@@ -47,7 +47,7 @@
      operator instruction 2026-08-19; each page carries a hidden internal
      note saying the same. Neither names an operating entity.
   2. Founder contact actions (application + speak-with-founder) go to
-     founder@haseeb.com via mailto: — the visitor's own email app; no
+     founder@haseeb.app via mailto: — the visitor's own email app; no
      invented endpoint. Tarek-directed 2026-08-19.
   3. The previously shown company name was removed everywhere — it is
      not yet incorporated. The only instance was the visible footer.
@@ -1010,10 +1010,10 @@
             </div>
             <div class="apply-actions">
               <button type="submit" class="btn btn-primary btn-large">Apply for a founding place</button>
-              <a class="btn btn-ghost" href="mailto:founder@haseeb.com?subject=Haseeb%20%E2%80%94%20Conversation%20with%20the%20Founder">Speak with the founder</a>
+              <a class="btn btn-ghost" href="mailto:founder@haseeb.app?subject=Haseeb%20%E2%80%94%20Conversation%20with%20the%20Founder">Speak with the founder</a>
             </div>
             <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
-            <p class="apply-note">Both buttons open your email application with a pre-filled message to founder@haseeb.com — nothing is sent until you press send there. Please don't include financial statements or bank details; we'll never ask for them in this form.</p>
+            <p class="apply-note">Both buttons open your email application with a pre-filled message to founder@haseeb.app — nothing is sent until you press send there. Please don't include financial statements or bank details; we'll never ask for them in this form.</p>
           </form>
         </div>
       </div>
@@ -1028,7 +1028,7 @@
     <div style="display:flex;gap:20px;flex-wrap:wrap">
       <a href="website-terms.html">Website Terms</a>
       <a href="privacy.html">Privacy Policy</a>
-      <a href="mailto:founder@haseeb.com">founder@haseeb.com</a>
+      <a href="mailto:founder@haseeb.app">founder@haseeb.app</a>
     </div>
     <div>© 2026 Haseeb. All rights reserved.</div>
     <div>English &nbsp;·&nbsp; <span class="ar" title="Arabic version pending approval">العربية</span> <span style="font-size: 11px;">— soon</span></div>
@@ -1087,7 +1087,7 @@
   })();
 
   // Founding-cohort application — uses the repo's approved contact
-  // mechanism (mailto: founder@haseeb.com). No invented endpoint.
+  // mechanism (mailto: founder@haseeb.app). No invented endpoint.
   (function () {
     var form = document.getElementById('cohortForm');
     var status = document.getElementById('formStatus');
@@ -1117,12 +1117,12 @@
         'Business type: ' + vals['f-type'] + '\n' +
         'Current accounting setup: ' + vals['f-setup'] + '\n' +
         'Contact: ' + vals['f-contact'] + '\n';
-      var href = 'mailto:founder@haseeb.com'
+      var href = 'mailto:founder@haseeb.app'
         + '?subject=' + encodeURIComponent('Haseeb Founding Cohort Application — ' + vals['f-company'])
         + '&body=' + encodeURIComponent(body);
       window.location.href = href;
       status.className = 'form-status ok';
-      status.textContent = 'Your email app should now be open with your application to founder@haseeb.com — press send there to submit it. If nothing opened, email founder@haseeb.com directly.';
+      status.textContent = 'Your email app should now be open with your application to founder@haseeb.app — press send there to submit it. If nothing opened, email founder@haseeb.app directly.';
     });
   })();
 </script>
