@@ -22,7 +22,11 @@
   --teal-ink:      #00795F;
   --teal-soft:     rgba(0,166,132,.10);
 
-  --amber:         #B45309;
+  /* .pill-ask paints this ink on --amber-soft composited over the white card,
+     i.e. #FAEFE1. #B45309 measured 4.42:1 there and failed AA for 12.5px/500
+     text; this step is the same hue (25.9 deg vs 26.0 deg) two stops darker
+     and measures 5.64:1 on the composite, 6.40:1 on white. */
+  --amber:         #9A4708;
   --amber-soft:    rgba(217,119,6,.12);
   --red:           #B91C1C;
   --red-soft:      rgba(220,38,38,.10);
@@ -961,12 +965,13 @@ body.bot-open .bot-launcher { display: none; }
 :root {
   --film-bg:       #F8F6F2;  /* warm white, the site --bg */
   --film-ink:      #2A2E35;  /* charcoal, 11.9:1 on warm white */
-  /* Receding tokens. The film module applies this as an OPACITY keyframe on
-     --film-ink rather than as a flat colour: over --film-bg the two are the
-     same pixels, opacity is what the animation can carry, and a transient
-     decorative token in an aria-hidden field is not informative text that
-     must clear 4.5:1 (WCAG 1.4.3 exempts pure decoration). */
-  --film-ink-soft: rgba(42,46,53,.55);
+  /* Receding tokens carry NO colour token of their own: the film module
+     applies the recession as an OPACITY keyframe on --film-ink. Over
+     --film-bg the two are the same pixels, opacity is what the animation can
+     carry, and a transient decorative token in an aria-hidden field is not
+     informative text that must clear 4.5:1 (WCAG 1.4.3 exempts pure
+     decoration). A declared-and-unused soft ink was the leftover of the flat
+     colour approach and is removed rather than left to look load-bearing. */
   --film-teal:     #00A684;  /* the ONE teal movement, and the mark */
   --film-teal-ink: #00795F;  /* teal used AS TEXT (4.7:1 on warm white) */
 }

@@ -517,6 +517,18 @@ check(15, 'the opening film: three statements verbatim, a real Skip outside the 
   return { ok: problems.length === 0, detail: problems.join(' · ') || seen.join(' · ') };
 });
 
+/* The copy of record behind each built page. Tripwire 16 asserts the film's
+   money tokens against THESE files rather than against the classes build.mjs
+   assigned, and the two patterns below are written out literally here rather
+   than imported from build.mjs, so this tripwire still fails when the BUILD's
+   own classifier is what breaks. */
+const COPY_OF = { 'haseeb.html': 'src/copy/en.json', 'ar.html': 'src/copy/ar.json' };
+/* carries money: a currency mark in either language, or a dot beside a digit.
+   The Arabic mark \u062F.\u0643 owns a dot, so it is matched as a mark, never as a decimal. */
+const SOURCE_MONEY = /KWD|\u062F\.\u0643|\d\.|\.\d/;
+/* and Kuwaiti money is exactly one figure carrying exactly three decimals */
+const SOURCE_AMOUNT = /^(?:(?:KWD|\u062F\.\u0643)\s*)?\d{1,3}(?:,\d{3})*\.\d{3}(?:\s*(?:KWD|\u062F\.\u0643))?$/;
+
 check(16, 'the film markup is a brand hook: no product UI, no place messaging, no imagery', () => {
   /* Patterns are assembled from fragments where a literal would make this
      file match itself under a future whole-repo scan. */
@@ -539,16 +551,39 @@ check(16, 'the film markup is a brand hook: no product UI, no place messaging, n
     const imagery = (markup.match(/<(img|svg|picture|canvas|video|audio|iframe|object|embed)\b/gi) || []);
     if (imagery.length) problems.push(`${page}: the film markup contains ${imagery.join(' ')}`);
 
+    /* THE DENOMINATOR IS THE SOURCE, NOT THE BUILD'S CLASSES. The build
+       classifies a token as an amount by finding a three-decimal figure in
+       it, so a two-decimal figure is not a failed amount — it is silently
+       re-classified as a WORD, and counting decimals over the amount spans
+       the build emitted then measures a set the bad token has already left.
+       Every money token is therefore read from src/copy/*.json, the copy of
+       record, and the markup is checked for AGREEING with it. */
+    const srcTokens = JSON.parse(read(COPY_OF[page])).film.tokens;
+    if (!Array.isArray(srcTokens) || !srcTokens.length) {
+      problems.push(`${COPY_OF[page]}: film.tokens is not a non-empty array`);
+      continue;
+    }
+    const srcMoney = srcTokens.filter((t) => SOURCE_MONEY.test(t));
+    const srcWords = srcTokens.filter((t) => !SOURCE_MONEY.test(t));
+    const notThreeDp = srcMoney.filter((t) => !SOURCE_AMOUNT.test(t));
+    if (notThreeDp.length) {
+      problems.push(`${COPY_OF[page]}: ${notThreeDp.length} money token(s) are not a single three-decimal figure: ${notThreeDp.join(' | ')}`);
+    }
+    if (srcTokens.length < 14) problems.push(`${COPY_OF[page]}: ${srcTokens.length} film tokens, the spec asks for at least 14`);
+    if (srcWords.length < 10) problems.push(`${COPY_OF[page]}: ${srcWords.length} word tokens`);
+    if (srcMoney.length < 4) problems.push(`${COPY_OF[page]}: ${srcMoney.length} money tokens`);
+
+    /* and the markup must render exactly the source's split, token for token */
     const tokens = markup.match(/class="film-tok /g) || [];
     const words = markup.match(/class="film-tok film-word"/g) || [];
     const amounts = markup.match(/class="film-tok film-amt"/g) || [];
-    if (tokens.length < 14) problems.push(`${page}: ${tokens.length} film tokens, the spec asks for at least 14`);
-    if (words.length < 10) problems.push(`${page}: ${words.length} word tokens`);
-    if (amounts.length < 4) problems.push(`${page}: ${amounts.length} amount tokens`);
-    const undecimalised = amounts.length - (markup.match(/class="film-amt-f"><span class="num">\.\d{3}</g) || []).length;
-    if (undecimalised !== 0) problems.push(`${page}: ${undecimalised} amount token(s) are not three-decimal`);
+    if (tokens.length !== srcTokens.length) problems.push(`${page}: ${tokens.length} rendered film tokens, ${srcTokens.length} in ${COPY_OF[page]}`);
+    if (amounts.length !== srcMoney.length) problems.push(`${page}: ${amounts.length} rendered amount tokens against ${srcMoney.length} money tokens in ${COPY_OF[page]} — a money token rendered as a WORD`);
+    if (words.length !== srcWords.length) problems.push(`${page}: ${words.length} rendered word tokens, ${srcWords.length} in ${COPY_OF[page]}`);
+    const rendered3dp = (markup.match(/class="film-amt-f"><span class="num">\.\d{3}</g) || []).length;
+    if (rendered3dp !== srcMoney.length) problems.push(`${page}: ${srcMoney.length - rendered3dp} money token(s) do not render a three-decimal fraction`);
 
-    seen.push(`${page}: ${tokens.length} tokens (${words.length} words, ${amounts.length} amounts, all 3dp) · 0 img/svg/canvas/video/audio/iframe · ${FORBIDDEN.length} forbidden patterns absent`);
+    seen.push(`${page}: ${srcTokens.length} source tokens in ${COPY_OF[page]} (${srcWords.length} words, ${srcMoney.length} money, every money token 3dp AT SOURCE) rendered as ${words.length} words + ${amounts.length} amounts · 0 img/svg/canvas/video/audio/iframe · ${FORBIDDEN.length} forbidden patterns absent`);
   }
 
   return {

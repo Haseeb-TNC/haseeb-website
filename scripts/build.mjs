@@ -79,11 +79,36 @@ function flatten(node, prefix, raw) {
 
 const FILM_AMOUNT = /^(.*?)(\.\d{3})(.*)$/;
 
+/* A token CARRIES MONEY when it shows a currency mark in either language or
+   a decimal point next to a digit. The Arabic mark د.ك carries a dot of its
+   own, so it is matched as a mark and never read as a decimal point. */
+const FILM_MONEY_MARK = /KWD|\u062F\.\u0643/;
+const FILM_CARRIES_MONEY = (t) => FILM_MONEY_MARK.test(t) || /\d\.|\.\d/.test(t);
+
+/* Kuwaiti money is three decimals, always. Classifying by FILM_AMOUNT alone
+   DEMOTES a wrong figure ("450.00 KWD") to a word, which is silent: the film
+   still renders, and any downstream "all amounts are 3dp" assertion then
+   counts over a denominator the bad token has already left. So the demotion
+   is refused here, at the source, before classification. */
+function filmMoneyFault(t) {
+  if (!FILM_CARRIES_MONEY(t)) return null;
+  const bare = String(t).replace(new RegExp(FILM_MONEY_MARK.source, 'g'), ' ');
+  const dots = (bare.match(/\./g) || []).length;
+  const threeDp = (bare.match(/\d\.\d{3}(?!\d)/g) || []).length;
+  if (dots === 1 && threeDp === 1) return null;
+  return `film.tokens entry "${t}" carries money but is not exactly one ` +
+         `three-decimal figure (${dots} decimal point(s), ${threeDp} three-decimal figure(s))`;
+}
+
 function renderFilmTokens(tokens, isArabic) {
   if (!Array.isArray(tokens)) throw new Error('build: film.tokens must be an array');
   const words = [];
   const amounts = [];
-  for (const t of tokens) (FILM_AMOUNT.test(t) ? amounts : words).push(t);
+  for (const t of tokens) {
+    const fault = filmMoneyFault(t);
+    if (fault) throw new Error(`build: ${fault}`);
+    (FILM_CARRIES_MONEY(t) ? amounts : words).push(t);
+  }
   if (!words.length || !amounts.length) throw new Error('build: film.tokens needs both words and amounts');
 
   const out = words.map((t, i) => {
@@ -102,6 +127,7 @@ function renderFilmTokens(tokens, isArabic) {
      an even rhythm rather than a block */
   amounts.forEach((t, j) => {
     const m = t.match(FILM_AMOUNT);
+    if (!m) throw new Error(`build: film.tokens entry "${t}" has no three-decimal figure to align on`);
     const row = Math.min(words.length, Math.max(1,
       Math.round(((j + 0.5) * words.length) / amounts.length)));
     out.push(
@@ -117,7 +143,7 @@ function renderFilmTokens(tokens, isArabic) {
 /* statement 2 carries the brand word, and it is the only teal TEXT in the
    film. Derived rather than hand-written so the copy of record stays plain. */
 function renderFilmLine2(line2, brandWord) {
-  const re = new RegExp(brandWord.replace(/[.*+?^${}()|[\]\\]/g, '\\function buildPage(copyPath, templateSrc) {'), 'i');
+  const re = new RegExp(brandWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
   if (!re.test(line2)) {
     throw new Error(`build: film.line2 "${line2}" does not contain the brand word "${brandWord}"`);
   }
