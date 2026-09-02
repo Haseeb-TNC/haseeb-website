@@ -50,7 +50,6 @@
     "srDescription": "Animation: a bank transaction is read, Haseeb prepares the entry, asks one question when information is missing, shows a balanced draft that you approve, and the books update.",
     "preview": "Product preview · sample data",
     "tenant": "The Company W.L.L.",
-    "tenantAr": "الشركة ذ.م.م",
     "ownerView": "Owner view · April 2026",
     "drLabel": "Dr",
     "crLabel": "Cr",
@@ -121,7 +120,7 @@
   },
   "ask": {
     "eyebrow": "Plain-language questions",
-    "h2": "Talk to your accountant the way you talk to anyone.",
+    "h2": "Ask your books a question, in plain language.",
     "body": "Ask which customers still owe you, or how much cash you have today, and get an answer in plain language.",
     "cta": "Try the guided demo"
   },
@@ -155,7 +154,7 @@
     "namePh": "Your name",
     "phonePh": "+965 …",
     "emailPh": "you@company.com",
-    "submit": "Apply for a founding place",
+    "submit": "Send your application",
     "errName": "Please add your name.",
     "errPhone": "Please add your phone number.",
     "errEmail": "Please add a valid email address.",

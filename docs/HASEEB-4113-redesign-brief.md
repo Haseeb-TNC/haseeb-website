@@ -187,13 +187,13 @@ Rules:
 
 ## 8. Definition-of-done tripwires (`scripts/check.mjs`, exit 1 on any failure)
 
-1. **No assistant brand anywhere:** every tracked file under `src/`, `assets/`, `scripts/` plus the four built pages has zero case-insensitive matches of `amin[ae]h?|ameena|أمينة|امينة`.
+1. **No assistant brand anywhere:** every tracked file under `src/`, `assets/`, `scripts/` plus the four built pages, `vercel.json`, `.vercelignore`, `package.json` (same file set as tripwire 11) has zero case-insensitive matches of `amin[ae]h?|ameena|أمينة|امينة`.
 2. `en.json` and `ar.json` have identical key sets (deep) and no empty string values.
-3. Built pages contain none of the removed-section copy: “will become normal”, “put it to work first”, “catches up”, “Better information. Faster accounting”, “more value from the accounting”, “Founding cohort now forming”; and each page's `<section id>` set is exactly `top, how, ask, kuwait, cohort`.
+3. Built pages (WHOLE file, head included, no carve-outs) contain none of the removed-section copy: “will become normal”, “put it to work first”, “catches up”, “Better information. Faster accounting”, “more value from the accounting”, “Intelligent accounting”; and each page's `<section id>` set is exactly `top, how, ask, kuwait, cohort`. (Ruling 2026-09-02: “Founding cohort now forming” was the announcement BAR, not a removed section; it stays in `meta.description` only and must not appear in the body — assert that separately.)
 4. Each built page: `#cohortForm` has exactly three `<input>` (types text, tel, email), no `<select>`, no `<textarea>`, no `action` attribute; `assets/site.js` contains no `fetch(`, `XMLHttpRequest`, `sendBeacon`, `WebSocket`; `mailto:founder@haseeb.app` present.
 5. Each built page contains `mailto:info@haseeb.app`, `website-terms.html`, `privacy.html`; both legal pages contain `mailto:info@haseeb.app` and the AR back link.
 6. `ar.html` has `lang="ar" dir="rtl"`; `haseeb.html` has `lang="en"` and no `dir="rtl"`; both have `rel="canonical"` and three absolute `hreflang` links.
-7. Both pages contain the locked supporting line verbatim.
+7. The `.hero-support` element (not the whole file) contains the locked supporting line verbatim on both pages.
 8. Both pages contain the pause/play control (`aria-pressed`) and `assets/site.css` contains a `prefers-reduced-motion: reduce` rule.
 9. Light-first: no `data-theme="dark"`, no `#0B0F14`/`#0b0f14` in any of the four pages or `site.css`.
 10. External hosts: every `src`/`href` with a scheme is `https://fonts.googleapis.com` or `https://fonts.gstatic.com`; no `<video>`, `<audio>`, `<iframe>`, no external `<script>`.
