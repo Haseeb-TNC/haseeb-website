@@ -109,7 +109,7 @@ Both pages are restyled light with content unchanged EXCEPT:
 --border-strong: rgba(0,0,0,.14)
 --text-1:        #1A1F26
 --text-2:        #4A5260
---text-3:        #697180
+--text-3:        #5D6472   tertiary; >=5.0:1 on all three grounds (bg 5.510 / surface 5.947 / surface-2 5.178)
 --teal:          #00A684   brand fill for primary buttons and accents
 --teal-on:       #04231C   TEXT ON TEAL (product --accent-primary-on; 5.8:1) — never white on teal at body size
 --teal-ink:      #00795F   teal used AS TEXT on white (4.7:1)

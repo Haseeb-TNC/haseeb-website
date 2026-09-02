@@ -12,10 +12,15 @@
 
   --text-1:        #1A1F26;
   --text-2:        #4A5260;
-  --text-3:        #697180;
-  /* tertiary on --surface-2 (#F1EFEB): #697180 measures 4.27:1 and fails AA,
-     so text over the sunken surface uses this darker step (5.18:1). */
-  --text-3-on-2:   #5D6472;
+  /* tertiary text. The previous #697180 measured 4.552:1 on --bg and 4.278:1
+     on --surface-2 — 0.05 of margin over AA on the warm white, and a plain
+     failure on the sunken surface — so it needed a per-ground exception
+     token. This value clears 5.0:1 on ALL THREE grounds the site paints
+     tertiary text on (5.510 on --bg, 5.947 on --surface, 5.178 on
+     --surface-2), which retires that exception: it IS the value the former
+     --text-3-on-2 already shipped, so folding the two changed no pixel that
+     used the exception and only darkened the ones that did not. */
+  --text-3:        #5D6472;
 
   --teal:          #00A684;
   --teal-on:       #04231C;
@@ -505,10 +510,10 @@ section { padding-block: var(--sec-pad); }
 .foot-links { display: flex; flex-wrap: wrap; gap: 22px; font-size: 14.5px; }
 .foot-links a { color: var(--text-2); }
 .foot-links a:hover { color: var(--text-1); }
-.foot-contact-l { color: var(--text-3-on-2); }
-.foot-lang { display: flex; align-items: center; gap: 10px; font-size: 14.5px; color: var(--text-3-on-2); }
+.foot-contact-l { color: var(--text-3); }
+.foot-lang { display: flex; align-items: center; gap: 10px; font-size: 14.5px; color: var(--text-3); }
 .foot-lang-current { color: var(--text-1); font-weight: 500; }
-.foot-copy { inline-size: 100%; margin: 0; font-size: 13.5px; color: var(--text-3-on-2); }
+.foot-copy { inline-size: 100%; margin: 0; font-size: 13.5px; color: var(--text-3); }
 
 /* ---------------- mobile sticky CTA ---------------- */
 
@@ -830,7 +835,7 @@ section { padding-block: var(--sec-pad); }
   line-height: 1.4;
   resize: none;
 }
-.bot-text::placeholder { color: var(--text-3-on-2); }
+.bot-text::placeholder { color: var(--text-3); }
 .bot-send {
   flex: none;
   display: inline-grid;
@@ -843,7 +848,7 @@ section { padding-block: var(--sec-pad); }
   border-radius: 8px;
   cursor: pointer;
 }
-.bot-send[disabled] { background: var(--surface-2); color: var(--text-3-on-2); cursor: not-allowed; }
+.bot-send[disabled] { background: var(--surface-2); color: var(--text-3); cursor: not-allowed; }
 [dir="rtl"] .bot-send svg { transform: scaleX(-1); }
 
 .bot-disclaimer {

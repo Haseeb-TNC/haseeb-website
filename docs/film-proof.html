@@ -30,10 +30,15 @@
 
   --text-1:        #1A1F26;
   --text-2:        #4A5260;
-  --text-3:        #697180;
-  /* tertiary on --surface-2 (#F1EFEB): #697180 measures 4.27:1 and fails AA,
-     so text over the sunken surface uses this darker step (5.18:1). */
-  --text-3-on-2:   #5D6472;
+  /* tertiary text. The previous #697180 measured 4.552:1 on --bg and 4.278:1
+     on --surface-2 — 0.05 of margin over AA on the warm white, and a plain
+     failure on the sunken surface — so it needed a per-ground exception
+     token. This value clears 5.0:1 on ALL THREE grounds the site paints
+     tertiary text on (5.510 on --bg, 5.947 on --surface, 5.178 on
+     --surface-2), which retires that exception: it IS the value the former
+     --text-3-on-2 already shipped, so folding the two changed no pixel that
+     used the exception and only darkened the ones that did not. */
+  --text-3:        #5D6472;
 
   --teal:          #00A684;
   --teal-on:       #04231C;

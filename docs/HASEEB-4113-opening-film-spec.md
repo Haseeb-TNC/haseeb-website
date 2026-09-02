@@ -31,7 +31,7 @@ fallbacks. Both languages. Do not deploy.
 ```
 --film-bg:       #F8F6F2   warm white (site --bg)
 --film-ink:      #2A2E35   charcoal for tokens and statements (AA on warm white: 11.9:1)
---film-ink-soft: rgba(42,46,53,.55)   receding tokens
+(no soft ink token)      receding tokens at 55% opacity of --film-ink
 --film-teal:     #00A684   the ONE teal movement + the mark; HASEEB in statement 2 may be teal
 --film-teal-ink: #00795F   teal used as text (AA)
 ```
@@ -64,7 +64,7 @@ names.
 | t (s) | Beat | What happens | Motion (transform/opacity only) |
 |---|---|---|---|
 | 0.0–0.6 | open | Warm white. Skip control visible at the top inline-end from the first frame (`film.skip`). The site's nav is NOT visible yet. | fade-in of the field |
-| 0.6–3.2 | information arrives | Tokens enter from all four edges and the corners at different speeds and sizes, drifting toward the centre, overlapping, slightly rotating (±4°), charcoal only, some soft (`--film-ink-soft`). Density rises to the point of visual competition; a few late tokens overshoot and settle. | staggered translate + rotate, ease-out; 60–110 ms stagger |
+| 0.6–3.2 | information arrives | Tokens enter from all four edges and the corners at different speeds and sizes, drifting toward the centre, overlapping, slightly rotating (±4°), charcoal only, some receding tokens at 55% opacity. Density rises to the point of visual competition; a few late tokens overshoot and settle. | staggered translate + rotate, ease-out; 60–110 ms stagger |
 | 3.2–4.4 | the teal movement | ONE teal band (a thin rounded bar, full height, ~12px wide, soft glow) sweeps once across the field from inline-start to inline-end. As it passes each token, that token snaps into place: words align into a single left column (start-aligned), amounts into a right column aligned on the decimal point, sizes normalise to one size, rotation to 0, spacing to an even rhythm. Nothing else is drawn: no rules, no headers, no card. The result reads as calm, organised text, not a table UI. | band: translateX over 1.1 s, ease-in-out; tokens: 220 ms snap each as the band crosses them |
 | 4.4–5.6 | statement 1 | The ordered rows recede (scale .92, opacity .18) and hold as texture; **YOU RUN THE BUSINESS.** / **أنت تدير أعمالك.** lands large, charcoal, centred. | rows: scale+fade; statement: rise 24px + fade, 420 ms |
 | 5.6–6.8 | statement 2 | Statement 1 exits upward; **HASEEB PREPARES THE ACCOUNTING.** / **حسيب يجهّز حساباتك.** lands; the word HASEEB / حسيب in `--film-teal-ink`. The ordered rows behind tighten one notch (scale .90). | exit up 24px + fade 260 ms; enter as before |
