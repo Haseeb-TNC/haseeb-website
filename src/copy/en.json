@@ -22,7 +22,8 @@
     "lang": "العربية",
     "langAria": "Switch to Arabic",
     "cta": "Join the founding cohort",
-    "menu": "Menu"
+    "menu": "Menu",
+    "aria": "Main navigation"
   },
   "hero": {
     "h1": "Get ahead with accounting software that understands your business.",
@@ -51,6 +52,8 @@
     "tenant": "The Company W.L.L.",
     "tenantAr": "الشركة ذ.م.م",
     "ownerView": "Owner view · April 2026",
+    "drLabel": "Dr",
+    "crLabel": "Cr",
     "f1Line": "KNET POS — ZAIN TELECOM KUWAIT",
     "f1Amount": "−28.500 KWD",
     "f1Meta": "14 Apr 2026 · imported from your bank statement",

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -16,63 +16,75 @@
   to what this static page actually does: a mailto: application, email
   to founder@haseeb.app, and font loading — no cookies, no analytics,
   no tracking, no form endpoint. Names NO operating entity.
+  2026-09-02 (HASEEB-4113): restyled light; the §2 field list rewritten to
+  the three fields the form now asks for; general contact moved to
+  info@haseeb.app; Arabic back link added. Arabic legal text is NOT
+  produced — this page is English only.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@400;500&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --bg: #0B0F14; --text-1: #E8E4DF;
-    --text-2: rgba(232,228,223,0.72); --text-3: rgba(232,228,223,0.45);
-    --border: rgba(255,255,255,0.08); --teal: #00C48C;
-    --amber: #D4A84B; --amber-soft: rgba(212,168,75,0.10);
+    --bg: #F8F6F2;
+    --border: rgba(0,0,0,.09);
+    --text-1: #1A1F26;
+    --text-2: #4A5260;
+    --text-3: #697180;
+    --teal-ink: #00795F;
   }
   * { box-sizing: border-box; }
   body {
     margin: 0; background: var(--bg); color: var(--text-1);
     font-family: 'DM Sans', system-ui, sans-serif;
-    font-size: 16.5px; line-height: 1.7;
+    font-size: 17px; line-height: 1.7;
     -webkit-font-smoothing: antialiased;
   }
-  a { color: var(--teal); text-decoration: none; }
+  a { color: var(--teal-ink); text-decoration: none; }
   a:hover { text-decoration: underline; }
-  a:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; border-radius: 4px; }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 40px 22px 80px; }
-  .back { font-size: 13.5px; color: var(--text-3); display: inline-block; margin-bottom: 36px; }
+  a:focus-visible { outline: 2px solid var(--teal-ink); outline-offset: 2px; border-radius: 4px; }
+  .wrap { max-inline-size: 720px; margin-inline: auto; padding: 40px 22px 80px; }
+  .backs { display: flex; flex-wrap: wrap; gap: 18px; margin-block-end: 36px; }
+  .back { font-size: 14px; color: var(--text-3); }
   .back:hover { color: var(--text-1); text-decoration: none; }
-  h1 { font-size: clamp(30px, 5vw, 40px); line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 8px; }
+  .back[lang="ar"] { font-family: 'Noto Sans Arabic', system-ui, sans-serif; }
+  h1 { font-size: clamp(30px, 5vw, 40px); line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 8px; font-weight: 600; }
   .updated { font-family: 'DM Mono', monospace; font-size: 11.5px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--text-3); margin-bottom: 28px; }
-  h2 { font-size: 19px; letter-spacing: -0.01em; margin: 34px 0 10px; }
+  h2 { font-size: 19px; letter-spacing: -0.01em; margin: 34px 0 10px; font-weight: 600; }
   p, li { color: var(--text-2); margin: 0 0 12px; }
-  ul { padding-left: 22px; margin: 0 0 12px; }
+  ul { padding-inline-start: 22px; margin: 0 0 12px; }
   li { margin-bottom: 6px; }
   strong { color: var(--text-1); }
-  footer { border-top: 1px solid var(--border); margin-top: 56px; padding-top: 20px; font-size: 13px; color: var(--text-3); }
+  footer { border-block-start: 1px solid var(--border); margin-block-start: 56px; padding-block-start: 20px; font-size: 13.5px; color: var(--text-3); }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <a class="back" href="haseeb.html">← Back to haseeb</a>
+  <div class="backs">
+    <a class="back" href="haseeb.html">← Back to haseeb</a>
+    <a class="back" href="ar.html" lang="ar" dir="rtl">← العودة إلى حسيب</a>
+  </div>
 
   <h1>Privacy Policy</h1>
-  <p class="updated">Last updated · 19 August 2026</p>
+  <p class="updated">Last updated · 2 September 2026</p>
 
   <h2>1. What this policy covers</h2>
   <p>This policy covers information handled through this public pre-launch landing page: the
   founding-cohort application, emails you send to
+  <a href="mailto:info@haseeb.app">info@haseeb.app</a> or
   <a href="mailto:founder@haseeb.app">founder@haseeb.app</a>, and the basic operation of the
   website. It does <strong>not</strong> cover the Haseeb accounting product.</p>
 
   <h2>2. What we collect, and why</h2>
   <p><strong>Founding-cohort applications.</strong> The application form asks for your name,
-  company, role, business type, current accounting setup, and a work email or phone number.
-  The form opens your own email application with this information pre-filled — nothing is
-  transmitted until you press send, and the details arrive as an ordinary email to
-  founder@haseeb.app. We ask for this information only to review your application and, if
-  your company fits the cohort, to contact you for a short introductory conversation. Please
-  do not include financial statements or bank details — we never ask for them at this stage.</p>
-  <p><strong>Emails.</strong> If you email founder@haseeb.app, we receive your address and
-  whatever you choose to write, and we use it to reply.</p>
+  phone number and email address. The form opens your own email application with this
+  information pre-filled — nothing is transmitted until you press send, and the details arrive
+  as an ordinary email to founder@haseeb.app. We ask for this information only to review your
+  application and, if your company fits the cohort, to contact you for a short introductory
+  conversation. Please do not include financial statements or bank details — we never ask for
+  them at this stage.</p>
+  <p><strong>Emails.</strong> If you email info@haseeb.app or founder@haseeb.app, we receive
+  your address and whatever you choose to write, and we use it to reply.</p>
   <p><strong>Website operation.</strong> This website currently uses no advertising trackers,
   non-essential cookies or behavioural analytics. Like most websites, its hosting provider may
   process basic technical information such as IP address, browser type, requested pages and
@@ -99,7 +111,7 @@
   a near fit. You can ask us to delete yours at any time.</p>
 
   <h2>6. Your choices</h2>
-  <p>Email <a href="mailto:founder@haseeb.app">founder@haseeb.app</a> to ask what information
+  <p>Email <a href="mailto:info@haseeb.app">info@haseeb.app</a> to ask what information
   we hold about you, to correct it, or to have it deleted. We will act on reasonable requests
   promptly.</p>
 
@@ -114,7 +126,7 @@
   reflects the current version.</p>
 
   <h2>9. Contact</h2>
-  <p>Privacy enquiries: <a href="mailto:founder@haseeb.app">founder@haseeb.app</a></p>
+  <p>Privacy enquiries: <a href="mailto:info@haseeb.app">info@haseeb.app</a></p>
 
   <footer>
     © 2026 Haseeb. All rights reserved. &nbsp;·&nbsp;

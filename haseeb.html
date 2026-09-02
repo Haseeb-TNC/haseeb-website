@@ -1,1131 +1,392 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" dir="ltr">
 <head>
+<!-- GENERATED FILE — do not edit by hand.
+     Source: src/site.template.html + src/copy/*.json
+     Rebuild: npm run site:build   ·   Verify: npm run site:check -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Haseeb — Accounting software that understands your business.</title>
-<meta name="description" content="Haseeb is built for Kuwaiti business. It handles more of the accounting work, gives you better information and lets you ask questions in plain language. Founding cohort now forming." />
+<meta name="description" content="Haseeb is built for Kuwaiti businesses. It prepares the accounting, asks when something is missing, and answers your questions in plain language. Founding cohort now forming." />
+<meta name="theme-color" content="#F8F6F2" />
 
-<!--
-  FOUNDING-COHORT HOMEPAGE — v8 (2026-08-18)
+<link rel="canonical" href="https://haseeb.app/" />
+<link rel="alternate" hreflang="en" href="https://haseeb.app/" />
+<link rel="alternate" hreflang="ar" href="https://haseeb.app/ar" />
+<link rel="alternate" hreflang="x-default" href="https://haseeb.app/" />
 
-  Rebuilt from v7 per Tarek's founding-cohort brief. Persuasion sequence:
-  Advantage → Product proof → Problem → Behaviour → Conversation → Kuwait →
-  Business value → Premium → Trust → Urgency → Founding-cohort application.
-
-  Product-fidelity notes (verified against the real app before building):
-  - Product frames mirror the real Owner Today screen (assets/screenshots/
-    01-owner-today.png): black top bar, green square logo, TENANT chip,
-    Bebas Neue company display name, mono KPI numbers 3dp KWD, AMINAH
-    ONLINE / ENGINE ACTIVE pills, Taskbox rows (ow avatar · role · chip ·
-    body · when), NEEDS YOUR ATTENTION amber badge.
-  - Chat mirrors the real Aminah drawer (03-aminah-conversation.png):
-    "AMINAH · Ready to help", "+ New conversation", suggested-question
-    chips, input placeholder "Ask Aminah anything about your books…",
-    and the real disclaimer "Aminah can make mistakes. Always verify
-    critical numbers."
-  - Status labels use the real product vocabulary (src/i18n/locales/en):
-    "READY TO APPROVE" (approval flow), "NEEDS AN ANSWER" (identity
-    questions), "NOT POSTED — HELD FOR REVIEW" (conv-accounting.json).
-  - Chat examples map to registered read-only tools: get_ar_aging
-    (customers who owe) and get_cash_position_advisor (cash position).
-    A supplier-payments tool does NOT exist, so the brief's second
-    example was replaced with the supported cash question.
-  - Tenant stays the deliberately generic "The Company W.L.L. /
-    الشركة ذ.م.م" (v6 rule: never brush against a real Kuwaiti company).
-    All figures are fictional demonstration data.
-
-  Removed per claim restrictions: "learns from every correction",
-  learning-loop section, "15 checks running continuously", Audit 14/15,
-  XBRL-2027 banner, SHA-256 audit chain, "audit ready", "real-time"
-  statements, full six-tab financial-statement showcase, standalone
-  "Meet Aminah" section, Book-a-Demo ending, "Built for the Gulf".
-
-  ⚠️ FLAGS FOR PUBLICATION (do not remove this comment until resolved):
-  1. website-terms.html and privacy.html still need PROFESSIONAL LEGAL
-     REVIEW before publication. The visible draft banners were removed by
-     operator instruction 2026-08-19; each page carries a hidden internal
-     note saying the same. Neither names an operating entity.
-  2. Founder contact actions (application + speak-with-founder) go to
-     founder@haseeb.app via mailto: — the visitor's own email app; no
-     invented endpoint. Tarek-directed 2026-08-19.
-  3. The previously shown company name was removed everywhere — it is
-     not yet incorporated. The only instance was the visible footer.
-     Copyright line is "© 2026 Haseeb. All rights reserved."
-  4. Arabic page (haseeb-ar.html) is the OLD pre-cohort page — it is not
-     linked from this version. Footer marks Arabic as pending approval.
--->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Haseeb — Accounting software that understands your business." />
+<meta property="og:description" content="Haseeb is built for Kuwaiti businesses. It prepares the accounting, asks when something is missing, and answers your questions in plain language. Founding cohort now forming." />
+<meta property="og:url" content="https://haseeb.app/" />
+<meta property="og:locale" content="en" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Bebas+Neue&family=Noto+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet" />
-
-<style>
-  :root {
-    --bg:           #0B0F14;
-    --bg-elev:      rgba(255, 255, 255, 0.04);
-    --bg-elev-2:    rgba(255, 255, 255, 0.02);
-    --border:       rgba(255, 255, 255, 0.06);
-    --border-2:     rgba(255, 255, 255, 0.10);
-
-    --text-1:       #E8E4DF;
-    /* v8: body copy lifted 0.55 → 0.68 for contrast (brief: grey too faint) */
-    --text-2:       rgba(232, 228, 223, 0.68);
-    --text-3:       rgba(232, 228, 223, 0.38);
-
-    --teal:         #00A684;
-    --teal-bright:  #00C48C;
-    --teal-glow:    rgba(0, 196, 140, 0.15);
-    --teal-soft:    rgba(0, 196, 140, 0.08);
-
-    --red:          #FD361C;
-    --red-soft:     rgba(253, 54, 28, 0.10);
-    --amber:        #D4A84B;
-    --amber-soft:   rgba(212, 168, 75, 0.12);
-
-    --font-sans:    'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-    --font-mono:    'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    --font-display: 'Bebas Neue', var(--font-sans);
-    --font-arabic:  'Noto Sans Arabic', system-ui, sans-serif;
-
-    --max-w:        1240px;
-  }
-
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-  body {
-    background: var(--bg);
-    color: var(--text-1);
-    font-family: var(--font-sans);
-    font-size: 18px;
-    line-height: 1.65;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
-    position: relative;
-  }
-  ::selection { background: var(--teal); color: #0B0F14; }
-  a { color: inherit; text-decoration: none; }
-  img { max-width: 100%; display: block; }
-
-  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
-    outline: 2px solid var(--teal-bright);
-    outline-offset: 2px;
-    border-radius: 6px;
-  }
-
-  .container { width: 100%; max-width: var(--max-w); margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
-  .container-narrow { max-width: 880px; }
-
-  /* ─────────── Type ─────────── */
-  h1, h2, h3 { margin: 0; font-family: var(--font-sans); letter-spacing: -0.025em; }
-  h1 { font-size: clamp(42px, 5.8vw, 74px); font-weight: 700; line-height: 1.05; }
-  h2 { font-size: clamp(34px, 4.4vw, 54px); font-weight: 700; line-height: 1.1; }
-  h3 { font-size: 18px; font-weight: 600; line-height: 1.4; }
-  p  { margin: 0; color: var(--text-2); font-size: 18px; line-height: 1.65; }
-
-  .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.20em;
-    text-transform: uppercase;
-    color: var(--teal-bright);
-    margin: 0 0 22px;
-  }
-  .accent { color: var(--teal-bright); }
-  .ar { font-family: var(--font-arabic); }
-
-  /* ─────────── CTA ─────────── */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 13px 22px;
-    border-radius: 10px;
-    font-family: var(--font-sans);
-    font-weight: 500;
-    font-size: 14.5px;
-    line-height: 1;
-    cursor: pointer;
-    transition: transform 120ms ease, background 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
-    border: 1px solid transparent;
-    white-space: nowrap;
-  }
-  .btn-primary {
-    background: var(--teal);
-    color: #0B0F14;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 22px rgba(0, 196, 140, 0.22);
-  }
-  .btn-primary:hover {
-    background: var(--teal-bright);
-    transform: translateY(-1px);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 28px rgba(0, 196, 140, 0.32);
-  }
-  .btn-ghost {
-    background: transparent;
-    color: var(--text-1);
-    border-color: var(--border-2);
-  }
-  .btn-ghost:hover { border-color: var(--teal-bright); color: var(--teal-bright); }
-  .btn-large { padding: 15px 26px; font-size: 15.5px; }
-
-  /* ─────────── Background orbs ─────────── */
-  .orbs { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-  .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.5; will-change: transform; }
-  .orb-1 { width: 720px; height: 720px; top: -240px; left: -180px;
-    background: radial-gradient(circle, rgba(0, 220, 170, 0.18), transparent 70%);
-    animation: orbDrift1 30s ease-in-out infinite; }
-  .orb-2 { width: 520px; height: 520px; top: 160px; right: -200px;
-    background: radial-gradient(circle, rgba(0, 220, 170, 0.08), transparent 70%);
-    animation: orbDrift2 36s ease-in-out infinite; }
-  @keyframes orbDrift1 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(70px,50px) scale(1.04); } }
-  @keyframes orbDrift2 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-50px,90px) scale(0.96); } }
-
-  /* ─────────── Announcement bar ─────────── */
-  .announce {
-    position: relative;
-    z-index: 51;
-    background: var(--teal-soft);
-    border-bottom: 1px solid rgba(0, 196, 140, 0.18);
-    text-align: center;
-    padding: 9px 16px;
-    font-size: 13px;
-    color: var(--text-1);
-  }
-  .announce a { color: var(--teal-bright); font-weight: 600; }
-  .announce a:hover { text-decoration: underline; }
-
-  /* ─────────── Nav ─────────── */
-  .nav {
-    position: sticky; top: 0; z-index: 50;
-    transition: background 240ms ease, border-color 240ms ease;
-    background: transparent;
-    border-bottom: 1px solid transparent;
-  }
-  .nav.scrolled {
-    background: rgba(11, 15, 20, 0.6);
-    backdrop-filter: blur(18px) saturate(140%);
-    -webkit-backdrop-filter: blur(18px) saturate(140%);
-    border-bottom-color: var(--border);
-  }
-  .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 20px 0; gap: 32px; }
-  .brand { font-weight: 700; font-size: 20px; letter-spacing: -0.015em; color: var(--text-1); }
-  .nav-right { display: flex; align-items: center; gap: 26px; }
-  .nav-right a.nav-link { color: var(--text-2); font-size: 13.5px; font-weight: 500; transition: color 120ms ease; }
-  .nav-right a.nav-link:hover { color: var(--text-1); }
-
-  /* ─────────── Sections ─────────── */
-  section { padding: 52px 0; position: relative; z-index: 1; }
-  .section-head { max-width: 720px; margin-bottom: 28px; }
-  .section-head p { margin-top: 20px; }
-  .section-head p + p { margin-top: 12px; }
-  .section-head .strong-line { color: var(--text-1); font-weight: 600; }
-
-  /* ─────────── Hero ─────────── */
-  .hero { padding: 64px 0 72px; text-align: center; }
-  .hero h1 { max-width: 1020px; margin: 0 auto; }
-  .hero p.subhead { margin: 26px auto 0; max-width: 640px; font-size: 19px; }
-  .hero p.subhead-2 { margin: 14px auto 0; max-width: 640px; font-size: 17px; color: var(--text-1); font-weight: 500; }
-  .hero-cta { margin-top: 36px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-  .hero-trust {
-    margin-top: 26px;
-    font-family: var(--font-mono);
-    font-size: 11.5px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-3);
-  }
-
-  /* ─────────── Product frame (mirrors the real app shell) ─────────── */
-  .product-frame {
-    background: #0C0E12; /* real --bg-surface-raised */
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.20), 0 24px 60px rgba(0,0,0,0.35);
-    text-align: left;
-  }
-  .product-bar {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 20px;
-    background: #05070A; /* real top bar is near-black (--bg-base) */
-    border-bottom: 1px solid var(--border);
-    font-size: 12.5px;
-    gap: 12px;
-  }
-  .product-bar .left { display: flex; align-items: center; gap: 10px; color: var(--text-2); min-width: 0; }
-  .logo-sq {
-    width: 20px; height: 20px; border-radius: 5px;
-    background: var(--teal);
-    display: inline-grid; place-items: center;
-    color: #05070A; font-weight: 700; font-size: 11px;
-    flex-shrink: 0;
-  }
-  .product-bar .wordmark { font-weight: 700; color: var(--text-1); letter-spacing: 0.02em; }
-  .tenant-chip {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.10em;
-    text-transform: uppercase;
-    border: 1px solid var(--border-2);
-    border-radius: 6px;
-    padding: 3px 8px;
-    color: var(--text-2);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .product-bar .right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-  .pill {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.10em;
-    text-transform: uppercase;
-    border: 1px solid var(--border-2);
-    color: var(--text-2);
-    white-space: nowrap;
-  }
-  .pill .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--teal-bright); box-shadow: 0 0 0 3px var(--teal-soft); }
-  .pill.aminah { background: var(--teal-bright); color: #0B0F14; border-color: transparent; font-weight: 600; }
-  .pill.preview { color: var(--text-3); border-style: dashed; }
-
-  .product-headline { padding: 20px 20px 16px; border-bottom: 1px solid var(--border); }
-  .product-headline .co {
-    font-family: var(--font-display);
-    font-weight: 400;
-    font-size: 26px;
-    letter-spacing: 0.03em;
-  }
-  .product-headline .co .ar { font-family: var(--font-arabic); font-size: 15px; color: var(--text-2); margin-inline-start: 10px; letter-spacing: 0; }
-  .product-headline .meta {
-    margin-top: 5px;
-    font-family: var(--font-mono);
-    font-size: 10.5px;
-    letter-spacing: 0.10em;
-    text-transform: uppercase;
-    color: var(--text-2);
-  }
-
-  .kpi-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-bottom: 1px solid var(--border); }
-  .kpi { padding: 20px; border-right: 1px solid var(--border); }
-  .kpi:last-child { border-right: none; }
-  .kpi .num { font-family: var(--font-mono); font-size: 26px; font-weight: 500; letter-spacing: -0.02em; }
-  .kpi .label { margin-top: 6px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--text-2); }
-  .kpi .sub { margin-top: 7px; font-family: var(--font-mono); font-size: 11px; color: var(--text-3); }
-  .kpi .sub.up { color: var(--teal-bright); }
-
-  /* Batch strip — the three launch states */
-  .batch-strip { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--border); }
-  .batch-cell { padding: 14px 20px; border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 4px; }
-  .batch-cell:last-child { border-right: none; }
-  .state-chip {
-    display: inline-flex; align-items: center; gap: 7px;
-    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.10em; text-transform: uppercase;
-    font-weight: 500;
-  }
-  .state-chip .sdot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-  .state-ready  { color: var(--teal-bright); } .state-ready  .sdot { background: var(--teal-bright); }
-  .state-ask    { color: var(--amber); }       .state-ask    .sdot { background: var(--amber); }
-  .state-stop   { color: var(--red); }         .state-stop   .sdot { background: var(--red); }
-  .batch-cell .n { font-family: var(--font-mono); font-size: 20px; color: var(--text-1); }
-  .batch-cell .d { font-size: 12.5px; color: var(--text-3); }
-
-  .taskbox { padding: 12px 20px 18px; }
-  .taskbox .head {
-    display: flex; align-items: center; justify-content: space-between; gap: 10px;
-    margin-bottom: 10px;
-    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-2);
-  }
-  .taskbox .head .count { color: var(--teal-bright); font-weight: 500; }
-  .task { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
-  .task:last-child { border-bottom: none; }
-  .task .ow {
-    width: 22px; height: 22px; border-radius: 50%;
-    background: var(--bg-elev); border: 1px solid var(--border-2);
-    color: var(--text-2);
-    display: grid; place-items: center;
-    font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.04em;
-    flex-shrink: 0;
-  }
-  .task .tag {
-    display: inline-flex; padding: 2px 8px; border-radius: 4px;
-    background: var(--bg-elev); border: 1px solid var(--border);
-    font-family: var(--font-mono); font-size: 10px; color: var(--text-2);
-    flex-shrink: 0;
-  }
-  .task .tag.q { color: var(--amber); border-color: rgba(212,168,75,0.35); }
-  .task .body { flex: 1; color: var(--text-1); min-width: 0; }
-  .task .when { color: var(--text-3); font-family: var(--font-mono); font-size: 11px; flex-shrink: 0; }
-  .task-approve {
-    margin-top: 12px;
-    display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    padding: 12px 14px;
-    border-radius: 10px;
-    background: var(--teal-soft);
-    border: 1px solid rgba(0, 196, 140, 0.20);
-    font-size: 13.5px;
-  }
-  .task-approve .t { color: var(--text-1); }
-  .task-approve .fake-btn {
-    background: var(--teal); color: #0B0F14;
-    font-size: 12.5px; font-weight: 600;
-    border-radius: 8px; padding: 8px 14px;
-    white-space: nowrap;
-  }
-
-  /* ─────────── Behaviour cards ─────────── */
-  .beh-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 8px; }
-  .beh-card {
-    background: #0C0E12;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-    display: flex; flex-direction: column; gap: 12px;
-    box-shadow: 0 10px 34px rgba(0,0,0,0.25);
-  }
-  .beh-card .merchant { font-family: var(--font-mono); font-size: 13px; font-weight: 500; letter-spacing: 0.04em; color: var(--text-1); }
-  .beh-card .line { font-size: 14px; color: var(--text-2); flex: 1; }
-  .beh-card .amt { font-family: var(--font-mono); font-size: 12px; color: var(--text-3); }
-  .beh-card .foot { padding-top: 12px; border-top: 1px solid var(--border); }
-
-  /* ─────────── Conversation ─────────── */
-  .conv-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 48px; align-items: center; }
-  .conv-text p { margin-top: 22px; max-width: 440px; }
-  .aminah-panel {
-    background: #0C0E12;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.20), 0 18px 50px rgba(0,0,0,0.30);
-  }
-  .aminah-panel-head {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 20px;
-    border-bottom: 1px solid var(--border);
-  }
-  .aminah-panel-head .title { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: 0.05em; font-size: 13.5px; }
-  .aminah-panel-head .title .star { color: var(--teal-bright); }
-  .aminah-panel-head .title .ready { color: var(--teal-bright); font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.10em; font-weight: 500; margin-left: 4px; }
-  .aminah-panel-head .new { font-family: var(--font-mono); font-size: 11px; color: var(--text-2); letter-spacing: 0.04em; }
-  .aminah-stream { padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
-  .msg { max-width: 86%; padding: 12px 16px; border-radius: 14px; font-size: 14px; line-height: 1.55; }
-  .msg.user { align-self: flex-end; background: var(--bg-elev); border: 1px solid var(--border); border-bottom-right-radius: 6px; }
-  .msg.aminah { align-self: flex-start; background: var(--teal-soft); border: 1px solid rgba(0, 196, 140, 0.20); border-bottom-left-radius: 6px; }
-  .msg .mono { font-family: var(--font-mono); color: var(--teal-bright); font-weight: 500; }
-  .msg .ref { display: block; margin-top: 8px; font-size: 12.5px; color: var(--teal-bright); }
-  .aminah-input {
-    margin: 4px 20px 14px;
-    border: 1px solid var(--border-2);
-    border-radius: 10px;
-    padding: 11px 14px;
-    font-size: 13px;
-    color: var(--text-3);
-  }
-  .aminah-disclaimer {
-    padding: 0 20px 16px;
-    font-size: 11px;
-    color: var(--text-3);
-    text-align: center;
-  }
-
-  /* ─────────── Kuwait ─────────── */
-  .kw-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 48px; align-items: center; }
-  .kw-visual { display: flex; flex-direction: column; gap: 0; }
-  .kw-stage {
-    background: #0C0E12;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 14px 44px rgba(0,0,0,0.28);
-  }
-  .kw-head {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 12px 18px;
-    border-bottom: 1px solid var(--border);
-    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--text-2);
-  }
-  .kw-row { padding: 14px 18px; border-bottom: 1px solid var(--border); }
-  .kw-row:last-child { border-bottom: none; }
-  .kw-row .top { display: flex; justify-content: space-between; gap: 10px; font-family: var(--font-mono); font-size: 13px; }
-  .kw-row .top .neg { color: var(--text-1); }
-  .kw-row .desc { margin-top: 3px; font-size: 12.5px; color: var(--text-3); }
-  .kw-connector { display: grid; place-items: center; padding: 10px 0; color: var(--teal-bright); }
-  .kw-je { font-family: var(--font-mono); font-size: 12.5px; }
-  .kw-je .row { display: flex; justify-content: space-between; padding: 3px 0; color: var(--text-2); }
-  .kw-je .row .a { color: var(--text-1); }
-  .kw-facts { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 10px; }
-  .kw-fact {
-    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase;
-    border: 1px solid var(--border-2); border-radius: 999px; padding: 6px 12px; color: var(--text-2);
-  }
-
-  /* ─────────── Owner view (business value) ─────────── */
-  .value-frame { max-width: 880px; margin: 30px auto 0; }
-  .narration {
-    margin: 16px 20px 20px;
-    padding: 13px 16px;
-    border-radius: 10px;
-    background: var(--teal-soft);
-    border: 1px solid rgba(0, 196, 140, 0.18);
-    display: flex; align-items: flex-start; gap: 12px;
-    font-size: 14px; color: var(--text-1); line-height: 1.55;
-  }
-  .narration .star { color: var(--teal-bright); flex-shrink: 0; margin-top: 1px; }
-  .narration strong { color: var(--teal-bright); font-weight: 600; }
-  .kpi-row.four { grid-template-columns: repeat(4, minmax(0, 1fr)); border-bottom: none; }
-
-  /* ─────────── Editorial (premium + urgency) ─────────── */
-  .editorial { text-align: center; }
-  .editorial h2 { max-width: 900px; margin: 0 auto; }
-  .editorial .lines { max-width: 640px; margin: 28px auto 0; display: flex; flex-direction: column; gap: 12px; }
-  .editorial .strong-line { color: var(--text-1); font-weight: 600; font-size: 19px; }
-
-/* ─────────── Trust cards ─────────── */
-  .trust-after { max-width: 720px; margin: 30px 0 0; display: flex; flex-direction: column; gap: 8px; }
-  .trust-after .strong-line { color: var(--text-1); font-weight: 600; }
-
-.urgency {
-    margin-top: 24px;
-    padding: 84px 0;
-    background: linear-gradient(180deg, transparent, rgba(0, 196, 140, 0.035) 45%, transparent);
-  }
-
-  /* ─────────── Founding cohort ─────────── */
-  .cohort {
-    background: linear-gradient(180deg, var(--teal-soft), rgba(0, 196, 140, 0.03));
-    border: 1px solid rgba(0, 196, 140, 0.22);
-    border-radius: 18px;
-    padding: 56px 48px;
-  }
-  .cohort-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 56px; }
-  .cohort h2 { font-size: clamp(30px, 3.6vw, 44px); }
-  .cohort .lead { margin-top: 20px; }
-  .cohort .lead + .lead { margin-top: 12px; }
-  .receive { margin: 26px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
-  .receive li { display: flex; gap: 12px; align-items: flex-start; font-size: 15.5px; color: var(--text-1); }
-  .receive li::before { content: '✓'; color: var(--teal-bright); font-weight: 700; flex-shrink: 0; }
-  .cohort .not-mass { margin-top: 26px; font-size: 15px; color: var(--text-2); }
-  .cohort .not-mass strong { color: var(--text-1); }
-
-  .apply-card {
-    background: rgba(11, 15, 20, 0.75);
-    border: 1px solid var(--border-2);
-    border-radius: 14px;
-    padding: 28px;
-  }
-  .apply-card h3 { font-size: 16px; margin-bottom: 18px; }
-  .field { margin-bottom: 14px; }
-  .field label { display: block; font-size: 12.5px; font-weight: 500; color: var(--text-2); margin-bottom: 6px; }
-  .field input, .field select {
-    width: 100%;
-    background: var(--bg-elev);
-    border: 1px solid var(--border-2);
-    border-radius: 8px;
-    color: var(--text-1);
-    font-family: var(--font-sans);
-    font-size: 14px;
-    padding: 10px 12px;
-  }
-  .field select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--text-3) 50%), linear-gradient(135deg, var(--text-3) 50%, transparent 50%); background-position: calc(100% - 18px) 55%, calc(100% - 13px) 55%; background-size: 5px 5px; background-repeat: no-repeat; }
-  .field input::placeholder { color: var(--text-3); }
-  .field.invalid input, .field.invalid select { border-color: var(--red); }
-  .field .err { display: none; font-size: 12px; color: var(--red); margin-top: 5px; }
-  .field.invalid .err { display: block; }
-  .apply-actions { margin-top: 22px; display: flex; flex-direction: column; gap: 12px; }
-  .apply-actions .btn { width: 100%; }
-  .apply-note { font-size: 12px; color: var(--text-3); margin-top: 14px; line-height: 1.5; }
-  .form-status { display: none; margin-top: 16px; padding: 12px 14px; border-radius: 10px; font-size: 13.5px; line-height: 1.5; }
-  .form-status.ok { display: block; background: var(--teal-soft); border: 1px solid rgba(0,196,140,0.25); color: var(--text-1); }
-  .form-status.bad { display: block; background: var(--red-soft); border: 1px solid rgba(253,54,28,0.25); color: var(--text-1); }
-
-  /* ─────────── Footer ─────────── */
-  footer { border-top: 1px solid var(--border); padding: 36px 0 48px; position: relative; z-index: 1; }
-  .footer-inner {
-    display: flex; flex-wrap: wrap; gap: 18px 32px;
-    align-items: center; justify-content: space-between;
-    font-size: 13px; color: var(--text-3);
-  }
-  .footer-inner a:hover { color: var(--text-1); }
-
-  /* ─────────── Mobile persistent CTA ─────────── */
-  .mobi-cta {
-    position: fixed;
-    left: 16px; right: 16px;
-    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
-    z-index: 60;
-    display: none;
-    opacity: 0;
-    transform: translateY(12px);
-    transition: opacity 240ms ease, transform 240ms ease;
-    pointer-events: none;
-  }
-  .mobi-cta.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
-  .mobi-cta a {
-    display: flex; align-items: center; justify-content: center;
-    background: var(--teal);
-    color: #0B0F14;
-    font-weight: 600; font-size: 14.5px;
-    border-radius: 12px;
-    padding: 14px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.45), 0 4px 18px rgba(0,196,140,0.25);
-  }
-
-  /* ─────────── Reveal animations ─────────── */
-  .reveal, .slide-up { opacity: 0; transform: translateY(18px); transition: opacity 600ms ease, transform 600ms ease; }
-  .reveal.visible, .slide-up.visible { opacity: 1; transform: none; }
-
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    .orb { animation: none; }
-    .reveal, .slide-up { opacity: 1; transform: none; transition: none; }
-    .mobi-cta { transition: none; }
-  }
-
-  /* ─────────── Responsive ─────────── */
-  @media (max-width: 1023px) {
-    .conv-grid, .kw-grid { grid-template-columns: 1fr; gap: 36px; }
-    .cohort-grid { grid-template-columns: 1fr; gap: 40px; }
-    .cohort { padding: 40px 28px; }
-  }
-  @media (max-width: 767px) {
-    body { font-size: 16px; }
-    p { font-size: 16px; }
-    section { padding: 32px 0; }
-    .section-head { margin-bottom: 22px; }
-    .beh-grid { margin-top: 8px; }
-    .beh-card { padding: 16px; gap: 8px; }
-    .m-hide { display: none; }
-    .cohort { padding: 26px 18px; }
-    .cohort-grid { gap: 24px; }
-    .value-frame { margin-top: 28px; }
-    .container { padding: 0 20px; }
-    .nav-right a.nav-link { display: none; }
-    .hero { padding: 32px 0 44px; }
-    .hero p.subhead { font-size: 16.5px; }
-    .hero-cta .btn-ghost { border: none; background: none; color: var(--teal-bright); padding: 10px 6px; }
-    .kpi-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .kpi { padding: 16px; }
-    .kpi .num { font-size: 19px; }
-    .kpi.hide-m { display: none; }
-    .kpi-row.four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .kpi-row.four .kpi { border-bottom: 1px solid var(--border); }
-    .batch-strip { grid-template-columns: 1fr; }
-    .batch-cell { border-right: none; border-bottom: 1px solid var(--border); flex-direction: row; align-items: center; justify-content: space-between; }
-    .batch-cell:last-child { border-bottom: none; }
-    .batch-cell .d { display: none; }
-    .beh-grid { grid-template-columns: 1fr; }
-    .task .when { display: none; }
-    .mobi-cta { display: block; }
-    .announce { font-size: 12px; }
-    .product-bar .right .pill:not(.preview) { display: none; }
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Bebas+Neue&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/site.css" />
 </head>
 <body>
 
-<div class="orbs" aria-hidden="true">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-</div>
+<!-- ─────────────────────────  NAV  ───────────────────────── -->
+<nav class="nav" id="nav" aria-label="Main navigation">
+  <div class="wrap nav-inner">
+    <a class="wordmark" href="#top">HASEEB.</a>
 
-<!-- ════════════ ANNOUNCEMENT ════════════ -->
-<div class="announce">
-  <strong>Founding cohort now forming:</strong> 8–12 Kuwaiti service businesses. <a href="#apply">Apply for a place →</a>
-</div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navMenu">
+      <span class="nav-burger" aria-hidden="true"><span></span><span></span></span>
+      <span class="nav-toggle-label">Menu</span>
+    </button>
 
-<!-- ════════════ NAV ════════════ -->
-<nav class="nav" id="nav" aria-label="Main">
-  <div class="container nav-inner">
-    <a href="#top" class="brand">HASEEB.</a>
-    <div class="nav-right">
-      <a class="nav-link" href="#why">Why Haseeb</a>
+    <div class="nav-menu" id="navMenu">
+      <a class="nav-link" href="#how">How it works</a>
       <a class="nav-link" href="#kuwait">Kuwait</a>
-      <a class="nav-link" href="#how">How It Works</a>
-      <a class="nav-link" href="#cohort">Founding Cohort</a>
-      <a href="#apply" class="btn btn-primary">Join the Cohort</a>
+      <a class="nav-link" href="#cohort">Founding cohort</a>
+      <a class="nav-lang" data-lang-switch lang="ar" hreflang="ar" href="/ar" aria-label="Switch to Arabic">العربية</a>
+      <a class="btn btn-primary nav-cta" href="#apply">Join the founding cohort</a>
     </div>
   </div>
 </nav>
 
-<!-- ════════════ HERO — Advantage ════════════ -->
-<section class="hero" id="top">
-  <div class="container">
-    <h1 class="reveal">
-      Get ahead with<br />
-      accounting software that<br />
-      <span class="accent">understands your business.</span>
-    </h1>
-    <p class="subhead reveal" style="transition-delay: 120ms;">
-      Haseeb is built for Kuwaiti business. It handles more of the accounting work, gives you better information and lets you ask questions in plain language.
-    </p>
-    <p class="subhead-2 reveal" style="transition-delay: 200ms;">
-      Move faster. Reduce the work around accounting. Stay in control.
-    </p>
-    <div class="hero-cta reveal" style="transition-delay: 280ms;">
-      <a href="#apply" class="btn btn-primary btn-large">Join the founding cohort</a>
-      <a href="#how" class="btn btn-ghost btn-large">See how Haseeb works</a>
-    </div>
-    <div class="hero-trust reveal" style="transition-delay: 360ms;">
-      Founding cohort · 8–12 Kuwaiti businesses · Supervised from day one
-    </div>
-  </div>
-</section>
+<main>
 
-<!-- ════════════ PRODUCT PROOF — batch approval ════════════ -->
-<section id="how">
-  <div class="container">
-    <div class="section-head">
-      <h2>Haseeb prepares the work.<br />You approve it in batches.</h2>
-      <p>Haseeb reviews your transactions, prepares the accounting and separates what is clear from what needs attention.</p>
-      <p>You review the completed work, answer the questions only you can answer and approve when you are ready.</p>
-      <p class="strong-line">Haseeb does the work. You stay in control.</p>
-    </div>
+  <!-- ─────────────────────────  1 · HERO  ───────────────────────── -->
+  <section class="hero" id="top">
+    <div class="wrap hero-grid">
 
-    <div class="product-frame slide-up" role="img" aria-label="Product preview of the Haseeb owner dashboard showing prepared work waiting for batch approval">
-      <div class="product-bar">
-        <div class="left">
-          <span class="logo-sq">H</span>
-          <span class="wordmark">HASEEB.</span>
-          <span class="tenant-chip">Tenant · The Company W.L.L.</span>
+      <div class="hero-text">
+        <h1 class="hero-h1 reveal">Get ahead with accounting software that understands your business.</h1>
+        <p class="hero-support reveal">Haseeb is built for Kuwaiti businesses.</p>
+        <p class="hero-sub reveal">It prepares the accounting, asks when something is missing, and answers your questions in plain language.</p>
+        <div class="hero-actions reveal">
+          <a class="btn btn-primary btn-lg" href="#apply">Join the founding cohort</a>
+          <a class="link-arrow" href="#how">See how it works<span class="arrow" aria-hidden="true">→</span></a>
         </div>
-        <div class="right">
-          <span class="pill"><span class="dot"></span> Aminah online</span>
-          <span class="pill preview">Product preview</span>
-        </div>
+        <p class="hero-fact reveal">Founding cohort · 8–12 Kuwaiti businesses · Supervised from day one</p>
       </div>
 
-      <div class="product-headline">
-        <div class="co">THE COMPANY W.L.L. <span class="ar">الشركة ذ.م.م</span></div>
-        <div class="meta">Owner view · April 2026 · 14:22 KWT</div>
-      </div>
+      <div class="hero-stage reveal">
+        <div class="seq" id="seq" data-stage="1" data-mode="motion" role="group" aria-label="Product preview · sample data">
 
-      <div class="kpi-row">
-        <div class="kpi">
-          <div class="num">48,420.750</div>
-          <div class="label">Revenue this month</div>
-          <div class="sub up">▲ 14% vs last month</div>
-        </div>
-        <div class="kpi">
-          <div class="num">142,850.000</div>
-          <div class="label">Cash position</div>
-          <div class="sub">across 2 bank accounts</div>
-        </div>
-        <div class="kpi hide-m">
-          <div class="num">9,708.660</div>
-          <div class="label">Net income</div>
-          <div class="sub">this month · KWD</div>
-        </div>
-      </div>
+          <div class="seq-stage" id="seqStage" role="img" aria-label="Animation: a bank transaction is read, Haseeb prepares the entry, asks one question when information is missing, shows a balanced draft that you approve, and the books update.">
+            <div class="seq-chrome" aria-hidden="true">
+              <span class="seq-logo">H</span>
+              <span class="seq-wordmark">HASEEB.</span>
+              <span class="seq-tenant">The Company W.L.L.</span>
+              <span class="seq-preview">Product preview · sample data</span>
+            </div>
 
-      <div class="batch-strip">
-        <div class="batch-cell">
-          <span class="state-chip state-ready"><span class="sdot"></span> Ready to approve</span>
-          <span class="n">12</span>
-          <span class="d">Prepared and clear — approve as one batch</span>
-        </div>
-        <div class="batch-cell">
-          <span class="state-chip state-ask"><span class="sdot"></span> Needs an answer</span>
-          <span class="n">2</span>
-          <span class="d">One question each, from you</span>
-        </div>
-        <div class="batch-cell">
-          <span class="state-chip state-stop"><span class="sdot"></span> Held for review</span>
-          <span class="n">1</span>
-          <span class="d">Not enough information — nothing posted</span>
-        </div>
-      </div>
+            <div class="seq-body" aria-hidden="true">
 
-      <div class="taskbox">
-        <div class="head"><span>Taskbox <span class="count">· 3 open</span></span></div>
-        <div class="task">
-          <span class="ow">ow</span>
-          <span class="tag">Approval</span>
-          <span class="body">12 prepared transactions — ready for your approval</span>
-          <span class="when">Today</span>
-        </div>
-        <div class="task">
-          <span class="ow">ow</span>
-          <span class="tag q">Question</span>
-          <span class="body">Transfer on 14 Apr — what was this payment for?</span>
-          <span class="when">Today</span>
-        </div>
-        <div class="task">
-          <span class="ow">ow</span>
-          <span class="tag">Review</span>
-          <span class="body">Supplier invoice missing its document — held, nothing posted</span>
-          <span class="when">Yesterday</span>
-        </div>
-        <div class="task-approve">
-          <span class="t">Batch of 12 reviewed and balanced — approve to post</span>
-          <span class="fake-btn">Approve batch</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+              <!-- stage 1–2 · the bank line, full size -->
+              <div class="layer f-line" data-state="hidden">
+                <div class="card">
+                  <div class="card-top">
+                    <span class="card-label bank">KNET POS — ZAIN TELECOM KUWAIT</span>
+                    <span class="fig">−28.500 KWD</span>
+                  </div>
+                  <div class="card-meta">14 Apr 2026 · imported from your bank statement</div>
+                </div>
+              </div>
 
-<!-- ════════════ PROBLEM + BEHAVIOUR (merged, Psych refinement) ════════════ -->
-<section id="why">
-  <div class="container">
-    <div class="section-head">
-      <h2>Accounting software should do more than store the accounts.</h2>
-      <p class="strong-line">When the information is clear, Haseeb prepares the accounting. When it needs an answer, it asks. When there isn't enough information, it stops.</p>
-    </div>
+              <!-- stage 2 · the same line, contracted into a smaller window -->
+              <div class="layer f-mini" data-state="hidden">
+                <div class="card card-sm">
+                  <div class="card-label bank">KNET POS — ZAIN TELECOM KUWAIT</div>
+                  <div class="fig">−28.500 KWD</div>
+                </div>
+              </div>
 
-    <div class="beh-grid">
-      <div class="beh-card slide-up">
-        <span class="merchant">ZAIN TELECOM</span>
-        <span class="line">Telecommunications</span>
-        <span class="amt">−28.500 KWD · 14 Apr</span>
-        <div class="foot"><span class="state-chip state-ready"><span class="sdot"></span> Ready to approve</span></div>
-      </div>
-      <div class="beh-card slide-up" style="transition-delay: 100ms;">
-        <span class="merchant">TRANSFER — PURPOSE UNCLEAR</span>
-        <span class="line">What was this payment for?</span>
-        <span class="amt">−450.000 KWD · 15 Apr</span>
-        <div class="foot"><span class="state-chip state-ask"><span class="sdot"></span> Needs an answer</span></div>
-      </div>
-      <div class="beh-card slide-up" style="transition-delay: 200ms;">
-        <span class="merchant">DOCUMENT MISSING</span>
-        <span class="line">Not enough information</span>
-        <span class="amt">−1,840.000 KWD · 15 Apr</span>
-        <div class="foot"><span class="state-chip state-stop"><span class="sdot"></span> Not posted — held for review</span></div>
-      </div>
-    </div>
+              <!-- stage 2 · the organised entry -->
+              <div class="layer f-panel" data-state="hidden">
+                <div class="card">
+                  <div class="prow"><span class="tick" aria-hidden="true">✓</span><span>Merchant recognised</span></div>
+                  <div class="prow prow-cat">Telecommunications</div>
+                  <div class="prow je"><span class="dc">Dr</span><span class="acct">Telecommunications expense</span><span class="fig">28.500</span></div>
+                  <div class="prow je"><span class="dc">Cr</span><span class="acct">Bank — operating account</span><span class="fig">28.500</span></div>
+                  <div class="prow"><span class="pill pill-ready">Ready to approve</span></div>
+                </div>
+              </div>
 
-    <div class="trust-after">
-      <p>At launch, you or your accountant approve Haseeb's work in batches.</p>
-      <p class="strong-line">You stay in control of what gets approved.</p>
-    </div>
-  </div>
-</section>
+              <!-- stage 3 · the transfer -->
+              <div class="layer f-line2" data-state="hidden">
+                <div class="card">
+                  <div class="card-top">
+                    <span class="card-label">TRANSFER</span>
+                    <span class="fig">−450.000 KWD</span>
+                  </div>
+                  <div class="card-meta">15 Apr 2026</div>
+                </div>
+              </div>
 
-<!-- ════════════ CONVERSATION — Aminah, inside Haseeb ════════════ -->
-<section>
-  <div class="container">
-    <div class="conv-grid">
-      <div class="conv-text">
-        <p class="eyebrow">Aminah, inside Haseeb</p>
-        <h2>Talk to your accounts like you talk to a person.</h2>
-        <p>Get answers without digging through reports or translating your question into accounting terminology.</p>
-      </div>
+              <!-- stage 3 · the task and the owner's reply -->
+              <div class="layer f-task" data-state="hidden">
+                <div class="card">
+                  <div class="task-top"><span class="pill pill-ask">Needs an answer</span></div>
+                  <p class="task-q">Transfer on 15 Apr — what was this payment for?</p>
+                  <div class="reply">
+                    <span class="reply-field">
+                      <span class="reply-ph">Write a reply...</span>
+                      <span class="reply-typed"><span class="reply-text">Office rent — April</span><span class="reply-cover"></span></span>
+                    </span>
+                    <span class="reply-btn">Reply</span>
+                  </div>
+                </div>
+              </div>
 
-      <div class="aminah-panel slide-up" role="img" aria-label="Product preview of a conversation with Aminah inside Haseeb">
-        <div class="aminah-panel-head">
-          <div class="title">
-            <span class="star">✦</span>
-            <span>AMINAH</span>
-            <span class="ready">Ready to help</span>
+              <!-- stage 4 · the balanced draft and the approval -->
+              <div class="layer f-draft" data-state="hidden">
+                <div class="card">
+                  <div class="draft-top">
+                    <span class="draft-title">Draft entry</span>
+                    <span class="pill pill-ready">Ready to approve</span>
+                  </div>
+                  <div class="prow je"><span class="dc">Dr</span><span class="acct">Rent expense</span><span class="fig">450.000</span></div>
+                  <div class="prow je"><span class="dc">Cr</span><span class="acct">Bank — operating account</span><span class="fig">450.000</span></div>
+                  <div class="draft-bal">Balanced · difference 0.000</div>
+                  <div class="draft-act">
+                    <span class="btn-mini" data-approve="idle">
+                      <span class="lbl lbl-idle">Approve</span>
+                      <span class="lbl lbl-done">Approved</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- stage 5 · the owner view -->
+              <div class="layer f-owner" data-state="hidden">
+                <div class="owner-head">Owner view · April 2026</div>
+                <div class="owner-tiles">
+                  <div class="tile">
+                    <div class="tile-l">Revenue</div>
+                    <div class="tile-v fig">48,420.750</div>
+                  </div>
+                  <div class="tile">
+                    <div class="tile-l">Expenses</div>
+                    <div class="tile-v fig"><span class="num tween" data-from="38,712.090" data-to="39,190.590">38,712.090</span></div>
+                  </div>
+                  <div class="tile">
+                    <div class="tile-l">Net income</div>
+                    <div class="tile-v fig"><span class="num tween" data-from="9,708.660" data-to="9,230.160">9,708.660</span></div>
+                  </div>
+                </div>
+                <div class="owner-foot">
+                  <span>Taskbox · 0 open</span>
+                  <span class="owner-upd"><span class="tick" aria-hidden="true">✓</span>Books updated</span>
+                </div>
+              </div>
+
+            </div>
           </div>
-          <div class="new">+ New conversation</div>
-        </div>
-        <div class="aminah-stream">
-          <div class="msg user">Which customers still owe us?</div>
-          <div class="msg aminah">
-            Three customers owe you <span class="mono">12,450.000 KWD</span> in total. The largest is Alghanim Industries — invoice 7012, <span class="mono">8,000.000 KWD</span>, due last week.
-            <span class="ref">View the 3 open invoices →</span>
+
+          <div class="seq-bar">
+            <button class="seq-toggle" id="seqToggle" type="button" aria-pressed="false" data-pause="Pause animation" data-play="Play animation">
+              <span class="seq-icon" aria-hidden="true"></span>
+              <span class="seq-toggle-label">Pause animation</span>
+            </button>
+            <p class="seq-caps" id="seqCaps">
+              <span class="seq-cap" data-cap="1">1 · A bank transaction arrives</span>
+              <span class="seq-cap" data-cap="2">2 · Haseeb organizes the information</span>
+              <span class="seq-cap" data-cap="3">3 · A question, only when something is missing</span>
+              <span class="seq-cap" data-cap="4">4 · A balanced draft. You approve.</span>
+              <span class="seq-cap" data-cap="5">5 · The books and the report update</span>
+            </p>
           </div>
-          <div class="msg user m-hide">How much cash do we have right now?</div>
-          <div class="msg aminah m-hide">
-            <span class="mono">142,850.000 KWD</span> across your two bank accounts today. Your biggest upcoming payment is payroll at the end of the month.
-            <span class="ref">See the account breakdown →</span>
-          </div>
+
+          <div class="seq-strip" id="seqStrip" hidden></div>
         </div>
-        <div class="aminah-input">Ask Aminah anything about your books…</div>
-        <div class="aminah-disclaimer">Aminah can make mistakes. Always verify critical numbers.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─────────────────────────  2 · HOW IT WORKS  ───────────────────────── -->
+  <section id="how">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <h2>Haseeb prepares the work. You approve it.</h2>
+        <p class="lede">Haseeb reads your bank transactions, prepares the accounting, and separates what is clear from what needs your attention.</p>
+      </div>
+
+      <div class="cards">
+        <article class="card-b reveal">
+          <h3>Prepares</h3>
+          <span class="pill pill-ready">Ready to approve</span>
+          <div class="ex">
+            <div class="ex-top"><span class="ex-label">ZAIN TELECOM</span><span class="ex-amt fig">−28.500 KWD · 14 Apr</span></div>
+            <div class="ex-sub">Telecommunications</div>
+          </div>
+          <p>When the information is clear, Haseeb prepares the entry. You approve it, one by one or as a batch.</p>
+        </article>
+
+        <article class="card-b reveal">
+          <h3>Asks</h3>
+          <span class="pill pill-ask">Needs an answer</span>
+          <div class="ex">
+            <div class="ex-top"><span class="ex-label">Transfer</span><span class="ex-amt fig">−450.000 KWD · 15 Apr</span></div>
+            <div class="ex-sub">What was this payment for?</div>
+          </div>
+          <p>When something is missing, Haseeb asks you one question. Answer it and the entry is ready.</p>
+        </article>
+
+        <article class="card-b reveal">
+          <h3>Holds</h3>
+          <span class="pill pill-hold">Held for review</span>
+          <div class="ex">
+            <div class="ex-top"><span class="ex-label">Supplier invoice</span><span class="ex-amt fig">−1,840.000 KWD · 15 Apr</span></div>
+            <div class="ex-sub">Document missing</div>
+          </div>
+          <p>When there is not enough information, Haseeb stops. Nothing is posted until you or your accountant decide.</p>
+        </article>
+      </div>
+
+      <p class="sec-close reveal">You stay in control of what gets approved.</p>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────  3 · ASK  ───────────────────────── -->
+  <section id="ask">
+    <div class="wrap">
+      <div class="band reveal">
+        <p class="eyebrow">Plain-language questions</p>
+        <h2>Talk to your accountant the way you talk to anyone.</h2>
+        <p class="lede">Ask which customers still owe you, or how much cash you have today, and get an answer in plain language.</p>
+        <button class="link-arrow link-btn" id="askDemo" type="button" aria-expanded="false" aria-controls="botDialog">Try the guided demo<span class="arrow" aria-hidden="true">→</span></button>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ════════════ KUWAIT ════════════ -->
-<section id="kuwait">
-  <div class="container">
-    <div class="kw-grid">
-      <div>
+  <!-- ─────────────────────────  4 · KUWAIT  ───────────────────────── -->
+  <section id="kuwait">
+    <div class="wrap">
+      <div class="sec-head reveal">
         <p class="eyebrow">Built for here</p>
         <h2>It doesn't just work in Kuwait. It understands Kuwait.</h2>
-        <p style="margin-top: 22px;">Kuwaiti merchants. KWD transactions. Supported local bank-statement formats. Kuwaiti business and reporting requirements.</p>
-        <div class="kw-facts">
-          <span class="kw-fact">KWD · 3 decimals</span>
-          <span class="kw-fact">KNET settlements</span>
-          <span class="kw-fact">Local statement formats</span>
-          <span class="kw-fact">Kuwaiti merchants</span>
-        </div>
+        <p class="lede">Kuwaiti merchants. KWD to three decimals. Supported local bank-statement formats. Kuwaiti business and reporting requirements.</p>
+      </div>
+      <ul class="chips reveal"><li>KWD · 3 decimals</li>
+        <li>KNET settlements</li>
+        <li>Local statement formats</li>
+        <li>Kuwaiti merchants</li></ul>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────  5 · FOUNDING COHORT  ───────────────────────── -->
+  <section id="cohort">
+    <div class="wrap cohort-grid">
+      <div class="cohort-text reveal">
+        <p class="eyebrow">Founding cohort</p>
+        <h2>Be one of the first businesses in Kuwait to use Haseeb.</h2>
+        <p class="lede">We are selecting 8–12 Kuwaiti service businesses for Haseeb's founding cohort.</p>
+        <ul class="bullets"><li>Close onboarding</li>
+          <li>Direct access to the founding team</li>
+          <li>A carefully supervised start</li></ul>
       </div>
 
-      <div class="kw-visual slide-up" role="img" aria-label="Product preview: a Kuwaiti bank-statement line understood and prepared by Haseeb">
-        <div class="kw-stage">
-          <div class="kw-head">
-            <span>Statement import · supported local format</span>
-            <span class="pill preview" style="border-radius: 999px;">Product preview</span>
+      <div class="apply-card reveal" id="apply">
+        <h3>Apply for a founding place</h3>
+        <p class="apply-intro">Every application is reviewed personally. No financial information is required to apply.</p>
+
+        <form id="cohortForm" novalidate
+              data-to="founder@haseeb.app"
+              data-subject="Haseeb Founding Cohort Application — {name}"
+              data-heading="Haseeb Founding Cohort Application"
+              data-trailer="— sent from the founding-cohort form on haseeb.app"
+              data-summary="Please complete the highlighted fields."
+              data-success="Your email app should now be open with your application to founder@haseeb.app. Press send there to submit it. If nothing opened, email founder@haseeb.app directly.">
+          <div class="field">
+            <label for="f-name">Name</label>
+            <input id="f-name" name="name" type="text" autocomplete="name" placeholder="Your name" required aria-describedby="e-name" data-label="Name" />
+            <p class="field-err" id="e-name" hidden>Please add your name.</p>
           </div>
-          <div class="kw-row">
-            <div class="top"><span>KNET POS — ZAIN TELECOM KUWAIT</span><span class="neg">−28.500</span></div>
-            <div class="desc">14 Apr 2026 · KWD · imported from your bank statement</div>
+
+          <div class="field">
+            <label for="f-phone">Phone number</label>
+            <input id="f-phone" name="phone" type="tel" dir="ltr" autocomplete="tel" placeholder="+965 …" required aria-describedby="e-phone" data-label="Phone number" />
+            <p class="field-err" id="e-phone" hidden>Please add your phone number.</p>
           </div>
-          <div class="kw-connector" aria-hidden="true">↓ &nbsp;Haseeb understands it</div>
-          <div class="kw-row">
-            <div class="kw-je">
-              <div class="row"><span class="a">Telecommunications expense</span><span>28.500 Dr</span></div>
-              <div class="row"><span class="a">Bank — operating account</span><span>28.500 Cr</span></div>
-            </div>
-            <div class="desc" style="margin-top: 8px;"><span class="state-chip state-ready" style="font-size: 9.5px;"><span class="sdot"></span> Ready to approve</span></div>
+
+          <div class="field">
+            <label for="f-email">Email</label>
+            <input id="f-email" name="email" type="email" dir="ltr" autocomplete="email" placeholder="you@company.com" required aria-describedby="e-email" data-label="Email" />
+            <p class="field-err" id="e-email" hidden>Please add a valid email address.</p>
           </div>
-        </div>
+
+          <button class="btn btn-primary btn-block" type="submit">Apply for a founding place</button>
+          <p class="form-note">This opens your email app with a pre-filled message to founder@haseeb.app. Nothing is sent until you press send there, and nothing is stored on this site. Please don't include financial statements or bank details; we'll never ask for them in this form.</p>
+          <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+        </form>
+
+        <a class="founder-link" href="mailto:founder@haseeb.app?subject=Haseeb%20%E2%80%94%20Conversation%20with%20the%20Founder">Speak with the founder</a>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ════════════ BUSINESS VALUE ════════════ -->
-<section>
-  <div class="container">
-    <div class="section-head" style="text-align: center; margin-left: auto; margin-right: auto;">
-      <h2>Better information. Faster accounting. Less routine work.</h2>
-      <p style="max-width: 640px; margin-left: auto; margin-right: auto;">Haseeb is built to help businesses get useful information sooner, reduce manual accounting work and give accountants and finance teams more time for important decisions.</p>
-      <p>The advantage is not having more reports.</p>
-      <p class="strong-line">It is getting more value from the accounting.</p>
-    </div>
+</main>
 
-    <div class="value-frame">
-      <div class="product-frame slide-up" role="img" aria-label="Product preview of the simplified owner view with four key numbers and one explanation from Haseeb">
-        <div class="product-bar">
-          <div class="left">
-            <span class="logo-sq">H</span>
-            <span class="wordmark">HASEEB.</span>
-            <span class="tenant-chip">Owner view · April 2026</span>
-          </div>
-          <div class="right"><span class="pill preview">Product preview</span></div>
-        </div>
-        <div class="kpi-row four">
-          <div class="kpi">
-            <div class="num">48,420.750</div>
-            <div class="label">Revenue</div>
-          </div>
-          <div class="kpi">
-            <div class="num">38,712.090</div>
-            <div class="label">Expenses</div>
-          </div>
-          <div class="kpi">
-            <div class="num">9,708.660</div>
-            <div class="label">Net income</div>
-          </div>
-          <div class="kpi">
-            <div class="num">142,850.000</div>
-            <div class="label">Cash position</div>
-          </div>
-        </div>
-        <div class="narration">
-          <span class="star">✦</span>
-          <span>Net income is <strong>9,708.660 KWD</strong> this month. Revenue is up <strong>14%</strong> — mostly the new consulting contract — while expenses stayed level. All figures in KWD.</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════ URGENCY (separate movement after the premium close) ════════════ -->
-<section class="editorial urgency">
-  <div class="container container-narrow">
-    <h2 class="reveal" style="font-size: clamp(38px, 5.4vw, 64px);">Intelligent accounting<br />will become normal.</h2>
-    <div class="lines reveal" style="transition-delay: 120ms;">
-      <p class="strong-line">The advantage belongs to the businesses that <span class="accent">put it to work first</span>.</p>
-      <p>By the time the rest of the market catches up, early adopters will already be operating differently.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════ FOUNDING COHORT ════════════ -->
-<section id="cohort" style="padding-bottom: 72px;">
-  <div class="container">
-    <div class="cohort slide-up">
-      <div class="cohort-grid">
-        <div>
-          <p class="eyebrow">Founding cohort</p>
-          <h2>Be one of the first businesses in Kuwait to use Haseeb.</h2>
-          <p class="lead">We are selecting 8–12 Kuwaiti service businesses for Haseeb's founding cohort.</p>
-          <p class="lead">This is for owners who want to put a new generation of accounting technology to work before the rest of the market.</p>
-
-          <ul class="receive">
-            <li>Close onboarding</li>
-            <li>Direct access to the founding team</li>
-            <li>A carefully supervised start</li>
-          </ul>
-          <p class="lead" style="margin-top: 18px; font-size: 15.5px;">Founding members will also receive early access to new capabilities and help shape how Haseeb develops for Kuwait.</p>
-
-          <p class="not-mass">This is not a mass beta. <strong>It is a small working cohort for businesses that want to build the advantage early.</strong></p>
-        </div>
-
-        <div class="apply-card" id="apply">
-          <h3>Apply for a founding place</h3>
-          <p style="font-size: 13px; color: var(--text-2); margin: -6px 0 16px; line-height: 1.55;">Every application is reviewed personally. If your company fits the founding cohort, we will contact you for a short introductory conversation. No financial information is required to apply.</p>
-          <form id="cohortForm" novalidate>
-            <div class="field">
-              <label for="f-name">Name</label>
-              <input id="f-name" name="name" type="text" autocomplete="name" placeholder="Your name" required />
-              <span class="err">Please add your name.</span>
-            </div>
-            <div class="field">
-              <label for="f-company">Company</label>
-              <input id="f-company" name="company" type="text" autocomplete="organization" placeholder="Company name" required />
-              <span class="err">Please add your company.</span>
-            </div>
-            <div class="field">
-              <label for="f-role">Role</label>
-              <input id="f-role" name="role" type="text" autocomplete="organization-title" placeholder="Owner, partner, manager…" required />
-              <span class="err">Please add your role.</span>
-            </div>
-            <div class="field">
-              <label for="f-type">Business type</label>
-              <select id="f-type" name="businessType" required>
-                <option value="">Choose one…</option>
-                <option>Professional services / consulting</option>
-                <option>Contracting / maintenance services</option>
-                <option>Food &amp; beverage</option>
-                <option>Retail / trading</option>
-                <option>Other services</option>
-              </select>
-              <span class="err">Please choose a business type.</span>
-            </div>
-            <div class="field">
-              <label for="f-setup">Current accounting setup</label>
-              <select id="f-setup" name="setup" required>
-                <option value="">Choose one…</option>
-                <option>External accountant / bookkeeper</option>
-                <option>Accounting software in-house</option>
-                <option>Spreadsheets</option>
-                <option>Nothing formal yet</option>
-              </select>
-              <span class="err">Please choose your current setup.</span>
-            </div>
-            <div class="field">
-              <label for="f-contact">Work email or phone</label>
-              <input id="f-contact" name="contact" type="text" autocomplete="email" placeholder="you@company.com or +965…" required />
-              <span class="err">Please add an email or phone number.</span>
-            </div>
-            <div class="apply-actions">
-              <button type="submit" class="btn btn-primary btn-large">Apply for a founding place</button>
-              <a class="btn btn-ghost" href="mailto:founder@haseeb.app?subject=Haseeb%20%E2%80%94%20Conversation%20with%20the%20Founder">Speak with the founder</a>
-            </div>
-            <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
-            <p class="apply-note">Both buttons open your email application with a pre-filled message to founder@haseeb.app — nothing is sent until you press send there. Please don't include financial statements or bank details; we'll never ask for them in this form.</p>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════ FOOTER ════════════ -->
-<footer>
-  <div class="container footer-inner">
-    <div><a href="#top" class="brand" style="font-size: 13.5px;">HASEEB.</a></div>
-    <div style="display:flex;gap:20px;flex-wrap:wrap">
+<!-- ─────────────────────────  6 · FOOTER  ───────────────────────── -->
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <a class="wordmark foot-mark" href="#top">HASEEB.</a>
+    <div class="foot-links">
       <a href="website-terms.html">Website Terms</a>
       <a href="privacy.html">Privacy Policy</a>
-      <a href="mailto:founder@haseeb.app">founder@haseeb.app</a>
+      <a href="mailto:info@haseeb.app" class="foot-contact"><span class="foot-contact-l">General enquiries</span> info@haseeb.app</a>
     </div>
-    <div>© 2026 Haseeb. All rights reserved.</div>
-    <div>English &nbsp;·&nbsp; <span class="ar" title="Arabic version pending approval">العربية</span> <span style="font-size: 11px;">— soon</span></div>
+    <div class="foot-lang">
+      <span class="foot-lang-current">English</span>
+      <span class="foot-sep" aria-hidden="true">·</span>
+      <a data-lang-switch lang="ar" hreflang="ar" href="/ar" aria-label="Switch to Arabic">العربية</a>
+    </div>
+    <p class="foot-copy">© 2026 Haseeb. All rights reserved.</p>
   </div>
 </footer>
 
-<!-- Mobile persistent CTA (appears after the hero) -->
-<div class="mobi-cta" id="mobiCta" aria-hidden="true">
-  <a href="#apply">Join the cohort →</a>
-</div>
+<!-- ─────────────────────────  MOBILE STICKY CTA  ───────────────────────── -->
+<div class="sticky-cta" id="stickyCta" hidden><a href="#apply">Join the cohort →</a></div>
 
-<script>
-  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+<!-- ─────────────────────────  GUIDED-DEMO CHATBOT  ───────────────────────── -->
+<button class="bot-launcher" id="botLauncher" type="button" aria-expanded="false" aria-controls="botDialog" aria-label="Open the guided demo">
+  <span class="bot-ico" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-8 8H7l-4 3v-6.5A8 8 0 0 1 11 4h2a8 8 0 0 1 8 8z"></path></svg>
+  </span>
+  <span class="bot-launcher-text">Talk to your accountant the way you talk to anyone</span>
+  <span class="bot-launcher-tag">Guided demo</span>
+</button>
 
-  // Sticky nav backdrop
-  (function () {
-    var nav = document.getElementById('nav');
-    function check() { nav.classList.toggle('scrolled', window.scrollY > 40); }
-    check();
-    window.addEventListener('scroll', check, { passive: true });
-  })();
+<dialog class="bot-dialog" id="botDialog" role="dialog" aria-modal="true" aria-labelledby="botTitle">
+  <div class="bot-head">
+    <span class="bot-avatar" aria-hidden="true">H</span>
+    <h2 class="bot-title" id="botTitle">Haseeb</h2>
+    <button class="bot-close" id="botClose" type="button" aria-label="Close"><span aria-hidden="true">✕</span></button>
+  </div>
+  <p class="bot-badge">Guided demo · sample data</p>
+  <div class="bot-body">
+    <p class="bot-intro">This is a guided demonstration on sample figures for a fictional company. Pick a question to see how Haseeb answers inside the product.</p>
+    <div class="bot-live" id="botLive" role="status" aria-live="polite">
+      <div class="bot-x" id="botX1" hidden>
+        <p class="bot-q">Which customers still owe us?</p>
+        <p class="bot-a">Three customers owe you 12,450.000 KWD in total. The largest is Example Trading Co. W.L.L., invoice 7012, 8,000.000 KWD, due last week.</p>
+      </div>
+      <div class="bot-x" id="botX2" hidden>
+        <p class="bot-q">How much cash do we have right now?</p>
+        <p class="bot-a">142,850.000 KWD across your two bank accounts today. Your biggest upcoming payment is payroll at the end of the month.</p>
+      </div>
+      <div class="bot-x" id="botX3" hidden>
+        <p class="bot-q">How are this month's numbers?</p>
+        <p class="bot-a">Net income is 9,230.160 KWD this month. Revenue is up 14%, mostly the new consulting contract, while expenses rose with April's rent.</p>
+      </div>
+    </div>
+    <div class="bot-chips" id="botChips">
+      <button class="bot-chip" type="button" data-x="botX1">Which customers still owe us?</button>
+      <button class="bot-chip" type="button" data-x="botX2">How much cash do we have right now?</button>
+      <button class="bot-chip" type="button" data-x="botX3">How are this month's numbers?</button>
+    </div>
+    <button class="bot-again" id="botAgain" type="button" hidden>Ask another question</button>
+  </div>
+  <p class="bot-foot">In the product, answers come from your own books. These are sample figures.</p>
+</dialog>
 
-  // Reveal on view (hero reveals on load)
-  window.addEventListener('load', function () {
-    document.querySelectorAll('.hero .reveal').forEach(function (el) { el.classList.add('visible'); });
-  });
-  (function () {
-    var els = document.querySelectorAll('.reveal, .slide-up');
-    if (!('IntersectionObserver' in window) || reducedMotion) {
-      els.forEach(function (el) { el.classList.add('visible'); });
-      return;
-    }
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
-    els.forEach(function (el) { io.observe(el); });
-  })();
-
-  // Mobile persistent CTA — appears after the first scroll past the hero,
-  // hides again near the application form (no doubled CTA).
-  (function () {
-    var bar = document.getElementById('mobiCta');
-    var hero = document.getElementById('top');
-    var apply = document.getElementById('apply');
-    function check() {
-      var past = window.scrollY > (hero.offsetTop + hero.offsetHeight - 80);
-      var nearApply = apply.getBoundingClientRect().top < window.innerHeight;
-      var show = past && !nearApply;
-      bar.classList.toggle('show', show);
-      bar.setAttribute('aria-hidden', show ? 'false' : 'true');
-    }
-    check();
-    window.addEventListener('scroll', check, { passive: true });
-  })();
-
-  // Founding-cohort application — uses the repo's approved contact
-  // mechanism (mailto: founder@haseeb.app). No invented endpoint.
-  (function () {
-    var form = document.getElementById('cohortForm');
-    var status = document.getElementById('formStatus');
-    form.addEventListener('submit', function (ev) {
-      ev.preventDefault();
-      var bad = 0;
-      var vals = {};
-      ['f-name', 'f-company', 'f-role', 'f-type', 'f-setup', 'f-contact'].forEach(function (id) {
-        var el = document.getElementById(id);
-        var wrap = el.closest('.field');
-        var ok = el.value.trim().length > 0;
-        wrap.classList.toggle('invalid', !ok);
-        if (!ok) bad++;
-        vals[id] = el.value.trim();
-      });
-      if (bad > 0) {
-        status.className = 'form-status bad';
-        status.textContent = 'Please complete the highlighted fields — every question helps us pick the right cohort.';
-        return;
-      }
-      var body =
-        'Haseeb Founding Cohort Application\n' +
-        '---------------------------\n' +
-        'Name: ' + vals['f-name'] + '\n' +
-        'Company: ' + vals['f-company'] + '\n' +
-        'Role: ' + vals['f-role'] + '\n' +
-        'Business type: ' + vals['f-type'] + '\n' +
-        'Current accounting setup: ' + vals['f-setup'] + '\n' +
-        'Contact: ' + vals['f-contact'] + '\n';
-      var href = 'mailto:founder@haseeb.app'
-        + '?subject=' + encodeURIComponent('Haseeb Founding Cohort Application — ' + vals['f-company'])
-        + '&body=' + encodeURIComponent(body);
-      window.location.href = href;
-      status.className = 'form-status ok';
-      status.textContent = 'Your email app should now be open with your application to founder@haseeb.app — press send there to submit it. If nothing opened, email founder@haseeb.app directly.';
-    });
-  })();
-</script>
-
+<script src="assets/site.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,6 @@
+docs/
+src/
+scripts/
+package.json
+.github/
+*.md

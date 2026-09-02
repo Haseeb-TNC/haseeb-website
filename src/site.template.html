@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="{{@html.lang}}" dir="{{@html.dir}}">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{{@meta.title}}</title>
+<meta name="description" content="{{@meta.description}}" />
+<meta name="theme-color" content="#F8F6F2" />
+
+<link rel="canonical" href="{{@html.canonical}}" />
+<link rel="alternate" hreflang="en" href="{{@html.enHref}}" />
+<link rel="alternate" hreflang="ar" href="{{@html.arHref}}" />
+<link rel="alternate" hreflang="x-default" href="{{@html.xDefaultHref}}" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="{{@meta.title}}" />
+<meta property="og:description" content="{{@meta.description}}" />
+<meta property="og:url" content="{{@html.canonical}}" />
+<meta property="og:locale" content="{{@html.lang}}" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Bebas+Neue&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/site.css" />
+</head>
+<body>
+
+<!-- ─────────────────────────  NAV  ───────────────────────── -->
+<nav class="nav" id="nav" aria-label="{{@nav.aria}}">
+  <div class="wrap nav-inner">
+    <a class="wordmark" href="#top">{{brand.wordmark}}</a>
+
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navMenu">
+      <span class="nav-burger" aria-hidden="true"><span></span><span></span></span>
+      <span class="nav-toggle-label">{{nav.menu}}</span>
+    </button>
+
+    <div class="nav-menu" id="navMenu">
+      <a class="nav-link" href="#how">{{nav.how}}</a>
+      <a class="nav-link" href="#kuwait">{{nav.kuwait}}</a>
+      <a class="nav-link" href="#cohort">{{nav.cohort}}</a>
+      <a class="nav-lang" data-lang-switch lang="{{@html.altLang}}" hreflang="{{@html.altLang}}" href="{{@html.altPath}}" aria-label="{{@nav.langAria}}">{{nav.lang}}</a>
+      <a class="btn btn-primary nav-cta" href="#apply">{{nav.cta}}</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ─────────────────────────  1 · HERO  ───────────────────────── -->
+  <section class="hero" id="top">
+    <div class="wrap hero-grid">
+
+      <div class="hero-text">
+        <h1 class="hero-h1 reveal">{{hero.h1}}</h1>
+        <p class="hero-support reveal">{{hero.support}}</p>
+        <p class="hero-sub reveal">{{hero.sub}}</p>
+        <div class="hero-actions reveal">
+          <a class="btn btn-primary btn-lg" href="#apply">{{hero.cta}}</a>
+          <a class="link-arrow" href="#how">{{hero.secondary}}<span class="arrow" aria-hidden="true">→</span></a>
+        </div>
+        <p class="hero-fact reveal">{{hero.fact}}</p>
+      </div>
+
+      <div class="hero-stage reveal">
+        <div class="seq" id="seq" data-stage="1" data-mode="motion" role="group" aria-label="{{@seq.preview}}">
+
+          <div class="seq-stage" id="seqStage" role="img" aria-label="{{@seq.srDescription}}">
+            <div class="seq-chrome" aria-hidden="true">
+              <span class="seq-logo">H</span>
+              <span class="seq-wordmark">{{brand.wordmark}}</span>
+              <span class="seq-tenant">{{seq.tenant}}</span>
+              <span class="seq-preview">{{seq.preview}}</span>
+            </div>
+
+            <div class="seq-body" aria-hidden="true">
+
+              <!-- stage 1–2 · the bank line, full size -->
+              <div class="layer f-line" data-state="hidden">
+                <div class="card">
+                  <div class="card-top">
+                    <span class="card-label bank">{{seq.f1Line}}</span>
+                    <span class="fig">{{seq.f1Amount}}</span>
+                  </div>
+                  <div class="card-meta">{{seq.f1Meta}}</div>
+                </div>
+              </div>
+
+              <!-- stage 2 · the same line, contracted into a smaller window -->
+              <div class="layer f-mini" data-state="hidden">
+                <div class="card card-sm">
+                  <div class="card-label bank">{{seq.f1Line}}</div>
+                  <div class="fig">{{seq.f1Amount}}</div>
+                </div>
+              </div>
+
+              <!-- stage 2 · the organised entry -->
+              <div class="layer f-panel" data-state="hidden">
+                <div class="card">
+                  <div class="prow"><span class="tick" aria-hidden="true">✓</span><span>{{seq.f2Merchant}}</span></div>
+                  <div class="prow prow-cat">{{seq.f2Category}}</div>
+                  <div class="prow je"><span class="dc">{{seq.drLabel}}</span><span class="acct">{{seq.f2Dr}}</span><span class="fig">{{seq.f2Amount}}</span></div>
+                  <div class="prow je"><span class="dc">{{seq.crLabel}}</span><span class="acct">{{seq.f2Cr}}</span><span class="fig">{{seq.f2Amount}}</span></div>
+                  <div class="prow"><span class="pill pill-ready">{{seq.f2Status}}</span></div>
+                </div>
+              </div>
+
+              <!-- stage 3 · the transfer -->
+              <div class="layer f-line2" data-state="hidden">
+                <div class="card">
+                  <div class="card-top">
+                    <span class="card-label">{{seq.f3Line}}</span>
+                    <span class="fig">{{seq.f3Amount}}</span>
+                  </div>
+                  <div class="card-meta">{{seq.f3Meta}}</div>
+                </div>
+              </div>
+
+              <!-- stage 3 · the task and the owner's reply -->
+              <div class="layer f-task" data-state="hidden">
+                <div class="card">
+                  <div class="task-top"><span class="pill pill-ask">{{seq.f3Status}}</span></div>
+                  <p class="task-q">{{seq.f3Question}}</p>
+                  <div class="reply">
+                    <span class="reply-field">
+                      <span class="reply-ph">{{seq.f3ReplyPlaceholder}}</span>
+                      <span class="reply-typed"><span class="reply-text">{{seq.f3Reply}}</span><span class="reply-cover"></span></span>
+                    </span>
+                    <span class="reply-btn">{{seq.f3ReplyButton}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- stage 4 · the balanced draft and the approval -->
+              <div class="layer f-draft" data-state="hidden">
+                <div class="card">
+                  <div class="draft-top">
+                    <span class="draft-title">{{seq.f4Title}}</span>
+                    <span class="pill pill-ready">{{seq.f4Status}}</span>
+                  </div>
+                  <div class="prow je"><span class="dc">{{seq.drLabel}}</span><span class="acct">{{seq.f4Dr}}</span><span class="fig">{{seq.f4Amount}}</span></div>
+                  <div class="prow je"><span class="dc">{{seq.crLabel}}</span><span class="acct">{{seq.f4Cr}}</span><span class="fig">{{seq.f4Amount}}</span></div>
+                  <div class="draft-bal">{{seq.f4Balanced}}</div>
+                  <div class="draft-act">
+                    <span class="btn-mini" data-approve="idle">
+                      <span class="lbl lbl-idle">{{seq.f4Approve}}</span>
+                      <span class="lbl lbl-done">{{seq.f4Approved}}</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- stage 5 · the owner view -->
+              <div class="layer f-owner" data-state="hidden">
+                <div class="owner-head">{{seq.ownerView}}</div>
+                <div class="owner-tiles">
+                  <div class="tile">
+                    <div class="tile-l">{{seq.f5Revenue}}</div>
+                    <div class="tile-v fig">{{seq.f5RevenueValue}}</div>
+                  </div>
+                  <div class="tile">
+                    <div class="tile-l">{{seq.f5Expenses}}</div>
+                    <div class="tile-v fig"><span class="num tween" data-from="{{@seq.f5ExpensesFrom}}" data-to="{{@seq.f5ExpensesTo}}">{{seq.f5ExpensesFrom}}</span></div>
+                  </div>
+                  <div class="tile">
+                    <div class="tile-l">{{seq.f5Net}}</div>
+                    <div class="tile-v fig"><span class="num tween" data-from="{{@seq.f5NetFrom}}" data-to="{{@seq.f5NetTo}}">{{seq.f5NetFrom}}</span></div>
+                  </div>
+                </div>
+                <div class="owner-foot">
+                  <span>{{seq.f5Taskbox}}</span>
+                  <span class="owner-upd"><span class="tick" aria-hidden="true">✓</span>{{seq.f5Updated}}</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="seq-bar">
+            <button class="seq-toggle" id="seqToggle" type="button" aria-pressed="false" data-pause="{{@seq.pause}}" data-play="{{@seq.play}}">
+              <span class="seq-icon" aria-hidden="true"></span>
+              <span class="seq-toggle-label">{{seq.pause}}</span>
+            </button>
+            <p class="seq-caps" id="seqCaps">
+              <span class="seq-cap" data-cap="1">{{seq.stage1}}</span>
+              <span class="seq-cap" data-cap="2">{{seq.stage2}}</span>
+              <span class="seq-cap" data-cap="3">{{seq.stage3}}</span>
+              <span class="seq-cap" data-cap="4">{{seq.stage4}}</span>
+              <span class="seq-cap" data-cap="5">{{seq.stage5}}</span>
+            </p>
+          </div>
+
+          <div class="seq-strip" id="seqStrip" hidden></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─────────────────────────  2 · HOW IT WORKS  ───────────────────────── -->
+  <section id="how">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <h2>{{how.h2}}</h2>
+        <p class="lede">{{how.intro}}</p>
+      </div>
+
+      <div class="cards">
+        <article class="card-b reveal">
+          <h3>{{how.prepares.label}}</h3>
+          <span class="pill pill-ready">{{how.prepares.status}}</span>
+          <div class="ex">
+            <div class="ex-top"><span class="ex-label">{{how.prepares.rowLabel}}</span><span class="ex-amt fig">{{how.prepares.rowAmount}}</span></div>
+            <div class="ex-sub">{{how.prepares.rowCategory}}</div>
+          </div>
+          <p>{{how.prepares.body}}</p>
+        </article>
+
+        <article class="card-b reveal">
+          <h3>{{how.asks.label}}</h3>
+          <span class="pill pill-ask">{{how.asks.status}}</span>
+          <div class="ex">
+            <div class="ex-top"><span class="ex-label">{{how.asks.rowLabel}}</span><span class="ex-amt fig">{{how.asks.rowAmount}}</span></div>
+            <div class="ex-sub">{{how.asks.rowQuestion}}</div>
+          </div>
+          <p>{{how.asks.body}}</p>
+        </article>
+
+        <article class="card-b reveal">
+          <h3>{{how.holds.label}}</h3>
+          <span class="pill pill-hold">{{how.holds.status}}</span>
+          <div class="ex">
+            <div class="ex-top"><span class="ex-label">{{how.holds.rowLabel}}</span><span class="ex-amt fig">{{how.holds.rowAmount}}</span></div>
+            <div class="ex-sub">{{how.holds.rowNote}}</div>
+          </div>
+          <p>{{how.holds.body}}</p>
+        </article>
+      </div>
+
+      <p class="sec-close reveal">{{how.close}}</p>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────  3 · ASK  ───────────────────────── -->
+  <section id="ask">
+    <div class="wrap">
+      <div class="band reveal">
+        <p class="eyebrow">{{ask.eyebrow}}</p>
+        <h2>{{ask.h2}}</h2>
+        <p class="lede">{{ask.body}}</p>
+        <button class="link-arrow link-btn" id="askDemo" type="button" aria-expanded="false" aria-controls="botDialog">{{ask.cta}}<span class="arrow" aria-hidden="true">→</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────  4 · KUWAIT  ───────────────────────── -->
+  <section id="kuwait">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">{{kuwait.eyebrow}}</p>
+        <h2>{{kuwait.h2}}</h2>
+        <p class="lede">{{kuwait.body}}</p>
+      </div>
+      <ul class="chips reveal">{{kuwait.chipsHtml}}</ul>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────  5 · FOUNDING COHORT  ───────────────────────── -->
+  <section id="cohort">
+    <div class="wrap cohort-grid">
+      <div class="cohort-text reveal">
+        <p class="eyebrow">{{cohort.eyebrow}}</p>
+        <h2>{{cohort.h2}}</h2>
+        <p class="lede">{{cohort.body}}</p>
+        <ul class="bullets">{{cohort.bulletsHtml}}</ul>
+      </div>
+
+      <div class="apply-card reveal" id="apply">
+        <h3>{{form.h3}}</h3>
+        <p class="apply-intro">{{form.intro}}</p>
+
+        <form id="cohortForm" novalidate
+              data-to="founder@haseeb.app"
+              data-subject="{{@form.mailSubject}}"
+              data-heading="{{@form.mailHeading}}"
+              data-trailer="{{@form.mailtoTrailer}}"
+              data-summary="{{@form.errSummary}}"
+              data-success="{{@form.success}}">
+          <div class="field">
+            <label for="f-name">{{form.name}}</label>
+            <input id="f-name" name="name" type="text" autocomplete="name" placeholder="{{@form.namePh}}" required aria-describedby="e-name" data-label="{{@form.name}}" />
+            <p class="field-err" id="e-name" hidden>{{form.errName}}</p>
+          </div>
+
+          <div class="field">
+            <label for="f-phone">{{form.phone}}</label>
+            <input id="f-phone" name="phone" type="tel" dir="ltr" autocomplete="tel" placeholder="{{@form.phonePh}}" required aria-describedby="e-phone" data-label="{{@form.phone}}" />
+            <p class="field-err" id="e-phone" hidden>{{form.errPhone}}</p>
+          </div>
+
+          <div class="field">
+            <label for="f-email">{{form.email}}</label>
+            <input id="f-email" name="email" type="email" dir="ltr" autocomplete="email" placeholder="{{@form.emailPh}}" required aria-describedby="e-email" data-label="{{@form.email}}" />
+            <p class="field-err" id="e-email" hidden>{{form.errEmail}}</p>
+          </div>
+
+          <button class="btn btn-primary btn-block" type="submit">{{form.submit}}</button>
+          <p class="form-note">{{form.note}}</p>
+          <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+        </form>
+
+        <a class="founder-link" href="{{@form.founderMailto}}">{{form.founderLink}}</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ─────────────────────────  6 · FOOTER  ───────────────────────── -->
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <a class="wordmark foot-mark" href="#top">{{brand.wordmark}}</a>
+    <div class="foot-links">
+      <a href="website-terms.html">{{footer.terms}}</a>
+      <a href="privacy.html">{{footer.privacy}}</a>
+      <a href="mailto:info@haseeb.app" class="foot-contact"><span class="foot-contact-l">{{footer.contactLabel}}</span> {{footer.contact}}</a>
+    </div>
+    <div class="foot-lang">
+      <span class="foot-lang-current">{{footer.langCurrent}}</span>
+      <span class="foot-sep" aria-hidden="true">·</span>
+      <a data-lang-switch lang="{{@html.altLang}}" hreflang="{{@html.altLang}}" href="{{@html.altPath}}" aria-label="{{@nav.langAria}}">{{footer.lang}}</a>
+    </div>
+    <p class="foot-copy">{{footer.copyright}}</p>
+  </div>
+</footer>
+
+<!-- ─────────────────────────  MOBILE STICKY CTA  ───────────────────────── -->
+<div class="sticky-cta" id="stickyCta" hidden><a href="#apply">{{sticky.cta}}</a></div>
+
+<!-- ─────────────────────────  GUIDED-DEMO CHATBOT  ───────────────────────── -->
+<button class="bot-launcher" id="botLauncher" type="button" aria-expanded="false" aria-controls="botDialog" aria-label="{{@bot.launcherAria}}">
+  <span class="bot-ico" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-8 8H7l-4 3v-6.5A8 8 0 0 1 11 4h2a8 8 0 0 1 8 8z"></path></svg>
+  </span>
+  <span class="bot-launcher-text">{{bot.launcher}}</span>
+  <span class="bot-launcher-tag">{{bot.launcherTag}}</span>
+</button>
+
+<dialog class="bot-dialog" id="botDialog" role="dialog" aria-modal="true" aria-labelledby="botTitle">
+  <div class="bot-head">
+    <span class="bot-avatar" aria-hidden="true">H</span>
+    <h2 class="bot-title" id="botTitle">{{bot.title}}</h2>
+    <button class="bot-close" id="botClose" type="button" aria-label="{{@bot.close}}"><span aria-hidden="true">✕</span></button>
+  </div>
+  <p class="bot-badge">{{bot.badge}}</p>
+  <div class="bot-body">
+    <p class="bot-intro">{{bot.intro}}</p>
+    <div class="bot-live" id="botLive" role="status" aria-live="polite">
+      <div class="bot-x" id="botX1" hidden>
+        <p class="bot-q">{{bot.q1}}</p>
+        <p class="bot-a">{{bot.a1}}</p>
+      </div>
+      <div class="bot-x" id="botX2" hidden>
+        <p class="bot-q">{{bot.q2}}</p>
+        <p class="bot-a">{{bot.a2}}</p>
+      </div>
+      <div class="bot-x" id="botX3" hidden>
+        <p class="bot-q">{{bot.q3}}</p>
+        <p class="bot-a">{{bot.a3}}</p>
+      </div>
+    </div>
+    <div class="bot-chips" id="botChips">
+      <button class="bot-chip" type="button" data-x="botX1">{{bot.q1}}</button>
+      <button class="bot-chip" type="button" data-x="botX2">{{bot.q2}}</button>
+      <button class="bot-chip" type="button" data-x="botX3">{{bot.q3}}</button>
+    </div>
+    <button class="bot-again" id="botAgain" type="button" hidden>{{bot.again}}</button>
+  </div>
+  <p class="bot-foot">{{bot.footer}}</p>
+</dialog>
+
+<script src="assets/site.js" defer></script>
+</body>
+</html>
