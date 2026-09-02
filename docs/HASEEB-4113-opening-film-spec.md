@@ -54,8 +54,10 @@ AR page (Arabic terms; keep 2–3 Latin tokens such as `KNET` and `#1042`):
 `توصيل` `إيصال` `تحويل بنكي` `28.500 د.ك` `1,250.000 د.ك` `450.000 د.ك`
 `3,980.250 د.ك` `12,450.000 د.ك` `KNET` `Invoice` 
 
-Roughly 24–30 tokens on desktop, 14–18 on tablet. Never a statistic, never a
-sentence, never a UI label like Dr/Cr/Approve. No company names.
+The enumerated lists above are the token set of record (20 EN / 19 AR as
+built). Density is a founder tunable (24–30 would read denser). Never a
+statistic, never a sentence, never a UI label like Dr/Cr/Approve. No company
+names.
 
 ## Storyboard (≈10 s; all timings from film start)
 

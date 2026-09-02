@@ -220,6 +220,8 @@ Rules:
 
 ## 9. Verification the builder runs and records
 
+- **axe evidence rule (QA pass 2, 2026-09-02):** every axe run must be taken in the READING state — force every `.reveal` (and any other opacity-0 / lazy section) visible, or scroll them into view, before invoking axe; a run at page load skips 15 hidden sections and concealed a real AA failure. Guards must assert against the SOURCE intent (copy tables) rather than the artifact the build produced, so a build that silently reclassifies bad input cannot green its own check.
+
 - Playwright: prefer `~/Downloads/haseeb-corporate/node_modules` (Playwright 1.59.1, Chromium installed); fallback `npx -y playwright@1.59.1` with `npx playwright install chromium`. Never skip silently.
 - Render both pages at 320×568, 390×844, 768×1024, 1280×800, 1440×900: assert `document.documentElement.scrollWidth <= innerWidth`, zero console errors; screenshots to `docs/screenshots/HASEEB-4113/`.
 - Checkpoint captures: `desktop-en.png` + `desktop-ar.png` (1440×900), `mobile-en.png` + `mobile-ar.png` (390×844 full page), `chatbot-open-en.png` + `chatbot-open-ar.png` (drawer with a transcript, 1440×900), `chatbot-empty-ar.png` (drawer just opened, empty state, 1440×900), plus the overflow matrix. The shelved-sequence captures (`desktop-en-hero.png`, `reduced-motion-en.png`, `storyboard.png`) were deleted on 2026-09-02.
