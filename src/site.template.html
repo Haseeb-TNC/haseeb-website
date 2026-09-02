@@ -47,153 +47,21 @@
 
 <main>
 
-  <!-- ─────────────────────────  1 · HERO  ───────────────────────── -->
+  <!-- ─────────────────────────  1 · HERO  ─────────────────────────
+       Text-first. The animated product-UI stage that lived here was SHELVED
+       on 2026-09-02 (founder instruction); it survives in git history at
+       cc186c2 and is not part of the deployed site. The opening film is a
+       separate, undecided concept — docs/HASEEB-4113-opening-concepts.md. -->
   <section class="hero" id="top">
-    <div class="wrap hero-grid">
-
-      <div class="hero-text">
-        <h1 class="hero-h1 reveal">{{hero.h1}}</h1>
-        <p class="hero-support reveal">{{hero.support}}</p>
-        <p class="hero-sub reveal">{{hero.sub}}</p>
-        <div class="hero-actions reveal">
-          <a class="btn btn-primary btn-lg" href="#apply">{{hero.cta}}</a>
-          <a class="link-arrow" href="#how">{{hero.secondary}}<span class="arrow" aria-hidden="true">→</span></a>
-        </div>
-        <p class="hero-fact reveal">{{hero.fact}}</p>
+    <div class="wrap hero-inner">
+      <h1 class="hero-h1 reveal">{{hero.h1}}</h1>
+      <p class="hero-support reveal">{{hero.support}}</p>
+      <p class="hero-sub reveal">{{hero.sub}}</p>
+      <div class="hero-actions reveal">
+        <a class="btn btn-primary btn-lg" href="#apply">{{hero.cta}}</a>
+        <a class="link-arrow" href="#how">{{hero.secondary}}<span class="arrow" aria-hidden="true">→</span></a>
       </div>
-
-      <div class="hero-stage reveal">
-        <div class="seq" id="seq" data-stage="1" data-mode="motion" role="group" aria-label="{{@seq.preview}}">
-
-          <div class="seq-stage" id="seqStage" role="img" aria-label="{{@seq.srDescription}}">
-            <div class="seq-chrome" aria-hidden="true">
-              <span class="seq-logo">H</span>
-              <span class="seq-wordmark">{{brand.wordmark}}</span>
-              <span class="seq-tenant">{{seq.tenant}}</span>
-              <span class="seq-preview">{{seq.preview}}</span>
-            </div>
-
-            <div class="seq-body" aria-hidden="true">
-
-              <!-- stage 1–2 · the bank line, full size -->
-              <div class="layer f-line" data-state="hidden">
-                <div class="card">
-                  <div class="card-top">
-                    <span class="card-label bank">{{seq.f1Line}}</span>
-                    <span class="fig">{{seq.f1Amount}}</span>
-                  </div>
-                  <div class="card-meta">{{seq.f1Meta}}</div>
-                </div>
-              </div>
-
-              <!-- stage 2 · the same line, contracted into a smaller window -->
-              <div class="layer f-mini" data-state="hidden">
-                <div class="card card-sm">
-                  <div class="card-label bank">{{seq.f1Line}}</div>
-                  <div class="fig">{{seq.f1Amount}}</div>
-                </div>
-              </div>
-
-              <!-- stage 2 · the organised entry -->
-              <div class="layer f-panel" data-state="hidden">
-                <div class="card">
-                  <div class="prow"><span class="tick" aria-hidden="true">✓</span><span>{{seq.f2Merchant}}</span></div>
-                  <div class="prow prow-cat">{{seq.f2Category}}</div>
-                  <div class="prow je"><span class="dc">{{seq.drLabel}}</span><span class="acct">{{seq.f2Dr}}</span><span class="fig">{{seq.f2Amount}}</span></div>
-                  <div class="prow je"><span class="dc">{{seq.crLabel}}</span><span class="acct">{{seq.f2Cr}}</span><span class="fig">{{seq.f2Amount}}</span></div>
-                  <div class="prow"><span class="pill pill-ready">{{seq.f2Status}}</span></div>
-                </div>
-              </div>
-
-              <!-- stage 3 · the transfer -->
-              <div class="layer f-line2" data-state="hidden">
-                <div class="card">
-                  <div class="card-top">
-                    <span class="card-label">{{seq.f3Line}}</span>
-                    <span class="fig">{{seq.f3Amount}}</span>
-                  </div>
-                  <div class="card-meta">{{seq.f3Meta}}</div>
-                </div>
-              </div>
-
-              <!-- stage 3 · the task and the owner's reply -->
-              <div class="layer f-task" data-state="hidden">
-                <div class="card">
-                  <div class="task-top"><span class="pill pill-ask">{{seq.f3Status}}</span></div>
-                  <p class="task-q">{{seq.f3Question}}</p>
-                  <div class="reply">
-                    <span class="reply-field">
-                      <span class="reply-ph">{{seq.f3ReplyPlaceholder}}</span>
-                      <span class="reply-typed"><span class="reply-text">{{seq.f3Reply}}</span><span class="reply-cover"></span></span>
-                    </span>
-                    <span class="reply-btn">{{seq.f3ReplyButton}}</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- stage 4 · the balanced draft and the approval -->
-              <div class="layer f-draft" data-state="hidden">
-                <div class="card">
-                  <div class="draft-top">
-                    <span class="draft-title">{{seq.f4Title}}</span>
-                    <span class="pill pill-ready">{{seq.f4Status}}</span>
-                  </div>
-                  <div class="prow je"><span class="dc">{{seq.drLabel}}</span><span class="acct">{{seq.f4Dr}}</span><span class="fig">{{seq.f4Amount}}</span></div>
-                  <div class="prow je"><span class="dc">{{seq.crLabel}}</span><span class="acct">{{seq.f4Cr}}</span><span class="fig">{{seq.f4Amount}}</span></div>
-                  <div class="draft-bal">{{seq.f4Balanced}}</div>
-                  <div class="draft-act">
-                    <span class="btn-mini" data-approve="idle">
-                      <span class="lbl lbl-idle">{{seq.f4Approve}}</span>
-                      <span class="lbl lbl-done">{{seq.f4Approved}}</span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- stage 5 · the owner view -->
-              <div class="layer f-owner" data-state="hidden">
-                <div class="owner-head">{{seq.ownerView}}</div>
-                <div class="owner-tiles">
-                  <div class="tile">
-                    <div class="tile-l">{{seq.f5Revenue}}</div>
-                    <div class="tile-v fig">{{seq.f5RevenueValue}}</div>
-                  </div>
-                  <div class="tile">
-                    <div class="tile-l">{{seq.f5Expenses}}</div>
-                    <div class="tile-v fig"><span class="num tween" data-from="{{@seq.f5ExpensesFrom}}" data-to="{{@seq.f5ExpensesTo}}">{{seq.f5ExpensesFrom}}</span></div>
-                  </div>
-                  <div class="tile">
-                    <div class="tile-l">{{seq.f5Net}}</div>
-                    <div class="tile-v fig"><span class="num tween" data-from="{{@seq.f5NetFrom}}" data-to="{{@seq.f5NetTo}}">{{seq.f5NetFrom}}</span></div>
-                  </div>
-                </div>
-                <div class="owner-foot">
-                  <span>{{seq.f5Taskbox}}</span>
-                  <span class="owner-upd"><span class="tick" aria-hidden="true">✓</span>{{seq.f5Updated}}</span>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          <div class="seq-bar">
-            <button class="seq-toggle" id="seqToggle" type="button" aria-pressed="false" data-pause="{{@seq.pause}}" data-play="{{@seq.play}}">
-              <span class="seq-icon" aria-hidden="true"></span>
-              <span class="seq-toggle-label">{{seq.pause}}</span>
-            </button>
-            <p class="seq-caps" id="seqCaps">
-              <span class="seq-cap" data-cap="1">{{seq.stage1}}</span>
-              <span class="seq-cap" data-cap="2">{{seq.stage2}}</span>
-              <span class="seq-cap" data-cap="3">{{seq.stage3}}</span>
-              <span class="seq-cap" data-cap="4">{{seq.stage4}}</span>
-              <span class="seq-cap" data-cap="5">{{seq.stage5}}</span>
-            </p>
-          </div>
-
-          <div class="seq-strip" id="seqStrip" hidden></div>
-        </div>
-      </div>
-
+      <p class="hero-fact reveal">{{hero.fact}}</p>
     </div>
   </section>
 
@@ -337,47 +205,75 @@
 <!-- ─────────────────────────  MOBILE STICKY CTA  ───────────────────────── -->
 <div class="sticky-cta" id="stickyCta" hidden><a href="#apply">{{sticky.cta}}</a></div>
 
-<!-- ─────────────────────────  GUIDED-DEMO CHATBOT  ───────────────────────── -->
+<!-- ─────────────────────────  CONVERSATION DRAWER · GUIDED DEMO  ─────────────────────────
+     A faithful recreation of the product's in-app accounting-conversation
+     drawer: same chrome, same spacing, same message shapes. There is no live
+     endpoint, so it answers only the three suggested questions from sample
+     figures and says so plainly for anything else. Nothing here is a network
+     call and no answer is generated. -->
 <button class="bot-launcher" id="botLauncher" type="button" aria-expanded="false" aria-controls="botDialog" aria-label="{{@bot.launcherAria}}">
   <span class="bot-ico" aria-hidden="true">
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-8 8H7l-4 3v-6.5A8 8 0 0 1 11 4h2a8 8 0 0 1 8 8z"></path></svg>
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12a8 8 0 0 1-8 8H7l-4 3v-6.5A8 8 0 0 1 11 4h2a8 8 0 0 1 8 8z"></path></svg>
   </span>
   <span class="bot-launcher-text">{{bot.launcher}}</span>
   <span class="bot-launcher-tag">{{bot.launcherTag}}</span>
 </button>
 
-<dialog class="bot-dialog" id="botDialog" role="dialog" aria-modal="true" aria-labelledby="botTitle">
+<div class="bot-backdrop" id="botBackdrop" hidden></div>
+
+<div class="bot-drawer" id="botDialog" role="dialog" aria-modal="true" aria-labelledby="botTitle" hidden>
+
   <div class="bot-head">
-    <span class="bot-avatar" aria-hidden="true">H</span>
-    <h2 class="bot-title" id="botTitle">{{bot.title}}</h2>
-    <button class="bot-close" id="botClose" type="button" aria-label="{{@bot.close}}"><span aria-hidden="true">✕</span></button>
+    <span class="bot-mark" aria-hidden="true">H</span>
+    <div class="bot-head-text">
+      <span class="bot-head-line">
+        <h2 class="bot-title" id="botTitle">{{bot.title}}</h2>
+        <span class="bot-status">{{bot.status}}</span>
+      </span>
+      <span class="bot-badge">{{bot.badge}}</span>
+    </div>
+    <div class="bot-head-acts">
+      <button class="bot-new" id="botNew" type="button" aria-label="{{@bot.newConversation}}"><span class="bot-plus" aria-hidden="true">+</span><span class="bot-new-label">{{bot.newConversation}}</span></button>
+      <button class="bot-close" id="botClose" type="button" aria-label="{{@bot.close}}"><span aria-hidden="true">✕</span></button>
+    </div>
   </div>
-  <p class="bot-badge">{{bot.badge}}</p>
-  <div class="bot-body">
-    <p class="bot-intro">{{bot.intro}}</p>
-    <div class="bot-live" id="botLive" role="status" aria-live="polite">
-      <div class="bot-x" id="botX1" hidden>
-        <p class="bot-q">{{bot.q1}}</p>
-        <p class="bot-a">{{bot.a1}}</p>
-      </div>
-      <div class="bot-x" id="botX2" hidden>
-        <p class="bot-q">{{bot.q2}}</p>
-        <p class="bot-a">{{bot.a2}}</p>
-      </div>
-      <div class="bot-x" id="botX3" hidden>
-        <p class="bot-q">{{bot.q3}}</p>
-        <p class="bot-a">{{bot.a3}}</p>
+
+  <div class="bot-body" id="botBody">
+    <div class="bot-empty" id="botEmpty">
+      <span class="bot-empty-mark" aria-hidden="true">H</span>
+      <p class="bot-empty-title">{{bot.emptyTitle}}</p>
+      <p class="bot-empty-sub">{{bot.emptySub}}</p>
+      <p class="bot-sugg-label">{{bot.suggestedLabel}}</p>
+      <div class="bot-chips" id="botChips">
+        <button class="bot-chip" type="button" data-answer="a1">{{bot.q1}}</button>
+        <button class="bot-chip" type="button" data-answer="a2">{{bot.q2}}</button>
+        <button class="bot-chip" type="button" data-answer="a3">{{bot.q3}}</button>
       </div>
     </div>
-    <div class="bot-chips" id="botChips">
-      <button class="bot-chip" type="button" data-x="botX1">{{bot.q1}}</button>
-      <button class="bot-chip" type="button" data-x="botX2">{{bot.q2}}</button>
-      <button class="bot-chip" type="button" data-x="botX3">{{bot.q3}}</button>
-    </div>
-    <button class="bot-again" id="botAgain" type="button" hidden>{{bot.again}}</button>
+    <div class="bot-thread" id="botThread" aria-live="polite"></div>
   </div>
-  <p class="bot-foot">{{bot.footer}}</p>
-</dialog>
+
+  <div class="bot-input">
+    <form class="bot-input-row" id="botForm" novalidate>
+      <label class="sr-only" for="botText">{{bot.inputLabel}}</label>
+      <textarea class="bot-text" id="botText" rows="1" autocomplete="off" placeholder="{{@bot.placeholder}}"></textarea>
+      <button class="bot-send" id="botSend" type="submit" disabled aria-label="{{@bot.send}}">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 2 11 13"></path><path d="M22 2 15 22l-4-9-9-4 20-7z"></path></svg>
+      </button>
+    </form>
+    <p class="bot-disclaimer">{{bot.disclaimer}}</p>
+  </div>
+
+  <!-- copy store: the rendered answer blocks the script clones into the
+       transcript. Hidden, never announced, never edited by script. -->
+  <div class="bot-store" id="botStore" hidden aria-hidden="true">
+    <div class="bot-answer" data-store="a1">{{bot.a1}}</div>
+    <div class="bot-answer" data-store="a2">{{bot.a2}}</div>
+    <div class="bot-answer" data-store="a3">{{bot.a3}}</div>
+    <div class="bot-answer" data-store="boundary">{{bot.demoBoundary}}</div>
+    <div class="bot-thinking" data-store="thinking"><span class="bot-spin" aria-hidden="true"></span><span>{{bot.thinking}}</span></div>
+  </div>
+</div>
 
 <script src="assets/site.js" defer></script>
 </body>

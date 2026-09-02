@@ -19,18 +19,23 @@ const ALL_PAGES = [...BUILT, ...LEGAL];
 const SOURCE_DIRS = ['src', 'assets', 'scripts'];
 
 const results = [];
+/* A check may return { ok, detail, exempt }. `exempt` is a list of every
+   carve-out the check applies; the printer emits it on the check's line
+   whether it passed or failed, so no exemption can be introduced silently. */
 function check(n, title, fn) {
   let ok = false;
   let detail = '';
+  let exempt = [];
   try {
     const r = fn();
     ok = r === true || (r && r.ok === true);
     detail = (r && r.detail) || '';
+    exempt = (r && r.exempt) || [];
   } catch (err) {
     ok = false;
     detail = err && err.message ? err.message : String(err);
   }
-  results.push({ n, title, ok, detail });
+  results.push({ n, title, ok, detail, exempt });
 }
 
 function walk(dir, acc = []) {
@@ -84,14 +89,31 @@ function attr(tag, name) {
 /* The forbidden strings are assembled from fragments so that this file,
    which lives under scripts/ and is scanned by check 1 and check 11,
    does not match its own patterns. */
+/* the one scan set, shared by tripwires 1 and 11 */
+const SCAN_SET = () => [
+  ...SOURCE_DIRS.flatMap((d) => walk(d)),
+  ...ALL_PAGES,
+  'vercel.json',
+  '.vercelignore',
+  'package.json'
+].filter((f) => existsSync(join(ROOT, f)));
+
+const SCAN_EXEMPT =
+  'scripts/check.mjs is itself in the scan set; it assembles the two forbidden ' +
+  'patterns from string fragments so it cannot match itself. No file is skipped.';
+
 const BRAND = new RegExp(['am' + 'in[ae]h?', 'am' + 'eena',
   '\\u0623\\u0645\\u064A\\u0646\\u0629', '\\u0627\\u0645\\u064A\\u0646\\u0629'].join('|'), 'i');
 const REFERENCE_BRAND = new RegExp('kp' + 'mg', 'i');
 
-check(1, 'no assistant brand in src/, assets/, scripts/ or any built page', () => {
-  const files = [...SOURCE_DIRS.flatMap((d) => walk(d)), ...ALL_PAGES];
+check(1, 'no assistant brand anywhere in the scan set (source, output and deploy config)', () => {
+  const files = SCAN_SET();
   const hits = files.filter((f) => BRAND.test(read(f)));
-  return { ok: hits.length === 0, detail: hits.length ? `matches in ${hits.join(', ')}` : `${files.length} files scanned` };
+  return {
+    ok: hits.length === 0,
+    detail: hits.length ? `matches in ${hits.join(', ')}` : `${files.length} files scanned: ${SOURCE_DIRS.map((d) => d + '/').join(' ')} ${ALL_PAGES.join(' ')} vercel.json .vercelignore package.json`,
+    exempt: [SCAN_EXEMPT]
+  };
 });
 
 check(2, 'en.json and ar.json have identical deep key sets and no empty values', () => {
@@ -111,29 +133,46 @@ check(2, 'en.json and ar.json have identical deep key sets and no empty values',
   };
 });
 
-check(3, 'removed-section copy is gone and the section id set is exact', () => {
+check(3, 'removed-section copy is gone from the WHOLE file and the section id set is exact', () => {
+  /* No head carve-out. These six phrases belong to sections deleted in the
+     redesign; none of them may survive anywhere in a built page — body,
+     <head>, metadata, comments or attributes. */
   const gone = [
     'will become normal',
     'put it to work first',
     'catches up',
     'Better information. Faster accounting',
     'more value from the accounting',
-    'Founding cohort now forming'
+    'Intelligent accounting'
   ];
+  /* Ruling 2026-09-02: "Founding cohort now forming" was the announcement BAR,
+     not a removed section. It is allowed in meta.description and nowhere else,
+     so it is asserted separately and only against <body>. */
+  const announcement = ['Founding cohort now forming', 'الدفعة التأسيسية قيد التشكيل'];
   const want = ['cohort', 'how', 'kuwait', 'top', 'ask'].sort().join(',');
   const problems = [];
   const notes = [];
+
   for (const page of BUILT) {
     const html = read(page);
-    const body = bodyOf(html);
     for (const phrase of gone) {
-      if (body.includes(phrase)) problems.push(`${page}: "${phrase}"`);
-      else if (html.includes(phrase)) notes.push(`${page}: "${phrase}" survives in <head> metadata only (copy of record, meta.description)`);
+      if (html.includes(phrase)) problems.push(`${page}: "${phrase}" (whole-file scan)`);
+    }
+    const body = bodyOf(html);
+    const bodyText = renderedText(body).replace(/\s+/g, ' ');
+    for (const phrase of announcement) {
+      if (body.includes(phrase) || bodyText.includes(phrase)) problems.push(`${page}: "${phrase}" in <body>`);
+      else if (html.includes(phrase)) notes.push(`${page}: "${phrase}" in <head> only`);
     }
     const ids = (html.match(/<section[^>]*\sid="([^"]+)"/g) || []).map((t) => attr(t, 'id')).sort().join(',');
     if (ids !== want) problems.push(`${page}: section ids = [${ids}]`);
   }
-  return { ok: problems.length === 0, detail: problems.join(' · ') || notes.join(' · ') || 'ok' };
+
+  return {
+    ok: problems.length === 0,
+    detail: problems.join(' · ') || `${gone.length} phrases scanned whole-file · announcement absent from both bodies · ids = [${want}]` + (notes.length ? ` · ${notes.join(' · ')}` : ''),
+    exempt: ['"Founding cohort now forming" / "الدفعة التأسيسية قيد التشكيل" may appear in <head> (meta.description) — asserted absent from <body> only. Every other removed-section phrase has NO exemption and is scanned across the whole file.']
+  };
 });
 
 check(4, 'three-field form, no endpoint, no network call in site.js', () => {
@@ -193,18 +232,60 @@ check(6, 'lang/dir, canonical and three absolute hreflang alternates', () => {
   return { ok: problems.length === 0, detail: problems.join(' · ') || 'ok' };
 });
 
-check(7, 'the locked supporting line is verbatim on both pages', () => {
+check(7, 'the rendered .hero-support element IS the locked supporting line, both pages', () => {
+  /* Asserted on the element, not the file: the same sentence also lives in
+     meta.description, so a whole-file substring test passes even when the
+     hero line has been changed or deleted. */
+  const LOCKED = {
+    'haseeb.html': 'Haseeb is built for Kuwaiti businesses.',
+    'ar.html': 'حسيب مصمّم للأعمال الكويتية.'
+  };
+  const decode = (t) => t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&amp;/g, '&');
   const problems = [];
-  if (!read('haseeb.html').includes('Haseeb is built for Kuwaiti businesses.')) problems.push('haseeb.html');
-  if (!read('ar.html').includes('حسيب مصمّم للأعمال الكويتية.')) problems.push('ar.html');
-  return { ok: problems.length === 0, detail: problems.length ? `missing on ${problems.join(', ')}` : 'ok' };
+  const seen = [];
+  for (const page of BUILT) {
+    const html = read(page);
+    const m = html.match(/<p[^>]*\sclass="[^"]*\bhero-support\b[^"]*"[^>]*>([\s\S]*?)<\/p>/);
+    if (!m) { problems.push(`${page}: no .hero-support element`); continue; }
+    const rendered = decode(m[1].replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim();
+    seen.push(`${page}: "${rendered}"`);
+    if (rendered !== LOCKED[page]) problems.push(`${page}: .hero-support renders "${rendered}", locked line is "${LOCKED[page]}"`);
+  }
+  return { ok: problems.length === 0, detail: problems.join(' · ') || seen.join(' · ') };
 });
 
-check(8, 'pause/play control on both pages and a reduced-motion rule in site.css', () => {
+check(8, 'a reduced-motion rule exists and nothing on either page autoplays', () => {
+  /* The hero sequence was shelved on 2026-09-02, so there is no pause/play
+     control left to assert. What must stay true is the reason that control
+     existed: no motion starts on its own, and any future opt-out motion
+     carries a real control. */
   const problems = [];
-  for (const page of BUILT) if (!read(page).includes('aria-pressed')) problems.push(`${page}: no aria-pressed control`);
-  if (!/@media\s*\(prefers-reduced-motion:\s*reduce\)/.test(read('assets/site.css'))) problems.push('site.css: no reduced-motion rule');
-  return { ok: problems.length === 0, detail: problems.join(' · ') || 'ok' };
+  const checked = [];
+
+  const css = read('assets/site.css');
+  if (/@media\s*\(prefers-reduced-motion:\s*reduce\)/.test(css)) checked.push('assets/site.css: @media (prefers-reduced-motion: reduce) present');
+  else problems.push('assets/site.css: no prefers-reduced-motion rule');
+
+  for (const page of BUILT) {
+    const html = read(page);
+    const tags = tagsOf(html);
+    const autoplay = tags.filter((t) => /\sautoplay(\s|=|\/|>)/i.test(t));
+    const videos = tags.filter((t) => /^<video/i.test(t));
+    const flagged = tags.filter((t) => /\sdata-autoplay/i.test(t));
+    const controls = tags.filter((t) => /\saria-pressed\s*=/i.test(t));
+    const controlled = new Set(controls.map((t) => attr(t, 'aria-controls')).filter(Boolean));
+
+    if (autoplay.length) problems.push(`${page}: ${autoplay.length} autoplay attribute(s)`);
+    if (videos.length) problems.push(`${page}: ${videos.length} <video> element(s)`);
+    for (const tag of flagged) {
+      const id = attr(tag, 'id');
+      if (!id) problems.push(`${page}: a data-autoplay element has no id, so no control can reference it`);
+      else if (!controlled.has(id)) problems.push(`${page}: data-autoplay #${id} has no aria-pressed control targeting it`);
+    }
+    checked.push(`${page}: ${tags.length} tags — 0 autoplay attrs, 0 <video>, ${flagged.length} data-autoplay element(s), ${controls.length} aria-pressed control(s)`);
+  }
+
+  return { ok: problems.length === 0, detail: problems.join(' · ') || checked.join(' · ') };
 });
 
 check(9, 'light-first: no dark theme attribute and no dark base colour', () => {
@@ -237,13 +318,24 @@ check(10, 'only the two font hosts are reached; no video/audio/iframe/off-site s
       }
     }
   }
-  return { ok: problems.length === 0, detail: problems.join(' · ') || 'ok' };
+  return {
+    ok: problems.length === 0,
+    detail: problems.join(' · ') || `${ALL_PAGES.length} pages scanned; allowed hosts ${allowed.join(' ')}`,
+    exempt: [
+      'rel="canonical" and rel="alternate" links are skipped: §2 REQUIRES them to be absolute https://haseeb.app URLs.',
+      'mailto: hrefs are skipped: they reach no host.'
+    ]
+  };
 });
 
 check(11, 'no reference to the excluded reference brand anywhere', () => {
-  const files = [...SOURCE_DIRS.flatMap((d) => walk(d)), ...ALL_PAGES, 'vercel.json', '.vercelignore', 'package.json'];
-  const hits = files.filter((f) => existsSync(join(ROOT, f)) && REFERENCE_BRAND.test(read(f)));
-  return { ok: hits.length === 0, detail: hits.length ? `matches in ${hits.join(', ')}` : `${files.length} files scanned` };
+  const files = SCAN_SET();
+  const hits = files.filter((f) => REFERENCE_BRAND.test(read(f)));
+  return {
+    ok: hits.length === 0,
+    detail: hits.length ? `matches in ${hits.join(', ')}` : `${files.length} files scanned (identical set to tripwire 1)`,
+    exempt: [SCAN_EXEMPT]
+  };
 });
 
 check(12, '.vercelignore keeps the source out of the deployment', () => {
@@ -258,7 +350,15 @@ check(13, 'every numeral on ar.html is isolated inside class="num"', () => {
   const leaks = renderedText(read('ar.html'))
     .split(/\s+/)
     .filter((w) => /[0-9]/.test(w));
-  return { ok: leaks.length === 0, detail: leaks.length ? `unisolated: ${leaks.slice(0, 8).join(' ')}` : 'ok' };
+  return {
+    ok: leaks.length === 0,
+    detail: leaks.length ? `unisolated: ${leaks.slice(0, 8).join(' ')}` : 'no unisolated digit run in ar.html text',
+    exempt: [
+      '<script>, <style> and HTML comments are removed before the scan (not rendered text).',
+      'Elements carrying class="num" are removed WITH their contents — that is the isolation being asserted.',
+      'Attribute values are not scanned: the scan runs on text nodes only.'
+    ]
+  };
 });
 
 check(14, 'the build is idempotent (a second run produces no diff)', () => {
@@ -270,9 +370,16 @@ check(14, 'the build is idempotent (a second run produces no diff)', () => {
 /* ------------------------------------------------------------------ */
 
 let failed = 0;
+let exemptions = 0;
 for (const r of results.sort((a, b) => a.n - b.n)) {
   if (!r.ok) failed++;
   console.log(`${r.ok ? 'PASS' : 'FAIL'}  ${String(r.n).padStart(2, ' ')}. ${r.title}${r.detail ? `  —  ${r.detail}` : ''}`);
+  /* Exemptions print on the check's own line, pass or fail. A carve-out that
+     is not visible in the output is a silent downgrade. */
+  for (const e of r.exempt || []) {
+    exemptions++;
+    console.log(`          EXEMPT  ${e}`);
+  }
 }
-console.log(`\n${results.length - failed}/${results.length} tripwires passed`);
+console.log(`\n${results.length - failed}/${results.length} tripwires passed · ${exemptions} exemption(s) declared and printed above`);
 process.exit(failed ? 1 : 0);
