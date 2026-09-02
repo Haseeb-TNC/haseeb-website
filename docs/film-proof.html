@@ -1,0 +1,980 @@
+<!doctype html>
+<!-- GENERATED FILE — do not edit by hand.
+     Source: src/film-proof.template.html + assets/site.css + assets/site.js
+             + the film fragment of the two built pages.
+     Rebuild: npm run site:build
+
+     This page exists so the opening film can be watched before it is
+     deployed anywhere. It is deliberately ONE self-contained file: the
+     stylesheet block and the script module below are copied VERBATIM out of
+     assets/site.css and assets/site.js by scripts/build.mjs, and the two
+     film fragments out of haseeb.html and ar.html, so what plays here is the
+     shipping code and not a re-implementation of it. It is excluded from the
+     deployment by .vercelignore (docs/). -->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Haseeb — opening film</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Bebas+Neue&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+/* ══ the site's design tokens — copied verbatim from assets/site.css ══ */
+:root {
+  --bg:            #F8F6F2;
+  --surface:       #FFFFFF;
+  --surface-2:     #F1EFEB;
+  --border:        rgba(0,0,0,.09);
+  --border-strong: rgba(0,0,0,.14);
+
+  --text-1:        #1A1F26;
+  --text-2:        #4A5260;
+  --text-3:        #697180;
+  /* tertiary on --surface-2 (#F1EFEB): #697180 measures 4.27:1 and fails AA,
+     so text over the sunken surface uses this darker step (5.18:1). */
+  --text-3-on-2:   #5D6472;
+
+  --teal:          #00A684;
+  --teal-on:       #04231C;
+  --teal-ink:      #00795F;
+  --teal-soft:     rgba(0,166,132,.10);
+
+  --amber:         #B45309;
+  --amber-soft:    rgba(217,119,6,.12);
+  --red:           #B91C1C;
+  --red-soft:      rgba(220,38,38,.10);
+
+  --radius:        14px;
+  --radius-input:  10px;
+  --radius-pill:   999px;
+  --shadow-card:   0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+  --shadow-lift:   0 2px 6px rgba(0,0,0,.06), 0 18px 40px rgba(0,0,0,.10);
+  --max-w:         1120px;
+
+  --font-sans:     'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono:     'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display:  'Bebas Neue', var(--font-sans);
+  --font-ar:       'Noto Sans Arabic', system-ui, sans-serif;
+
+  --sec-pad:       96px;
+  --sticky-h:      64px;
+
+  /* direction helpers — the only place a physical side name is written */
+  --dir: 1;
+  --origin-x: left;
+  --origin-x-far: right;
+}
+
+[dir="rtl"] {
+  --dir: -1;
+  --origin-x: right;
+  --origin-x-far: left;
+}
+
+/* ══ the film's stylesheet — copied verbatim from assets/site.css ══ */
+/* FILM-CSS:START ─────────────────  OPENING FILM  ─────────────────────────
+   A fixed overlay above the fully rendered page. Transform and opacity only.
+   Every measurement is against the FIELD (container query units) and never
+   the viewport, so this same block drives the 16:10 frame on
+   docs/film-proof.html, which copies it verbatim. Logical properties
+   throughout: the Arabic page mirrors by construction.
+   -------------------------------------------------------------------- */
+
+:root {
+  --film-bg:       #F8F6F2;  /* warm white, the site --bg */
+  --film-ink:      #2A2E35;  /* charcoal, 11.9:1 on warm white */
+  /* Receding tokens. The film module applies this as an OPACITY keyframe on
+     --film-ink rather than as a flat colour: over --film-bg the two are the
+     same pixels, opacity is what the animation can carry, and a transient
+     decorative token in an aria-hidden field is not informative text that
+     must clear 4.5:1 (WCAG 1.4.3 exempts pure decoration). */
+  --film-ink-soft: rgba(42,46,53,.55);
+  --film-teal:     #00A684;  /* the ONE teal movement, and the mark */
+  --film-teal-ink: #00795F;  /* teal used AS TEXT (4.7:1 on warm white) */
+}
+
+.film {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--film-bg);
+  overflow: hidden;
+}
+.film[hidden] { display: none; }
+
+/* the field is decorative and aria-hidden; the Skip button is its sibling */
+.film-field {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  container-name: film;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: var(--film-ink);
+  opacity: 0;
+}
+.film-field > * { grid-area: 1 / 1; }
+
+/* ---- the information ----------------------------------------------
+   Laid out in its FINAL ordered position and transformed out to the edges
+   from there, so the ordered state is exact by construction and not by
+   arithmetic. No rule, no header, no card. */
+
+.film-order {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  justify-content: center;
+  align-content: center;
+  row-gap: 5px;
+  column-gap: clamp(28px, 6cqi, 72px);
+  font-size: 15px;
+  line-height: 1.5;
+  max-inline-size: 100%;
+}
+.film-tok {
+  white-space: nowrap;
+  will-change: transform, opacity;
+}
+.film-word {
+  grid-column: 1;
+  justify-self: start;
+  font-weight: 500;
+}
+[dir="rtl"] .film-word { font-family: var(--font-ar); }
+/* An amount is laid out left-to-right in both languages — that is how a
+   figure is written in Arabic too — and isolated, so a currency mark cannot
+   be reordered into the middle of its own number. */
+.film-amt {
+  grid-column: 2;
+  justify-self: start;
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-family: var(--font-mono), var(--font-ar);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+.film-amt-i { display: inline-block; min-inline-size: 7ch; text-align: end; }
+.film-amt-f { display: inline-block; text-align: start; }
+
+/* ---- the one teal movement ---- */
+
+.film-band {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: 12px;
+  border-radius: 999px;
+  background: var(--film-teal);
+  box-shadow: 0 0 30px 6px rgba(0,166,132,.34), 0 0 90px 26px rgba(0,166,132,.16);
+  opacity: 0;
+  will-change: transform;
+}
+
+/* ---- the three statements ---- */
+
+.film-lines {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  inline-size: min(94cqi, 1180px);
+}
+.film-line {
+  grid-area: 1 / 1;
+  margin: 0;
+  text-align: center;
+  text-wrap: balance;
+  font-weight: 700;
+  font-size: clamp(40px, 7.2cqi, 104px);
+  letter-spacing: .01em;
+  line-height: 1.06;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+[dir="rtl"] .film-line {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  line-height: 1.35;
+}
+.film-teal { color: var(--film-teal-ink); }
+
+/* ---- the mark ---- */
+
+.film-mark {
+  display: grid;
+  justify-items: center;
+  gap: clamp(12px, 2.2cqh, 22px);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.film-mark-h {
+  display: grid;
+  place-items: center;
+  inline-size: clamp(56px, 8.4cqi, 104px);
+  block-size: clamp(56px, 8.4cqi, 104px);
+  border-radius: 22%;
+  background: var(--film-teal);
+  color: var(--teal-on);
+  font-family: var(--font-display);
+  font-size: clamp(34px, 5.2cqi, 64px);
+  line-height: 1;
+}
+.film-mark-word {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 4.6cqi, 58px);
+  letter-spacing: .04em;
+  line-height: 1;
+  color: var(--film-ink);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.film-mark-rule {
+  inline-size: clamp(52px, 7cqi, 92px);
+  block-size: 3px;
+  border-radius: 999px;
+  background: var(--film-teal);
+  transform: scaleX(0);
+  transform-origin: var(--origin-x) center;
+}
+
+/* ---- Skip: outside the aria-hidden field, visible from frame one ---- */
+
+.film-skip {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: 16px;
+  inset-inline-end: 16px;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 44px;
+  padding-inline: 20px;
+  border: 1px solid rgba(42,46,53,.24);
+  border-radius: var(--radius-pill);
+  background: rgba(255,255,255,.76);
+  color: var(--film-ink);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.film-skip:hover { background: #fff; }
+
+/* ---- static poster: < 720px of field, or Save-Data. No motion at all. ----
+   The final ordered state with the three statements stacked beneath it,
+   sized against the field height so it can never exceed the viewport. */
+
+.film.is-poster .film-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4cqh;
+  padding: 5cqh 18px;
+  opacity: 1;
+}
+.film.is-poster .film-order {
+  font-size: 11px;
+  font-size: clamp(9px, 2.15cqh, 13px);
+  row-gap: 2px;
+}
+.film.is-poster .film-order { column-gap: clamp(18px, 7cqi, 44px); }
+.film.is-poster .film-lines {
+  display: grid;
+  gap: 1.4cqh;
+  inline-size: auto;
+  max-inline-size: 100%;
+}
+.film.is-poster .film-line {
+  grid-area: auto;
+  opacity: 1;
+  font-size: 15px;
+  font-size: clamp(13px, 3.05cqh, 22px);
+  line-height: 1.16;
+}
+.film.is-poster .film-band,
+.film.is-poster .film-mark { display: none; }
+
+/* ---- reduced motion: there is no film at all ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  .film { display: none !important; }
+}
+/* FILM-CSS:END */
+
+/* ══ the proof harness. This block exists on this page only and touches
+      nothing the film uses. ══ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 28px 20px 48px;
+  background: #EAE7E1;
+  color: var(--text-1);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.proof-wrap { max-inline-size: 1040px; margin-inline: auto; }
+
+.proof-title {
+  margin: 0 0 6px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.proof-sub { margin: 0 0 18px; color: var(--text-2); font-size: 14.5px; max-inline-size: 74ch; }
+
+/* the 16:10 frame */
+.proof-frame {
+  position: relative;
+  inline-size: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,.14);
+  box-shadow: 0 2px 6px rgba(0,0,0,.06), 0 18px 40px rgba(0,0,0,.12);
+  background: var(--bg);
+}
+
+.proof-pane { position: absolute; inset: 0; background: var(--bg); }
+.proof-pane[hidden] { display: none; }
+
+/* the film is a fixed overlay on the site; inside the frame it is the
+   frame's overlay. This is the only film declaration this page changes. */
+.proof-pane .film { position: absolute; }
+
+/* The page beneath the film. Only the hero's first two lines, as plain
+   text, plus the wordmark — which is here because it is the destination of
+   the hand-off: without it the last beat would have nowhere to land. */
+.proof-page { position: absolute; inset: 0; display: grid; align-content: center; justify-items: center; padding: 0 8%; }
+.proof-navmark {
+  position: absolute;
+  inset-block-start: 22px;
+  inset-inline-start: 26px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: .04em;
+  color: var(--text-1);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.proof-h1 {
+  margin: 0 0 14px;
+  max-inline-size: 20ch;
+  text-align: center;
+  font-size: clamp(24px, 3.4vw, 40px);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.proof-support { margin: 0; text-align: center; font-size: 17px; font-weight: 500; color: var(--teal-ink); }
+[dir="rtl"] .proof-page { font-family: var(--font-ar); }
+[dir="rtl"] .proof-h1 { line-height: 1.3; letter-spacing: 0; }
+
+/* controls */
+.proof-controls { display: flex; flex-wrap: wrap; gap: 12px; margin-block-start: 18px; }
+.proof-btn {
+  min-block-size: 44px;
+  padding-inline: 20px;
+  border: 1px solid rgba(0,0,0,.14);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text-1);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.proof-btn:hover { background: #fff; }
+.proof-btn[aria-pressed="true"] { background: var(--teal); color: var(--teal-on); border-color: transparent; }
+.proof-btn:focus-visible { outline: 2px solid var(--teal-ink); outline-offset: 2px; }
+
+.proof-caption {
+  margin-block-start: 14px;
+  min-block-size: 46px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid rgba(0,0,0,.09);
+  font-family: var(--font-mono), monospace;
+  font-size: 13.5px;
+  color: var(--text-2);
+}
+
+.proof-foot { margin-block-start: 18px; color: var(--text-3); font-size: 13px; max-inline-size: 78ch; }
+</style>
+</head>
+<body>
+
+<div class="proof-wrap">
+  <h1 class="proof-title">Haseeb — the opening film</h1>
+  <p class="proof-sub">
+    Ten seconds. Everyday business information arrives and competes for attention; one
+    Haseeb-teal movement puts it in order; three statements; the mark; then it hands off to
+    the page. This is the shipping code — the stylesheet block, the script module and the
+    markup are copied into this file from the site itself. Skip is live from the first
+    frame, and Esc skips too.
+  </p>
+
+  <div class="proof-frame">
+    <div class="proof-pane" id="paneEn" lang="en" dir="ltr">
+      <div class="proof-page">
+        <span class="proof-navmark">HASEEB.</span>
+        <div>
+          <h2 class="proof-h1">Get ahead with accounting software that understands your business.</h2>
+          <p class="proof-support">Haseeb is built for Kuwaiti businesses.</p>
+        </div>
+      </div>
+      <div class="film" hidden data-beat="idle">
+  <div class="film-field" aria-hidden="true">
+    <div class="film-order"><span class="film-tok film-word" style="grid-row:1">Sale</span>
+        <span class="film-tok film-word" style="grid-row:2">Invoice #1042</span>
+        <span class="film-tok film-word" style="grid-row:3">Payment</span>
+        <span class="film-tok film-word" style="grid-row:4">Expense</span>
+        <span class="film-tok film-word" style="grid-row:5">Supplier</span>
+        <span class="film-tok film-word" style="grid-row:6">Customer</span>
+        <span class="film-tok film-word" style="grid-row:7">Rent</span>
+        <span class="film-tok film-word" style="grid-row:8">Salaries</span>
+        <span class="film-tok film-word" style="grid-row:9">KNET</span>
+        <span class="film-tok film-word" style="grid-row:10">Delivery</span>
+        <span class="film-tok film-word" style="grid-row:11">Receipt</span>
+        <span class="film-tok film-word" style="grid-row:12">Bank transfer</span>
+        <span class="film-tok film-word" style="grid-row:13">فاتورة</span>
+        <span class="film-tok film-word" style="grid-row:14">مورّد</span>
+        <span class="film-tok film-amt" style="grid-row:1"><span class="film-amt-i"><span class="num">28</span></span><span class="film-amt-f"><span class="num">.500</span> KWD</span></span>
+        <span class="film-tok film-amt" style="grid-row:4"><span class="film-amt-i"><span class="num">1,250</span></span><span class="film-amt-f"><span class="num">.000</span> KWD</span></span>
+        <span class="film-tok film-amt" style="grid-row:6"><span class="film-amt-i"><span class="num">450</span></span><span class="film-amt-f"><span class="num">.000</span> KWD</span></span>
+        <span class="film-tok film-amt" style="grid-row:8"><span class="film-amt-i"><span class="num">3,980</span></span><span class="film-amt-f"><span class="num">.250</span> KWD</span></span>
+        <span class="film-tok film-amt" style="grid-row:11"><span class="film-amt-i"><span class="num">12,450</span></span><span class="film-amt-f"><span class="num">.000</span> KWD</span></span>
+        <span class="film-tok film-amt" style="grid-row:13"><span class="film-amt-i">د.ك <span class="num">28</span></span><span class="film-amt-f"><span class="num">.500</span></span></span></div>
+    <div class="film-band"></div>
+    <div class="film-lines">
+      <p class="film-line" data-film-line="1">YOU RUN THE BUSINESS.</p>
+      <p class="film-line" data-film-line="2"><span class="film-teal">HASEEB</span> PREPARES THE ACCOUNTING.</p>
+      <p class="film-line" data-film-line="3">YOU STAY IN CONTROL.</p>
+    </div>
+    <div class="film-mark">
+      <span class="film-mark-h">H</span>
+      <span class="film-mark-word">HASEEB.</span>
+      <span class="film-mark-rule"></span>
+    </div>
+  </div>
+  <button class="film-skip" type="button" aria-label="Skip the opening">Skip</button>
+</div>
+    </div>
+
+    <div class="proof-pane" id="paneAr" lang="ar" dir="rtl" hidden>
+      <div class="proof-page">
+        <span class="proof-navmark">HASEEB.</span>
+        <div>
+          <h2 class="proof-h1">كن في المقدّمة مع برنامج محاسبة يفهم عملك.</h2>
+          <p class="proof-support">حسيب مصمّم للأعمال الكويتية.</p>
+        </div>
+      </div>
+      <div class="film" hidden data-beat="idle">
+  <div class="film-field" aria-hidden="true">
+    <div class="film-order"><span class="film-tok film-word" style="grid-row:1">بيع</span>
+        <span class="film-tok film-word" style="grid-row:2">فاتورة رقم <span class="num">1042</span></span>
+        <span class="film-tok film-word" style="grid-row:3">سداد</span>
+        <span class="film-tok film-word" style="grid-row:4">مصروف</span>
+        <span class="film-tok film-word" style="grid-row:5">مورّد</span>
+        <span class="film-tok film-word" style="grid-row:6">عميل</span>
+        <span class="film-tok film-word" style="grid-row:7">إيجار</span>
+        <span class="film-tok film-word" style="grid-row:8">رواتب</span>
+        <span class="film-tok film-word" style="grid-row:9">كي نت</span>
+        <span class="film-tok film-word" style="grid-row:10">توصيل</span>
+        <span class="film-tok film-word" style="grid-row:11">إيصال</span>
+        <span class="film-tok film-word" style="grid-row:12">تحويل بنكي</span>
+        <span class="film-tok film-word" style="grid-row:13">KNET</span>
+        <span class="film-tok film-word" style="grid-row:14">Invoice</span>
+        <span class="film-tok film-amt" style="grid-row:1"><span class="film-amt-i"><span class="num">28</span></span><span class="film-amt-f"><span class="num">.500</span> د.ك</span></span>
+        <span class="film-tok film-amt" style="grid-row:4"><span class="film-amt-i"><span class="num">1,250</span></span><span class="film-amt-f"><span class="num">.000</span> د.ك</span></span>
+        <span class="film-tok film-amt" style="grid-row:7"><span class="film-amt-i"><span class="num">450</span></span><span class="film-amt-f"><span class="num">.000</span> د.ك</span></span>
+        <span class="film-tok film-amt" style="grid-row:10"><span class="film-amt-i"><span class="num">3,980</span></span><span class="film-amt-f"><span class="num">.250</span> د.ك</span></span>
+        <span class="film-tok film-amt" style="grid-row:13"><span class="film-amt-i"><span class="num">12,450</span></span><span class="film-amt-f"><span class="num">.000</span> د.ك</span></span></div>
+    <div class="film-band"></div>
+    <div class="film-lines">
+      <p class="film-line" data-film-line="1">أنت تدير أعمالك.</p>
+      <p class="film-line" data-film-line="2"><span class="film-teal">حسيب</span> يجهّز حساباتك.</p>
+      <p class="film-line" data-film-line="3">وأنت صاحب القرار.</p>
+    </div>
+    <div class="film-mark">
+      <span class="film-mark-h">H</span>
+      <span class="film-mark-word">HASEEB.</span>
+      <span class="film-mark-rule"></span>
+    </div>
+  </div>
+  <button class="film-skip" type="button" aria-label="تخطّي الافتتاح">تخطّي</button>
+</div>
+    </div>
+  </div>
+
+  <div class="proof-controls">
+    <button class="proof-btn" id="playEn" type="button" aria-pressed="false">Play English</button>
+    <button class="proof-btn" id="playAr" type="button" lang="ar" aria-pressed="false">تشغيل العربية</button>
+    <button class="proof-btn" id="replay" type="button">Replay</button>
+  </div>
+
+  <p class="proof-caption" id="proofCaption" role="status" aria-live="polite">Press Play.</p>
+
+  <p class="proof-foot">
+    The frame is 16:10. The film treats the frame exactly as it treats a browser window, so a
+    narrow window here shows the same static poster a phone gets. If your system is set to
+    reduced motion, the film does not play at all — that is the shipping behaviour, and the
+    caption says so.
+  </p>
+</div>
+
+<script>
+/* ══ the film module — copied verbatim from assets/site.js ══ */
+/* FILM-MODULE:START ─────────────────────────────────────────────────────
+     The opening film. Storyboard and timings: the T map below, and
+     docs/HASEEB-4113-opening-film-spec.md.
+
+     One factory with no site-specific selector in it: everything comes from
+     the root element it is handed and from its options, and every element is
+     addressed by class. That is what lets docs/film-proof.html run THIS code
+     — scripts/build.mjs copies the block between these markers into that
+     page verbatim — instead of a fork of it.
+
+     Transform and opacity only, Web Animations API. No image, no canvas, no
+     library, no audio, no video, no network call.
+     ------------------------------------------------------------------ */
+  function createFilm(root, options) {
+    var opts = options || {};
+    var doc = root.ownerDocument;
+    var win = doc.defaultView || window;
+
+    /* the reduced-motion guard lives INSIDE the film: no film at all */
+    var reduceQuery = win.matchMedia('(prefers-reduced-motion: reduce)');
+
+    var field = root.querySelector('.film-field');
+    var order = root.querySelector('.film-order');
+    var band = root.querySelector('.film-band');
+    var lines = Array.prototype.slice.call(root.querySelectorAll('.film-line'));
+    var mark = root.querySelector('.film-mark');
+    var markH = root.querySelector('.film-mark-h');
+    var word = root.querySelector('.film-mark-word');
+    var rule = root.querySelector('.film-mark-rule');
+    var skipBtn = root.querySelector('.film-skip');
+    var toks = Array.prototype.slice.call(root.querySelectorAll('.film-tok'));
+
+    var KEY = opts.storageKey || 'haseeb.film.v1';
+    var POSTER_BELOW = 720;   /* px of field width */
+    var POSTER_HOLD = 1600;
+    var HANDOFF = 200;        /* the skip hand-off, and the poster's */
+    var BAND_MS = 1100;
+    var T = {
+      arrive: 600, order: 3200, line1: 4400, line2: 5600,
+      line3: 6800, mark: 8000, handoff: 9000, end: 10000
+    };
+
+    var anims = [];
+    var timers = [];
+    var running = false;
+    var ended = false;
+    var mode = 'idle';
+    var t0 = 0;
+
+    /* seeded, so two runs and two languages scatter identically */
+    function prng(seed) {
+      var a = seed >>> 0;
+      return function () {
+        a = (a + 0x6D2B79F5) >>> 0;
+        var t = Math.imul(a ^ (a >>> 15), 1 | a);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    /* A token snaps when the band REACHES it, so its delay is the inverse of
+       the band's easing at its position; a linear clock lets the band run
+       ahead of the tokens it is supposed to be ordering. */
+    var BAND_EASE = [0.5, 0, 0.5, 1];
+
+    function bandTimeAt(progress) {
+      var x1 = BAND_EASE[0], y1 = BAND_EASE[1], x2 = BAND_EASE[2], y2 = BAND_EASE[3];
+      var lo = 0, hi = 1, s = 0.5;
+      for (var i = 0; i < 26; i++) {
+        s = (lo + hi) / 2;
+        var u = 1 - s;
+        var y = 3 * u * u * s * y1 + 3 * u * s * s * y2 + s * s * s;
+        if (y < progress) lo = s; else hi = s;
+      }
+      var v = 1 - s;
+      return 3 * v * v * s * x1 + 3 * v * s * s * x2 + s * s * s;
+    }
+
+    function push(a) { if (a) anims.push(a); return a; }
+    function timer(fn, ms) { timers.push(win.setTimeout(fn, ms)); }
+
+    function clearAll() {
+      timers.splice(0).forEach(function (id) { win.clearTimeout(id); });
+      anims.splice(0).forEach(function (a) { try { a.cancel(); } catch (e) {} });
+    }
+
+    function emit(name, reason) {
+      root.setAttribute('data-beat', name);
+      var at = Math.round((win.performance ? win.performance.now() : Date.now()) - t0);
+      if (opts.onBeat) opts.onBeat(name, at);
+      var detail = { beat: name, t: at };
+      if (reason) detail.reason = reason;
+      try { root.dispatchEvent(new CustomEvent('film:beat', { bubbles: true, detail: detail })); } catch (e) {}
+    }
+
+    function seen() {
+      if (opts.once === false) return false;
+      try { return win.sessionStorage.getItem(KEY) === '1'; } catch (e) { return false; }
+    }
+
+    function markSeen() {
+      if (opts.once === false) return;
+      try { win.sessionStorage.setItem(KEY, '1'); } catch (e) {}
+    }
+
+    function saveData() {
+      var c = win.navigator && (win.navigator.connection || win.navigator.webkitConnection);
+      return !!(c && c.saveData);
+    }
+
+    /* ---- the plan: where each token starts, clusters and lands ---- */
+
+    var EDGES = [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]];
+
+    function plan() {
+      var fr = field.getBoundingClientRect();
+      var rtl = win.getComputedStyle(root).direction === 'rtl';
+      var rnd = prng(20260902);
+      return toks.map(function (el, i) {
+        var r = el.getBoundingClientRect();
+        var cx = r.left + r.width / 2 - fr.left;   /* its ORDERED centre */
+        var cy = r.top + r.height / 2 - fr.top;
+        var tx = fr.width * (0.5 + (rnd() - 0.5) * 0.66);
+        var ty = fr.height * (0.5 + (rnd() - 0.5) * 0.58);
+        tx = Math.max(fr.width * 0.08, Math.min(fr.width * 0.92, tx));
+        ty = Math.max(fr.height * 0.10, Math.min(fr.height * 0.90, ty));
+        var edge = EDGES[i % EDGES.length];
+        var scale = 0.95 + rnd() * 0.9;            /* ~14px .. ~28px */
+        var rot = (rnd() * 2 - 1) * 4;
+        var soft = rnd() < 0.42;
+        var late = i % 5 === 3;                    /* a few overshoot and settle */
+        var base = rtl ? fr.width - 12 : 0;
+        var span = (rtl ? -(fr.width + 60) : fr.width + 60) - (rtl ? 60 : -60);
+        var sweep = Math.max(0, Math.min(1, ((tx - base) - (rtl ? 60 : -60)) / (span || 1)));
+        return {
+          el: el,
+          start: 'translate(' + Math.round(tx - cx + edge[0] * (fr.width * 0.62 + 160)) + 'px,' +
+                 Math.round(ty - cy + edge[1] * (fr.height * 0.62 + 140)) + 'px) rotate(' +
+                 (rot * 3).toFixed(1) + 'deg) scale(' + (scale * 0.86).toFixed(3) + ')',
+          cluster: 'translate(' + Math.round(tx - cx) + 'px,' + Math.round(ty - cy) + 'px) rotate(' +
+                   rot.toFixed(1) + 'deg) scale(' + scale.toFixed(3) + ')',
+          over: 'translate(' + Math.round((tx - cx) * 1.14) + 'px,' + Math.round((ty - cy) * 1.14) +
+                'px) rotate(' + (rot * 1.5).toFixed(1) + 'deg) scale(' + (scale * 1.06).toFixed(3) + ')',
+          opacity: soft ? 0.55 : 1,
+          late: late,
+          enterAt: T.arrive + i * 85,
+          snapAt: T.order + Math.round(bandTimeAt(sweep) * BAND_MS)
+        };
+      });
+    }
+
+    /* ---- the full film ---- */
+
+    function playFull() {
+      mode = 'film';
+      var fr = field.getBoundingClientRect();
+      var rtl = win.getComputedStyle(root).direction === 'rtl';
+      var steps = plan();
+
+      push(field.animate([{ opacity: 0 }, { opacity: 1 }],
+        { duration: 400, easing: 'ease-out', fill: 'forwards' }));
+
+      steps.forEach(function (s) {
+        var frames = s.late
+          ? [{ transform: s.start, opacity: 0, offset: 0 },
+             { transform: s.over, opacity: s.opacity, offset: 0.78 },
+             { transform: s.cluster, opacity: s.opacity, offset: 1 }]
+          : [{ transform: s.start, opacity: 0 },
+             { transform: s.cluster, opacity: s.opacity }];
+        /* fill BOTH: without the backwards fill every token sits in its
+           finished ordered position for the first 600ms — the answer on
+           screen before the question. */
+        push(s.el.animate(frames, {
+          delay: s.enterAt, duration: s.late ? 980 : 860,
+          easing: 'cubic-bezier(.16,.84,.44,1)', fill: 'both'
+        }));
+        push(s.el.animate([
+          { transform: s.cluster, opacity: s.opacity },
+          { transform: 'none', opacity: 1 }
+        ], {
+          delay: s.snapAt, duration: 220,
+          easing: 'cubic-bezier(.2,.9,.3,1)', fill: 'forwards'
+        }));
+      });
+
+      /* the ONE teal movement */
+      var from = rtl ? 60 : -60;
+      var to = rtl ? -(fr.width + 60) : fr.width + 60;
+      push(band.animate([
+        { transform: 'translateX(' + from + 'px)', opacity: 0, offset: 0 },
+        { opacity: 0.95, offset: 0.12 },
+        { opacity: 0.95, offset: 0.82 },
+        { transform: 'translateX(' + to + 'px)', opacity: 0, offset: 1 }
+      ], { delay: T.order, duration: BAND_MS, easing: 'cubic-bezier(.5,0,.5,1)', fill: 'forwards' }));
+
+      /* the ordered rows recede, then hold as texture, then go */
+      push(order.animate([{ transform: 'none', opacity: 1 }, { transform: 'scale(.92)', opacity: 0.18 }],
+        { delay: T.line1 - 200, duration: 520, easing: 'ease-out', fill: 'forwards' }));
+      push(order.animate([{ transform: 'scale(.92)', opacity: 0.18 }, { transform: 'scale(.90)', opacity: 0.14 }],
+        { delay: T.line2, duration: 420, easing: 'ease-out', fill: 'forwards' }));
+      push(order.animate([{ transform: 'scale(.90)', opacity: 0.14 }, { transform: 'scale(.88)', opacity: 0 }],
+        { delay: T.line3, duration: 600, easing: 'ease-out', fill: 'forwards' }));
+
+      /* the three statements */
+      [T.line1, T.line2, T.line3].forEach(function (at, i) {
+        var el = lines[i];
+        if (!el) return;
+        push(el.animate([{ transform: 'translateY(24px)', opacity: 0 }, { transform: 'none', opacity: 1 }],
+          { delay: at, duration: 420, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' }));
+        push(el.animate([{ transform: 'none', opacity: 1 }, { transform: 'translateY(-24px)', opacity: 0 }],
+          { delay: at + 1200, duration: 260, easing: 'ease-in', fill: 'forwards' }));
+      });
+
+      /* the mark */
+      push(mark.animate([{ transform: 'scale(.8)', opacity: 0 }, { transform: 'none', opacity: 1 }],
+        { delay: T.mark, duration: 380, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' }));
+      if (rule) {
+        push(rule.animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }],
+          { delay: T.mark + 220, duration: 300, easing: 'ease-out', fill: 'forwards' }));
+      }
+
+      ['arrive', 'order', 'line1', 'line2', 'line3', 'mark'].forEach(function (name) {
+        timer(function () { emit(name); }, T[name]);
+      });
+      timer(handoff, T.handoff);
+    }
+
+    /* ---- hand-off: the mark becomes the nav wordmark ---- */
+
+    function handoff() {
+      emit('handoff');
+      if (opts.onHandoff) opts.onHandoff();
+
+      var target = typeof opts.handoffTarget === 'function' ? opts.handoffTarget() : opts.handoffTarget;
+      var travel = 520;
+
+      if (target && word && mark) {
+        var t = target.getBoundingClientRect();
+        var w = word.getBoundingClientRect();
+        var m = mark.getBoundingClientRect();
+        var ratio = parseFloat(win.getComputedStyle(target).fontSize) /
+                    parseFloat(win.getComputedStyle(word).fontSize);
+        if (!isFinite(ratio) || ratio <= 0) ratio = 0.4;
+        mark.style.transformOrigin =
+          (w.left + w.width / 2 - m.left) + 'px ' + (w.top + w.height / 2 - m.top) + 'px';
+        var dx = Math.round((t.left + t.width / 2) - (w.left + w.width / 2));
+        var dy = Math.round((t.top + t.height / 2) - (w.top + w.height / 2));
+        push(mark.animate([
+          { transform: 'none' },
+          { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + ratio.toFixed(4) + ')' }
+        ], { duration: travel, easing: 'cubic-bezier(.5,0,.2,1)', fill: 'forwards' }));
+        if (markH) push(markH.animate([{ opacity: 1 }, { opacity: 0 }],
+          { duration: 260, easing: 'ease-out', fill: 'forwards' }));
+        if (rule) push(rule.animate([{ opacity: 1 }, { opacity: 0 }],
+          { duration: 200, easing: 'ease-out', fill: 'forwards' }));
+      }
+
+      /* The overlay fades WHILE the mark travels, so the page rises underneath
+         it and the mark cross-fades into the real nav wordmark it is landing
+         on, rather than the page appearing after the mark has already parked. */
+      push(root.animate([{ opacity: 1 }, { opacity: 0 }],
+        { delay: 150, duration: 750, easing: 'cubic-bezier(.4,0,.6,1)', fill: 'forwards' }));
+      timer(function () { finish('completed'); }, T.end - T.handoff);
+    }
+
+    /* ---- the static poster: no motion at all ---- */
+
+    function playPoster() {
+      mode = 'poster';
+      root.classList.add('is-poster');
+      emit('poster');
+      if (skipBtn) { try { skipBtn.focus({ preventScroll: true }); } catch (e) { skipBtn.focus(); } }
+      root.addEventListener('click', posterTap);
+      timer(function () { posterEnd('completed'); }, POSTER_HOLD);
+    }
+
+    function posterTap() { posterEnd('tapped'); }
+
+    function posterEnd(reason) {
+      if (ended) return;
+      if (opts.onHandoff) opts.onHandoff();
+      finish(reason);
+    }
+
+    /* ---- skip: the same hand-off, in 200 ms ---- */
+
+    function skipNow() {
+      if (!running || ended) return;
+      if (mode === 'poster') { posterEnd('skipped'); return; }
+      emit('skip');
+      clearAll();
+      if (opts.onHandoff) opts.onHandoff();
+      push(root.animate([{ opacity: 1 }, { opacity: 0 }],
+        { duration: HANDOFF, easing: 'ease-out', fill: 'forwards' }));
+      timer(function () { finish('skipped'); }, HANDOFF);
+    }
+
+    function onKey(ev) {
+      if (!running || ended) return;
+      if (ev.key === 'Escape' || ev.key === 'Esc') { ev.preventDefault(); skipNow(); }
+    }
+
+    function finish(reason) {
+      if (ended) return;
+      ended = true;
+      running = false;
+      emit('end', reason);
+      root.hidden = true;
+      clearAll();
+      root.removeEventListener('click', posterTap);
+      doc.removeEventListener('keydown', onKey, true);
+      if (opts.onEnd) opts.onEnd(reason);
+    }
+
+    function reset() {
+      clearAll();
+      ended = false;
+      running = false;
+      mode = 'idle';
+      root.classList.remove('is-poster');
+      root.removeEventListener('click', posterTap);
+      doc.removeEventListener('keydown', onKey, true);
+      if (mark) mark.style.transformOrigin = '';
+      root.setAttribute('data-beat', 'idle');
+      root.hidden = true;
+    }
+
+    function play() {
+      reset();
+      if (!field || !order || !skipBtn || typeof root.animate !== 'function') return 'unsupported';
+      if (reduceQuery.matches) { root.setAttribute('data-beat', 'reduced-motion'); return 'reduced-motion'; }
+      if (seen()) { root.setAttribute('data-beat', 'seen'); return 'seen'; }
+      markSeen();
+
+      root.hidden = false;
+      running = true;
+      ended = false;
+      t0 = win.performance ? win.performance.now() : Date.now();
+      doc.addEventListener('keydown', onKey, true);
+      if (opts.onStart) opts.onStart();
+
+      var width = root.clientWidth || win.innerWidth || 0;
+      if (width < POSTER_BELOW || saveData()) { playPoster(); return 'poster'; }
+
+      emit('open');
+      try { skipBtn.focus({ preventScroll: true }); } catch (e) { skipBtn.focus(); }
+      playFull();
+      return 'playing';
+    }
+
+    if (skipBtn) skipBtn.addEventListener('click', skipNow);
+
+    return { play: play, skip: skipNow, reset: reset, root: root };
+  }
+  /* FILM-MODULE:END */
+
+/* ══ the proof harness ══ */
+(function proof() {
+  var panes = { en: document.getElementById('paneEn'), ar: document.getElementById('paneAr') };
+  var buttons = { en: document.getElementById('playEn'), ar: document.getElementById('playAr') };
+  var replay = document.getElementById('replay');
+  var caption = document.getElementById('proofCaption');
+
+  var LABEL = {
+    open: 'Warm white — Skip is already there',
+    arrive: 'The information arrives, and competes',
+    order: 'One teal movement puts it in order',
+    mark: 'The mark',
+    handoff: 'Hand-off — the mark becomes the wordmark',
+    end: 'End',
+    poster: 'Static poster — narrow frame or Save-Data. No motion.',
+    skip: 'Skipped — the same hand-off, in 200ms'
+  };
+
+  var films = {};
+  var current = 'en';
+  var beat = '';
+  var t0 = 0;
+  var raf = 0;
+  var running = false;
+
+  function labelFor(lang, name) {
+    var m = /^line([123])$/.exec(name);
+    if (m) {
+      var el = panes[lang].querySelectorAll('.film-line')[Number(m[1]) - 1];
+      return 'Statement ' + m[1] + ' — ' + (el ? el.textContent.trim() : '');
+    }
+    return LABEL[name] || name;
+  }
+
+  function tick() {
+    if (!running) return;
+    caption.textContent = beat + '  ·  ' + ((performance.now() - t0) / 1000).toFixed(1) + ' s';
+    raf = requestAnimationFrame(tick);
+  }
+
+  function stop(text) {
+    running = false;
+    cancelAnimationFrame(raf);
+    caption.textContent = text;
+  }
+
+  function filmFor(lang) {
+    if (films[lang]) return films[lang];
+    films[lang] = createFilm(panes[lang].querySelector('.film'), {
+      once: false,                      /* a proof page never gates on a session */
+      handoffTarget: function () { return panes[lang].querySelector('.proof-navmark'); },
+      onBeat: function (name) { beat = labelFor(lang, name); },
+      onEnd: function (reason) {
+        stop('End  ·  ' + ((performance.now() - t0) / 1000).toFixed(1) + ' s  ·  ' + reason +
+             '  —  handed off to the page beneath.');
+      }
+    });
+    return films[lang];
+  }
+
+  function play(lang) {
+    current = lang;
+    Object.keys(panes).forEach(function (k) {
+      panes[k].hidden = k !== lang;
+      buttons[k].setAttribute('aria-pressed', k === lang ? 'true' : 'false');
+      if (films[k]) films[k].reset();
+    });
+
+    var f = filmFor(lang);
+    t0 = performance.now();
+    beat = 'Start';
+    running = true;
+    cancelAnimationFrame(raf);
+
+    var status = f.play();
+    if (status === 'reduced-motion') {
+      stop('No film: your system is set to reduced motion, and the site shows no film at all in ' +
+           'that case. Turn the setting off to watch it.');
+      return;
+    }
+    if (status === 'unsupported') { stop('No film: this browser has no Web Animations API.'); return; }
+    tick();
+  }
+
+  buttons.en.addEventListener('click', function () { play('en'); });
+  buttons.ar.addEventListener('click', function () { play('ar'); });
+  replay.addEventListener('click', function () { play(current); });
+})();
+</script>
+</body>
+</html>

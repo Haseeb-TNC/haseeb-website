@@ -275,6 +275,37 @@
   </div>
 </div>
 
+<!-- FILM:START ─────────────────────  OPENING FILM  ─────────────────────
+     A brand hook, not a product demonstration: everyday business
+     information arrives and competes for attention, ONE teal movement puts
+     it in order, three statements, the mark, then the hand-off to the hero.
+
+     It is an overlay, never a page: everything above is already in the DOM
+     and readable underneath from the first frame. The field is decorative
+     motion and carries aria-hidden; the Skip button sits OUTSIDE the hidden
+     field and is the only focusable thing while the film runs. No image, no
+     canvas, no video, no audio, no library, no network call. Every inner
+     element is addressed by class and never by id, so the same markup can be
+     rendered twice on the proof page. -->
+<div class="film" hidden data-beat="idle">
+  <div class="film-field" aria-hidden="true">
+    <div class="film-order">{{film.tokensHtml}}</div>
+    <div class="film-band"></div>
+    <div class="film-lines">
+      <p class="film-line" data-film-line="1">{{film.line1}}</p>
+      <p class="film-line" data-film-line="2">{{film.line2Html}}</p>
+      <p class="film-line" data-film-line="3">{{film.line3}}</p>
+    </div>
+    <div class="film-mark">
+      <span class="film-mark-h">H</span>
+      <span class="film-mark-word">{{brand.wordmark}}</span>
+      <span class="film-mark-rule"></span>
+    </div>
+  </div>
+  <button class="film-skip" type="button" aria-label="{{@film.skipAria}}">{{film.skip}}</button>
+</div>
+<!-- FILM:END -->
+
 <script src="assets/site.js" defer></script>
 </body>
 </html>

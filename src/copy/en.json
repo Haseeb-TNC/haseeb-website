@@ -147,5 +147,34 @@
     "placeholder": "Ask anything about your books...",
     "send": "Send",
     "disclaimer": "Guided demo on sample data. Answers in the product come from your own books."
+  },
+  "film": {
+    "line1": "YOU RUN THE BUSINESS.",
+    "line2": "HASEEB PREPARES THE ACCOUNTING.",
+    "line3": "YOU STAY IN CONTROL.",
+    "skip": "Skip",
+    "skipAria": "Skip the opening",
+    "tokens": [
+      "Sale",
+      "Invoice #1042",
+      "Payment",
+      "Expense",
+      "Supplier",
+      "Customer",
+      "Rent",
+      "Salaries",
+      "KNET",
+      "Delivery",
+      "Receipt",
+      "Bank transfer",
+      "28.500 KWD",
+      "1,250.000 KWD",
+      "450.000 KWD",
+      "3,980.250 KWD",
+      "12,450.000 KWD",
+      "فاتورة",
+      "مورّد",
+      "د.ك 28.500"
+    ]
   }
 }

@@ -949,3 +949,244 @@ body.bot-open .bot-launcher { display: none; }
   .reveal { opacity: 1; transform: none; }
   .bot-drawer.entering { animation: none; }
 }
+
+/* FILM-CSS:START ─────────────────  OPENING FILM  ─────────────────────────
+   A fixed overlay above the fully rendered page. Transform and opacity only.
+   Every measurement is against the FIELD (container query units) and never
+   the viewport, so this same block drives the 16:10 frame on
+   docs/film-proof.html, which copies it verbatim. Logical properties
+   throughout: the Arabic page mirrors by construction.
+   -------------------------------------------------------------------- */
+
+:root {
+  --film-bg:       #F8F6F2;  /* warm white, the site --bg */
+  --film-ink:      #2A2E35;  /* charcoal, 11.9:1 on warm white */
+  /* Receding tokens. The film module applies this as an OPACITY keyframe on
+     --film-ink rather than as a flat colour: over --film-bg the two are the
+     same pixels, opacity is what the animation can carry, and a transient
+     decorative token in an aria-hidden field is not informative text that
+     must clear 4.5:1 (WCAG 1.4.3 exempts pure decoration). */
+  --film-ink-soft: rgba(42,46,53,.55);
+  --film-teal:     #00A684;  /* the ONE teal movement, and the mark */
+  --film-teal-ink: #00795F;  /* teal used AS TEXT (4.7:1 on warm white) */
+}
+
+.film {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--film-bg);
+  overflow: hidden;
+}
+.film[hidden] { display: none; }
+
+/* the field is decorative and aria-hidden; the Skip button is its sibling */
+.film-field {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  container-name: film;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: var(--film-ink);
+  opacity: 0;
+}
+.film-field > * { grid-area: 1 / 1; }
+
+/* ---- the information ----------------------------------------------
+   Laid out in its FINAL ordered position and transformed out to the edges
+   from there, so the ordered state is exact by construction and not by
+   arithmetic. No rule, no header, no card. */
+
+.film-order {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  justify-content: center;
+  align-content: center;
+  row-gap: 5px;
+  column-gap: clamp(28px, 6cqi, 72px);
+  font-size: 15px;
+  line-height: 1.5;
+  max-inline-size: 100%;
+}
+.film-tok {
+  white-space: nowrap;
+  will-change: transform, opacity;
+}
+.film-word {
+  grid-column: 1;
+  justify-self: start;
+  font-weight: 500;
+}
+[dir="rtl"] .film-word { font-family: var(--font-ar); }
+/* An amount is laid out left-to-right in both languages — that is how a
+   figure is written in Arabic too — and isolated, so a currency mark cannot
+   be reordered into the middle of its own number. */
+.film-amt {
+  grid-column: 2;
+  justify-self: start;
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-family: var(--font-mono), var(--font-ar);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+.film-amt-i { display: inline-block; min-inline-size: 7ch; text-align: end; }
+.film-amt-f { display: inline-block; text-align: start; }
+
+/* ---- the one teal movement ---- */
+
+.film-band {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: 12px;
+  border-radius: 999px;
+  background: var(--film-teal);
+  box-shadow: 0 0 30px 6px rgba(0,166,132,.34), 0 0 90px 26px rgba(0,166,132,.16);
+  opacity: 0;
+  will-change: transform;
+}
+
+/* ---- the three statements ---- */
+
+.film-lines {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  inline-size: min(94cqi, 1180px);
+}
+.film-line {
+  grid-area: 1 / 1;
+  margin: 0;
+  text-align: center;
+  text-wrap: balance;
+  font-weight: 700;
+  font-size: clamp(40px, 7.2cqi, 104px);
+  letter-spacing: .01em;
+  line-height: 1.06;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+[dir="rtl"] .film-line {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  line-height: 1.35;
+}
+.film-teal { color: var(--film-teal-ink); }
+
+/* ---- the mark ---- */
+
+.film-mark {
+  display: grid;
+  justify-items: center;
+  gap: clamp(12px, 2.2cqh, 22px);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.film-mark-h {
+  display: grid;
+  place-items: center;
+  inline-size: clamp(56px, 8.4cqi, 104px);
+  block-size: clamp(56px, 8.4cqi, 104px);
+  border-radius: 22%;
+  background: var(--film-teal);
+  color: var(--teal-on);
+  font-family: var(--font-display);
+  font-size: clamp(34px, 5.2cqi, 64px);
+  line-height: 1;
+}
+.film-mark-word {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 4.6cqi, 58px);
+  letter-spacing: .04em;
+  line-height: 1;
+  color: var(--film-ink);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.film-mark-rule {
+  inline-size: clamp(52px, 7cqi, 92px);
+  block-size: 3px;
+  border-radius: 999px;
+  background: var(--film-teal);
+  transform: scaleX(0);
+  transform-origin: var(--origin-x) center;
+}
+
+/* ---- Skip: outside the aria-hidden field, visible from frame one ---- */
+
+.film-skip {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: 16px;
+  inset-inline-end: 16px;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 44px;
+  padding-inline: 20px;
+  border: 1px solid rgba(42,46,53,.24);
+  border-radius: var(--radius-pill);
+  background: rgba(255,255,255,.76);
+  color: var(--film-ink);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.film-skip:hover { background: #fff; }
+
+/* ---- static poster: < 720px of field, or Save-Data. No motion at all. ----
+   The final ordered state with the three statements stacked beneath it,
+   sized against the field height so it can never exceed the viewport. */
+
+.film.is-poster .film-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4cqh;
+  padding: 5cqh 18px;
+  opacity: 1;
+}
+.film.is-poster .film-order {
+  font-size: 11px;
+  font-size: clamp(9px, 2.15cqh, 13px);
+  row-gap: 2px;
+}
+.film.is-poster .film-order { column-gap: clamp(18px, 7cqi, 44px); }
+.film.is-poster .film-lines {
+  display: grid;
+  gap: 1.4cqh;
+  inline-size: auto;
+  max-inline-size: 100%;
+}
+.film.is-poster .film-line {
+  grid-area: auto;
+  opacity: 1;
+  font-size: 15px;
+  font-size: clamp(13px, 3.05cqh, 22px);
+  line-height: 1.16;
+}
+.film.is-poster .film-band,
+.film.is-poster .film-mark { display: none; }
+
+/* ---- reduced motion: there is no film at all ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  .film { display: none !important; }
+}
+/* FILM-CSS:END */
+
+/* ---- the film owns the screen while it runs, and the two floating
+        controls do not exist until it has handed off ---- */
+
+body.film-playing { overflow: hidden; }
+
+.bot-launcher {
+  opacity: 0;
+  visibility: hidden;
+  transition: transform .18s ease, box-shadow .18s ease, opacity .3s ease;
+}
+body.launcher-ready .bot-launcher { opacity: 1; visibility: visible; }
