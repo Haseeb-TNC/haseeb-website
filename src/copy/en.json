@@ -1,0 +1,197 @@
+{
+  "html": {
+    "lang": "en",
+    "dir": "ltr",
+    "canonical": "https://haseeb.app/",
+    "altLang": "ar",
+    "altHref": "https://haseeb.app/ar",
+    "legalBackHref": "haseeb.html"
+  },
+  "brand": {
+    "wordmark": "HASEEB.",
+    "name": "Haseeb"
+  },
+  "meta": {
+    "title": "Haseeb — Accounting software that understands your business.",
+    "description": "Haseeb is built for Kuwaiti businesses. It prepares the accounting, asks when something is missing, and answers your questions in plain language. Founding cohort now forming."
+  },
+  "nav": {
+    "how": "How it works",
+    "kuwait": "Kuwait",
+    "cohort": "Founding cohort",
+    "lang": "العربية",
+    "langAria": "Switch to Arabic",
+    "cta": "Join the founding cohort",
+    "menu": "Menu"
+  },
+  "hero": {
+    "h1": "Get ahead with accounting software that understands your business.",
+    "support": "Haseeb is built for Kuwaiti businesses.",
+    "sub": "It prepares the accounting, asks when something is missing, and answers your questions in plain language.",
+    "cta": "Join the founding cohort",
+    "secondary": "See how it works",
+    "fact": "Founding cohort · 8–12 Kuwaiti businesses · Supervised from day one"
+  },
+  "_headlineOptions": {
+    "A": "Get ahead with accounting software that understands your business.",
+    "B": "Accounting that does the work, and asks when it needs you.",
+    "C": "Your books, prepared for you. You approve.",
+    "D": "Accounting software built for Kuwait that understands your business."
+  },
+  "seq": {
+    "stage1": "1 · A bank transaction arrives",
+    "stage2": "2 · Haseeb organizes the information",
+    "stage3": "3 · A question, only when something is missing",
+    "stage4": "4 · A balanced draft. You approve.",
+    "stage5": "5 · The books and the report update",
+    "pause": "Pause animation",
+    "play": "Play animation",
+    "srDescription": "Animation: a bank transaction is read, Haseeb prepares the entry, asks one question when information is missing, shows a balanced draft that you approve, and the books update.",
+    "preview": "Product preview · sample data",
+    "tenant": "The Company W.L.L.",
+    "tenantAr": "الشركة ذ.م.م",
+    "ownerView": "Owner view · April 2026",
+    "f1Line": "KNET POS — ZAIN TELECOM KUWAIT",
+    "f1Amount": "−28.500 KWD",
+    "f1Meta": "14 Apr 2026 · imported from your bank statement",
+    "f2Merchant": "Merchant recognised",
+    "f2Category": "Telecommunications",
+    "f2Dr": "Telecommunications expense",
+    "f2Cr": "Bank — operating account",
+    "f2Amount": "28.500",
+    "f2Status": "Ready to approve",
+    "f3Line": "TRANSFER",
+    "f3Amount": "−450.000 KWD",
+    "f3Meta": "15 Apr 2026",
+    "f3Question": "Transfer on 15 Apr — what was this payment for?",
+    "f3Status": "Needs an answer",
+    "f3ReplyPlaceholder": "Write a reply...",
+    "f3Reply": "Office rent — April",
+    "f3ReplyButton": "Reply",
+    "f4Title": "Draft entry",
+    "f4Dr": "Rent expense",
+    "f4Cr": "Bank — operating account",
+    "f4Amount": "450.000",
+    "f4Balanced": "Balanced · difference 0.000",
+    "f4Status": "Ready to approve",
+    "f4Approve": "Approve",
+    "f4Approved": "Approved",
+    "f5Revenue": "Revenue",
+    "f5RevenueValue": "48,420.750",
+    "f5Expenses": "Expenses",
+    "f5ExpensesFrom": "38,712.090",
+    "f5ExpensesTo": "39,190.590",
+    "f5Net": "Net income",
+    "f5NetFrom": "9,708.660",
+    "f5NetTo": "9,230.160",
+    "f5Taskbox": "Taskbox · 0 open",
+    "f5Updated": "Books updated"
+  },
+  "how": {
+    "h2": "Haseeb prepares the work. You approve it.",
+    "intro": "Haseeb reads your bank transactions, prepares the accounting, and separates what is clear from what needs your attention.",
+    "prepares": {
+      "label": "Prepares",
+      "status": "Ready to approve",
+      "body": "When the information is clear, Haseeb prepares the entry. You approve it, one by one or as a batch.",
+      "rowLabel": "ZAIN TELECOM",
+      "rowCategory": "Telecommunications",
+      "rowAmount": "−28.500 KWD · 14 Apr"
+    },
+    "asks": {
+      "label": "Asks",
+      "status": "Needs an answer",
+      "body": "When something is missing, Haseeb asks you one question. Answer it and the entry is ready.",
+      "rowLabel": "Transfer",
+      "rowQuestion": "What was this payment for?",
+      "rowAmount": "−450.000 KWD · 15 Apr"
+    },
+    "holds": {
+      "label": "Holds",
+      "status": "Held for review",
+      "body": "When there is not enough information, Haseeb stops. Nothing is posted until you or your accountant decide.",
+      "rowLabel": "Supplier invoice",
+      "rowNote": "Document missing",
+      "rowAmount": "−1,840.000 KWD · 15 Apr"
+    },
+    "close": "You stay in control of what gets approved."
+  },
+  "ask": {
+    "eyebrow": "Plain-language questions",
+    "h2": "Talk to your accountant the way you talk to anyone.",
+    "body": "Ask which customers still owe you, or how much cash you have today, and get an answer in plain language.",
+    "cta": "Try the guided demo"
+  },
+  "kuwait": {
+    "eyebrow": "Built for here",
+    "h2": "It doesn't just work in Kuwait. It understands Kuwait.",
+    "body": "Kuwaiti merchants. KWD to three decimals. Supported local bank-statement formats. Kuwaiti business and reporting requirements.",
+    "chips": [
+      "KWD · 3 decimals",
+      "KNET settlements",
+      "Local statement formats",
+      "Kuwaiti merchants"
+    ]
+  },
+  "cohort": {
+    "eyebrow": "Founding cohort",
+    "h2": "Be one of the first businesses in Kuwait to use Haseeb.",
+    "body": "We are selecting 8–12 Kuwaiti service businesses for Haseeb's founding cohort.",
+    "bullets": [
+      "Close onboarding",
+      "Direct access to the founding team",
+      "A carefully supervised start"
+    ]
+  },
+  "form": {
+    "h3": "Apply for a founding place",
+    "intro": "Every application is reviewed personally. No financial information is required to apply.",
+    "name": "Name",
+    "phone": "Phone number",
+    "email": "Email",
+    "namePh": "Your name",
+    "phonePh": "+965 …",
+    "emailPh": "you@company.com",
+    "submit": "Apply for a founding place",
+    "errName": "Please add your name.",
+    "errPhone": "Please add your phone number.",
+    "errEmail": "Please add a valid email address.",
+    "errSummary": "Please complete the highlighted fields.",
+    "note": "This opens your email app with a pre-filled message to founder@haseeb.app. Nothing is sent until you press send there, and nothing is stored on this site. Please don't include financial statements or bank details; we'll never ask for them in this form.",
+    "success": "Your email app should now be open with your application to founder@haseeb.app. Press send there to submit it. If nothing opened, email founder@haseeb.app directly.",
+    "founderLink": "Speak with the founder",
+    "founderSubject": "Haseeb — Conversation with the Founder",
+    "mailSubject": "Haseeb Founding Cohort Application — {name}",
+    "mailHeading": "Haseeb Founding Cohort Application",
+    "mailtoTrailer": "— sent from the founding-cohort form on haseeb.app"
+  },
+  "footer": {
+    "terms": "Website Terms",
+    "privacy": "Privacy Policy",
+    "contact": "info@haseeb.app",
+    "contactLabel": "General enquiries",
+    "copyright": "© 2026 Haseeb. All rights reserved.",
+    "lang": "العربية",
+    "langCurrent": "English"
+  },
+  "sticky": {
+    "cta": "Join the cohort →"
+  },
+  "bot": {
+    "launcher": "Talk to your accountant the way you talk to anyone",
+    "launcherTag": "Guided demo",
+    "launcherAria": "Open the guided demo",
+    "title": "Haseeb",
+    "badge": "Guided demo · sample data",
+    "intro": "This is a guided demonstration on sample figures for a fictional company. Pick a question to see how Haseeb answers inside the product.",
+    "q1": "Which customers still owe us?",
+    "a1": "Three customers owe you 12,450.000 KWD in total. The largest is Example Trading Co. W.L.L., invoice 7012, 8,000.000 KWD, due last week.",
+    "q2": "How much cash do we have right now?",
+    "a2": "142,850.000 KWD across your two bank accounts today. Your biggest upcoming payment is payroll at the end of the month.",
+    "q3": "How are this month's numbers?",
+    "a3": "Net income is 9,230.160 KWD this month. Revenue is up 14%, mostly the new consulting contract, while expenses rose with April's rent.",
+    "footer": "In the product, answers come from your own books. These are sample figures.",
+    "close": "Close",
+    "again": "Ask another question"
+  }
+}
