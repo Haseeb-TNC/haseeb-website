@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="{{@html.lang}}" dir="{{@html.dir}}">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{{@meta.title}}</title>
+<meta name="description" content="{{@meta.description}}" />
+<meta name="theme-color" content="#F8F6F2" />
+
+<link rel="canonical" href="{{@html.canonical}}" />
+<link rel="alternate" hreflang="en" href="{{@html.enHref}}" />
+<link rel="alternate" hreflang="ar" href="{{@html.arHref}}" />
+<link rel="alternate" hreflang="x-default" href="{{@html.xDefaultHref}}" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="{{@meta.title}}" />
+<meta property="og:description" content="{{@meta.description}}" />
+<meta property="og:url" content="{{@html.canonical}}" />
+<meta property="og:locale" content="{{@html.lang}}" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Bebas+Neue&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/site.css" />
+</head>
+<body>
+
+<!-- ─────────────────────────  NAV  ───────────────────────── -->
+<nav class="nav" id="nav" aria-label="{{@nav.aria}}">
+  <div class="wrap nav-inner">
+    <a class="wordmark" href="#top">{{brand.wordmark}}</a>
+
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navMenu">
+      <span class="nav-burger" aria-hidden="true"><span></span><span></span></span>
+      <span class="nav-toggle-label">{{nav.menu}}</span>
+    </button>
+
+    <div class="nav-menu" id="navMenu">
+      <a class="nav-link" href="#how">{{nav.how}}</a>
+      <a class="nav-link" href="#kuwait">{{nav.kuwait}}</a>
+      <a class="nav-link" href="#cohort">{{nav.cohort}}</a>
+      <a class="nav-lang" data-lang-switch lang="{{@html.altLang}}" hreflang="{{@html.altLang}}" href="{{@html.altPath}}" aria-label="{{@nav.langAria}}">{{nav.lang}}</a>
+      <a class="btn btn-primary nav-cta" href="#apply">{{nav.cta}}</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ─────────────────────────  1 · HERO  ─────────────────────────
+       Text-first. The explanatory sub-paragraph was removed in round 7
+       (founder, 2026-09-03): headline, the locked supporting line, the
+       action, the cohort fact. Nothing else. -->
+  <section class="hero" id="top">
+    <div class="wrap hero-inner">
+      <h1 class="hero-h1 reveal">{{hero.h1}}</h1>
+      <p class="hero-support reveal">{{hero.support}}</p>
+      <div class="hero-actions reveal">
+        <a class="btn btn-primary btn-lg" href="#apply">{{hero.cta}}</a>
+        <a class="link-arrow" href="#how">{{hero.secondary}}<span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+      <p class="hero-fact reveal">{{hero.fact}}</p>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────  2 · HOW IT WORKS  ───────────────────────── -->
+  <section id="how">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <h2>{{how.h2}}</h2>
+        <p class="lede">{{how.intro}}</p>
+      </div>
+
+      <div class="cards">
+        <article class="card-b reveal">
+          <h3>{{how.prepares.label}}</h3>
+          <span class="pill pill-ready">{{how.prepares.status}}</span>
+          <div class="ex">
+            <div class="ex-top"><span class="ex-label">{{how.prepares.rowLabel}}</span><span class="ex-amt fig">{{how.prepares.rowAmount}}</span></div>
+            <div class="ex-sub">{{how.prepares.rowCategory}}</div>
+          </div>
+          <p>{{how.prepares.body}}</p>
+        </article>
+
+        <article class="card-b reveal">
+          <h3>{{how.asks.label}}</h3>
+          <span class="pill pill-ask">{{how.asks.status}}</span>
+          <div class="ex">
+            <div class="ex-top"><span class="ex-label">{{how.asks.rowLabel}}</span><span class="ex-amt fig">{{how.asks.rowAmount}}</span></div>
+            <div class="ex-sub">{{how.asks.rowQuestion}}</div>
+          </div>
+          <p>{{how.asks.body}}</p>
+        </article>
+
+        <article class="card-b reveal">
+          <h3>{{how.holds.label}}</h3>
+          <span class="pill pill-hold">{{how.holds.status}}</span>
+          <div class="ex">
+            <div class="ex-top"><span class="ex-label">{{how.holds.rowLabel}}</span><span class="ex-amt fig">{{how.holds.rowAmount}}</span></div>
+            <div class="ex-sub">{{how.holds.rowNote}}</div>
+          </div>
+          <p>{{how.holds.body}}</p>
+        </article>
+      </div>
+
+      <p class="sec-close reveal">{{how.close}}</p>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────  3 · ASK  ───────────────────────── -->
+  <section id="ask">
+    <div class="wrap">
+      <div class="band reveal">
+        <p class="eyebrow">{{ask.eyebrow}}</p>
+        <h2>{{ask.h2}}</h2>
+        <p class="lede">{{ask.body}}</p>
+        <button class="link-arrow link-btn" id="askDemo" type="button" aria-expanded="false" aria-controls="botDialog">{{ask.cta}}<span class="arrow" aria-hidden="true">→</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────  4 · KUWAIT  ───────────────────────── -->
+  <section id="kuwait">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">{{kuwait.eyebrow}}</p>
+        <h2>{{kuwait.h2}}</h2>
+        <p class="lede">{{kuwait.body}}</p>
+      </div>
+      <ul class="chips reveal">{{kuwait.chipsHtml}}</ul>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────  5 · FOUNDING COHORT  ───────────────────────── -->
+  <section id="cohort">
+    <div class="wrap cohort-grid">
+      <div class="cohort-text reveal">
+        <p class="eyebrow">{{cohort.eyebrow}}</p>
+        <h2>{{cohort.h2}}</h2>
+        <p class="lede">{{cohort.body}}</p>
+        <ul class="bullets">{{cohort.bulletsHtml}}</ul>
+      </div>
+
+      <div class="apply-card reveal" id="apply">
+        <h3>{{form.h3}}</h3>
+        <p class="apply-intro">{{form.intro}}</p>
+
+        <!-- The action is what makes this form work with JavaScript off: the
+             browser hands the three fields to the visitor's own mail app as
+             plain text. With JavaScript on, site.js takes the submit event
+             first and composes a nicer subject and body. Nothing is ever
+             posted to a server; there is no endpoint. -->
+        <form id="cohortForm" novalidate
+              action="mailto:founder@haseeb.app" method="post" enctype="text/plain"
+              data-to="founder@haseeb.app"
+              data-subject="{{@form.mailSubject}}"
+              data-heading="{{@form.mailHeading}}"
+              data-trailer="{{@form.mailtoTrailer}}"
+              data-summary="{{@form.errSummary}}"
+              data-success="{{@form.success}}">
+          <div class="field">
+            <label for="f-name">{{form.name}}</label>
+            <input id="f-name" name="name" type="text" autocomplete="name" placeholder="{{@form.namePh}}" required aria-describedby="e-name" data-label="{{@form.name}}" />
+            <p class="field-err" id="e-name" hidden>{{form.errName}}</p>
+          </div>
+
+          <div class="field">
+            <label for="f-phone">{{form.phone}}</label>
+            <input id="f-phone" name="phone" type="tel" dir="ltr" autocomplete="tel" placeholder="{{@form.phonePh}}" required aria-describedby="e-phone" data-label="{{@form.phone}}" />
+            <p class="field-err" id="e-phone" hidden>{{form.errPhone}}</p>
+          </div>
+
+          <div class="field">
+            <label for="f-email">{{form.email}}</label>
+            <input id="f-email" name="email" type="email" dir="ltr" autocomplete="email" placeholder="{{@form.emailPh}}" required aria-describedby="e-email" data-label="{{@form.email}}" />
+            <p class="field-err" id="e-email" hidden>{{form.errEmail}}</p>
+          </div>
+
+          <button class="btn btn-primary btn-block" type="submit">{{form.submit}}</button>
+          <p class="form-note">{{form.note}}</p>
+          <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+        </form>
+
+        <a class="founder-link" href="{{@form.founderMailto}}">{{form.founderLink}}</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ─────────────────────────  6 · FOOTER  ───────────────────────── -->
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <a class="wordmark foot-mark" href="#top">{{brand.wordmark}}</a>
+    <div class="foot-links">
+      <a href="website-terms.html">{{footer.terms}}</a>
+      <a href="privacy.html">{{footer.privacy}}</a>
+      <a href="mailto:info@haseeb.app" class="foot-contact"><span class="foot-contact-l">{{footer.contactLabel}}</span> {{footer.contact}}</a>
+    </div>
+    <div class="foot-lang">
+      <span class="foot-lang-current">{{footer.langCurrent}}</span>
+      <span class="foot-sep" aria-hidden="true">·</span>
+      <a data-lang-switch lang="{{@html.altLang}}" hreflang="{{@html.altLang}}" href="{{@html.altPath}}" aria-label="{{@nav.langAria}}">{{footer.lang}}</a>
+    </div>
+    <p class="foot-copy">{{footer.copyright}}</p>
+  </div>
+</footer>
+
+<!-- ─────────────────────────  MOBILE STICKY CTA  ───────────────────────── -->
+<div class="sticky-cta" id="stickyCta" hidden><a href="#apply">{{sticky.cta}}</a></div>
+
+<!-- ─────────────────────────  CONVERSATION DRAWER · GUIDED DEMO  ─────────────────────────
+     A faithful recreation of the product's in-app accounting-conversation
+     drawer: same chrome, same spacing, same message shapes. Its identity is
+     the HASEEB. wordmark and nothing else — no icon, no persona. There is no
+     live endpoint, so it answers only the three suggested questions, from the
+     one fixture, and says so plainly for anything else. Each suggestion is
+     usable once per conversation. Nothing here is a network call. -->
+<button class="bot-launcher" id="botLauncher" type="button" aria-expanded="false" aria-controls="botDialog" aria-label="{{@bot.launcherAria}}">
+  <span class="bot-ico" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12a8 8 0 0 1-8 8H7l-4 3v-6.5A8 8 0 0 1 11 4h2a8 8 0 0 1 8 8z"></path></svg>
+  </span>
+  <span class="bot-launcher-text">{{bot.launcher}}</span>
+  <span class="bot-launcher-tag">{{bot.launcherTag}}</span>
+</button>
+
+<div class="bot-backdrop" id="botBackdrop" hidden></div>
+
+<div class="bot-drawer" id="botDialog" role="dialog" aria-modal="true" aria-labelledby="botTitle" hidden>
+
+  <div class="bot-head">
+    <div class="bot-head-text">
+      <span class="bot-head-line">
+        <h2 class="bot-title" id="botTitle">{{bot.title}}</h2>
+        <span class="bot-status">{{bot.status}}</span>
+      </span>
+      <span class="bot-badge">{{bot.badge}}</span>
+    </div>
+    <div class="bot-head-acts">
+      <button class="bot-new" id="botNew" type="button" aria-label="{{@bot.newConversation}}"><span class="bot-plus" aria-hidden="true">+</span><span class="bot-new-label">{{bot.newConversation}}</span></button>
+      <button class="bot-close" id="botClose" type="button" aria-label="{{@bot.close}}"><span aria-hidden="true">✕</span></button>
+    </div>
+  </div>
+
+  <div class="bot-body" id="botBody">
+    <div class="bot-empty" id="botEmpty">
+      <p class="bot-empty-title">{{bot.emptyTitle}}</p>
+      <p class="bot-empty-sub">{{bot.emptySub}}</p>
+    </div>
+    <!-- tabindex="-1" so the thread can TAKE focus without joining the tab
+         order: choosing a suggestion removes the chip the visitor is
+         standing on, and site.js moves focus here first so it never falls to
+         <body> for the length of the thinking phase. -->
+    <div class="bot-thread" id="botThread" aria-live="polite" tabindex="-1"></div>
+    <div class="bot-suggest" id="botSuggest">
+      <p class="bot-sugg-label">{{bot.suggestedLabel}}</p>
+      <!-- dir="auto" so a chip whose text is still English on the Arabic
+           page aligns and punctuates as English. Round 7 ships the three
+           questions in English on both pages pending Kuwaiti copy review;
+           without this the trailing "?" migrates to the wrong end. -->
+      <div class="bot-chips" id="botChips">
+        <button class="bot-chip" type="button" dir="auto" data-answer="a1">{{bot.q1}}</button>
+        <button class="bot-chip" type="button" dir="auto" data-answer="a2">{{bot.q2}}</button>
+        <button class="bot-chip" type="button" dir="auto" data-answer="a3">{{bot.q3}}</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bot-input">
+    <form class="bot-input-row" id="botForm" novalidate>
+      <label class="sr-only" for="botText">{{bot.inputLabel}}</label>
+      <textarea class="bot-text" id="botText" rows="1" autocomplete="off" placeholder="{{@bot.placeholder}}"></textarea>
+      <button class="bot-send" id="botSend" type="submit" disabled aria-label="{{@bot.send}}">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 2 11 13"></path><path d="M22 2 15 22l-4-9-9-4 20-7z"></path></svg>
+      </button>
+    </form>
+    <p class="bot-disclaimer">{{bot.disclaimer}}</p>
+  </div>
+
+  <!-- copy store: the rendered answer blocks the script clones into the
+       transcript. Hidden, never announced, never edited by script. -->
+  <div class="bot-store" id="botStore" hidden aria-hidden="true">
+    <div class="bot-answer" dir="auto" data-store="a1">{{bot.a1}}</div>
+    <div class="bot-answer" dir="auto" data-store="a2">{{bot.a2}}</div>
+    <div class="bot-answer" dir="auto" data-store="a3">{{bot.a3}}</div>
+    <div class="bot-answer" dir="auto" data-store="boundary">{{bot.demoBoundary}}</div>
+    <div class="bot-thinking" data-store="thinking"><span class="bot-spin" aria-hidden="true"></span><span>{{bot.thinking}}</span></div>
+  </div>
+</div>
+
+<!-- FILM:START ─────────────────────  OPENING FILM  ─────────────────────
+     One continuous composition, about seven and a half seconds, over the
+     already-rendered page: business activity moves without stopping, one
+     teal current puts it in order without stopping it, the three statements
+     FORM into a single block, and the wordmark condenses out of that current
+     and travels into the nav. Nothing is switched; every state change is
+     interpolated by one rAF loop.
+
+     Layer A is a Canvas 2D token field. It is decorative motion and carries
+     aria-hidden, so the Skip button sits OUTSIDE it and is the only
+     focusable thing while the film runs. The token vocabulary reaches the
+     module on the field element, words and amounts separately, so the
+     ordered state can align the amounts on their decimal point.
+
+     No image, no video, no audio, no library, no network call. Every inner
+     element is addressed by class and never by id, so the same markup can be
+     rendered twice on the proof page. -->
+<div class="film" hidden data-phase="idle">
+  <div class="film-field" aria-hidden="true"
+       data-film-words="{{@film.wordsAttr}}"
+       data-film-amounts="{{@film.amountsAttr}}">
+    <canvas class="film-canvas"></canvas>
+    <div class="film-lines">
+      <p class="film-line" data-film-line="1">{{film.line1}}</p>
+      <p class="film-line" data-film-line="2">{{film.line2Html}}</p>
+      <p class="film-line" data-film-line="3">{{film.line3}}</p>
+    </div>
+    <div class="film-mark">
+      <span class="film-mark-word">{{brand.wordmark}}</span>
+    </div>
+  </div>
+  <button class="film-skip" type="button" aria-label="{{@film.skipAria}}">{{film.skip}}</button>
+</div>
+<!-- FILM:END -->
+
+<script src="assets/site.js" defer></script>
+</body>
+</html>

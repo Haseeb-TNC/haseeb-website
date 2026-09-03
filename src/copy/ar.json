@@ -1,0 +1,177 @@
+{
+  "html": {
+    "lang": "ar",
+    "dir": "rtl",
+    "canonical": "https://haseeb.app/ar",
+    "altLang": "en",
+    "altHref": "https://haseeb.app/",
+    "legalBackHref": "ar.html"
+  },
+  "brand": {
+    "wordmark": "HASEEB.",
+    "name": "حسيب"
+  },
+  "meta": {
+    "title": "حسيب — برنامج محاسبة يفهم عملك.",
+    "description": "حسيب مصمّم للأعمال الكويتية. يجهّز لك المحاسبة، ويسألك عندما تنقص معلومة، ويجيب عن أسئلتك بلغة بسيطة. الدفعة التأسيسية قيد التشكيل."
+  },
+  "nav": {
+    "how": "كيف يعمل",
+    "kuwait": "الكويت",
+    "cohort": "الدفعة التأسيسية",
+    "lang": "English",
+    "langAria": "التبديل إلى الإنجليزية",
+    "cta": "انضم إلى الدفعة التأسيسية",
+    "menu": "القائمة",
+    "aria": "التنقل الرئيسي"
+  },
+  "hero": {
+    "h1": "كن في المقدّمة مع برنامج محاسبة يفهم عملك.",
+    "support": "حسيب مصمّم للأعمال الكويتية.",
+    "cta": "انضم إلى الدفعة التأسيسية",
+    "secondary": "شاهد كيف يعمل",
+    "fact": "الدفعة التأسيسية · 8–12 شركة كويتية · بإشراف منذ اليوم الأول"
+  },
+  "how": {
+    "h2": "حسيب يجهّز العمل، وأنت تعتمده.",
+    "intro": "يقرأ حسيب معاملاتك البنكية، ويجهّز لك المحاسبة، ويفصل ما هو واضح عمّا يحتاج إلى انتباهك.",
+    "prepares": {
+      "label": "يجهّز",
+      "status": "جاهزة للاعتماد",
+      "body": "عندما تكون المعلومات واضحة، يجهّز حسيب القيد. وأنت تعتمده — كل قيد بمفرده، أو الكل معًا.",
+      "rowLabel": "ZAIN TELECOM",
+      "rowCategory": "الاتصالات",
+      "rowAmount": "−{row1Amount} د.ك · {row1Date}"
+    },
+    "asks": {
+      "label": "يسأل",
+      "status": "بحاجة إلى إجابة",
+      "body": "عندما تنقص معلومة، يسألك حسيب سؤالًا واحدًا. أجب عنه، ويصبح القيد جاهزًا.",
+      "rowLabel": "تحويل",
+      "rowQuestion": "ما الغرض من هذا التحويل؟",
+      "rowAmount": "−{row2Amount} د.ك · {row2Date}"
+    },
+    "holds": {
+      "label": "يتوقّف",
+      "status": "موقوف للمراجعة",
+      "body": "عندما لا تكفي المعلومات، يتوقّف حسيب. لا يُرحَّل شيء حتى تقرّر أنت أو محاسبك.",
+      "rowLabel": "فاتورة مورّد",
+      "rowNote": "المستند ناقص",
+      "rowAmount": "−{row3Amount} د.ك · {row3Date}"
+    },
+    "close": "أنت من يتحكّم فيما يُعتمد."
+  },
+  "ask": {
+    "eyebrow": "أسئلة بلغة بسيطة",
+    "h2": "اسأل دفاترك بلغة بسيطة.",
+    "body": "اسأل: «أيّ العملاء لم يسدّدوا بعد؟» أو «كم لدينا من نقد اليوم؟» وستحصل على إجابة بلغة بسيطة.",
+    "cta": "جرّب العرض التوضيحي"
+  },
+  "kuwait": {
+    "eyebrow": "مصمّم لهنا",
+    "h2": "لا يعمل في الكويت فقط، بل يفهم الكويت.",
+    "body": "تجّار الكويت. تنسيقات مدعومة لكشوف الحسابات البنكية المحلية. متطلبات الأعمال والتقارير الكويتية.",
+    "chips": [
+      "تسويات كي-نت",
+      "تنسيقات الكشوف المحلية",
+      "التجّار الكويتيون"
+    ]
+  },
+  "cohort": {
+    "eyebrow": "الدفعة التأسيسية",
+    "h2": "كن من أوائل الشركات في الكويت التي تستخدم حسيب.",
+    "body": "نختار حاليًا من 8 إلى 12 شركة خدمات كويتية لدفعة حسيب التأسيسية.",
+    "bullets": [
+      "تهيئة عن قرب",
+      "تواصل مباشر مع الفريق المؤسس",
+      "بداية بإشراف دقيق"
+    ]
+  },
+  "form": {
+    "h3": "قدّم طلبًا لمقعد تأسيسي",
+    "intro": "نراجع كل طلب شخصيًا. لا نطلب أي معلومات مالية للتقديم.",
+    "name": "الاسم",
+    "phone": "رقم الهاتف",
+    "email": "البريد الإلكتروني",
+    "namePh": "اسمك",
+    "phonePh": "+965 …",
+    "emailPh": "you@company.com",
+    "submit": "قدّم طلبك",
+    "errName": "يرجى إدخال اسمك.",
+    "errPhone": "يرجى إدخال رقم هاتفك.",
+    "errEmail": "يرجى إدخال بريد إلكتروني صحيح.",
+    "errSummary": "يرجى إكمال الحقول المحدّدة.",
+    "note": "سيفتح هذا تطبيق البريد لديك برسالة جاهزة إلى founder@haseeb.app. لا يُرسل شيء حتى تضغط «إرسال» هناك، ولا يُحفظ شيء على هذا الموقع. يرجى عدم إرفاق قوائم مالية أو بيانات بنكية؛ لن نطلبها في هذا النموذج أبدًا.",
+    "success": "يُفترض أن يكون تطبيق البريد قد فُتح الآن ومعه طلبك إلى founder@haseeb.app. اضغط «إرسال» هناك لتقديمه. وإن لم يُفتح، راسل founder@haseeb.app مباشرة.",
+    "founderLink": "تحدّث مع المؤسس",
+    "founderSubject": "حسيب — محادثة مع المؤسس",
+    "mailSubject": "طلب الانضمام إلى الدفعة التأسيسية من حسيب — {name}",
+    "mailHeading": "طلب الانضمام إلى الدفعة التأسيسية من حسيب",
+    "mailtoTrailer": "— مُرسَل من نموذج الدفعة التأسيسية في haseeb.app"
+  },
+  "footer": {
+    "terms": "شروط الموقع (بالإنجليزية)",
+    "privacy": "سياسة الخصوصية (بالإنجليزية)",
+    "contact": "info@haseeb.app",
+    "contactLabel": "للاستفسارات العامة",
+    "copyright": "© 2026 حسيب. جميع الحقوق محفوظة.",
+    "lang": "English",
+    "langCurrent": "العربية"
+  },
+  "sticky": {
+    "cta": "انضم إلى الدفعة ←"
+  },
+  "bot": {
+    "launcher": "Talk to Haseeb like you talk to your accountant.",
+    "launcherTag": "عرض توضيحي موجّه",
+    "launcherAria": "افتح العرض التوضيحي الموجّه",
+    "title": "HASEEB.",
+    "status": "جاهزة للمساعدة",
+    "badge": "عرض توضيحي موجّه · بيانات تجريبية",
+    "newConversation": "محادثة جديدة",
+    "close": "إغلاق",
+    "emptyTitle": "اسأل عن دفاترك",
+    "emptySub": "يمكنني مساعدتك في فهم حساباتك المالية، واكتشاف المشكلات، والإجابة على أسئلتك حول دفاترك.",
+    "suggestedLabel": "أسئلة مقترحة",
+    "q1": "Which unpaid invoices need my attention?",
+    "a1": "{customerCount} customers have unpaid invoices totalling {openTotal} KWD. The largest open invoice is {largestInvoiceNo} from {largestCustomer}, {largestAmount} KWD.",
+    "q2": "How much cash do we have right now?",
+    "a2": "{cash} KWD available across {accountCount} bank accounts, as of {asOfDate}.",
+    "q3": "What were our revenue, expenses and net income this month?",
+    "a3": "{month}: revenue {revenue} KWD, operating expenses {opex} KWD, net income {net} KWD. Compared with {prevMonth}: revenue {revenueChangePct}, operating expenses {opexChangePct}, net income {netChangeAbs} KWD {netChangeDir}.",
+    "thinking": "جارٍ التفكير...",
+    "demoBoundary": "هذا عرض توضيحي موجّه على أرقام تجريبية، لذلك أجيب هنا عن الأسئلة المقترحة فقط. داخل المنتج تأتي الإجابات من دفاترك أنت.",
+    "inputLabel": "اطرح سؤالًا",
+    "placeholder": "This website demo answers the suggested questions only.",
+    "send": "إرسال",
+    "disclaimer": "عرض توضيحي على بيانات تجريبية. داخل المنتج تأتي الإجابات من دفاترك أنت."
+  },
+  "film": {
+    "line1": "أنت تدير أعمالك.",
+    "line2": "حسيب يجهّز حساباتك.",
+    "line3": "وأنت صاحب القرار.",
+    "skip": "تخطّي",
+    "skipAria": "تخطّي الافتتاح",
+    "tokens": [
+      "بيع",
+      "فاتورة رقم 1042",
+      "سداد",
+      "مصروف",
+      "مورّد",
+      "عميل",
+      "إيجار",
+      "رواتب",
+      "كي نت",
+      "توصيل",
+      "إيصال",
+      "تحويل بنكي",
+      "{row1Amount} د.ك",
+      "{row2Amount} د.ك",
+      "{row3Amount} د.ك",
+      "{largestAmount} د.ك",
+      "{openTotal} د.ك",
+      "KNET",
+      "Invoice"
+    ]
+  }
+}

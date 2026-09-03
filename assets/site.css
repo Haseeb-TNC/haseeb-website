@@ -1,0 +1,1192 @@
+/* ============================================================
+   Haseeb public site — light-first, bilingual (EN / AR)
+   Logical properties only in layout rules; [dir=rtl] mirrors below.
+   ============================================================ */
+
+:root {
+  --bg:            #F8F6F2;
+  --surface:       #FFFFFF;
+  --surface-2:     #F1EFEB;
+  --border:        rgba(0,0,0,.09);
+  --border-strong: rgba(0,0,0,.14);
+
+  --text-1:        #1A1F26;
+  --text-2:        #4A5260;
+  /* tertiary text. The previous #697180 measured 4.552:1 on --bg and 4.278:1
+     on --surface-2 — 0.05 of margin over AA on the warm white, and a plain
+     failure on the sunken surface — so it needed a per-ground exception
+     token. This value clears 5.0:1 on ALL THREE grounds the site paints
+     tertiary text on (5.510 on --bg, 5.947 on --surface, 5.178 on
+     --surface-2), which retires that exception: it IS the value the former
+     --text-3-on-2 already shipped, so folding the two changed no pixel that
+     used the exception and only darkened the ones that did not. */
+  --text-3:        #5D6472;
+
+  --teal:          #00A684;
+  --teal-on:       #04231C;
+  --teal-ink:      #00795F;
+  --teal-soft:     rgba(0,166,132,.10);
+
+  /* .pill-ask paints this ink on --amber-soft composited over the white card,
+     i.e. #FAEFE1. #B45309 measured 4.42:1 there and failed AA for 12.5px/500
+     text; this step is the same hue (25.9 deg vs 26.0 deg) two stops darker
+     and measures 5.64:1 on the composite, 6.40:1 on white. */
+  --amber:         #9A4708;
+  --amber-soft:    rgba(217,119,6,.12);
+  --red:           #B91C1C;
+  --red-soft:      rgba(220,38,38,.10);
+
+  --radius:        14px;
+  --radius-input:  10px;
+  --radius-pill:   999px;
+  --shadow-card:   0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+  --shadow-lift:   0 2px 6px rgba(0,0,0,.06), 0 18px 40px rgba(0,0,0,.10);
+  --max-w:         1120px;
+
+  --font-sans:     'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono:     'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display:  'Bebas Neue', var(--font-sans);
+  --font-ar:       'Noto Sans Arabic', system-ui, sans-serif;
+
+  --sec-pad:       96px;
+  --sticky-h:      64px;
+
+  /* direction helpers — the only place a physical side name is written */
+  --dir: 1;
+  --origin-x: left;
+  --origin-x-far: right;
+}
+
+[dir="rtl"] {
+  --dir: -1;
+  --origin-x: right;
+  --origin-x-far: left;
+}
+
+/* ---------------- base ---------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-block-start: 84px; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+[lang="ar"] body,
+[dir="rtl"] body {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  line-height: 1.8;
+}
+
+h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.02em; font-weight: 600; }
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3 { line-height: 1.3; letter-spacing: 0; }
+
+h1 { font-size: clamp(36px, 5vw, 60px); }
+h2 { font-size: clamp(28px, 3.4vw, 40px); }
+h3 { font-size: 20px; }
+
+p { margin: 0 0 14px; }
+
+a { color: var(--teal-ink); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+:focus-visible {
+  outline: 2px solid var(--teal-ink);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+img, svg { max-inline-size: 100%; }
+
+main { display: block; }
+
+section { padding-block: var(--sec-pad); }
+
+.wrap {
+  inline-size: 100%;
+  max-inline-size: var(--max-w);
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+/* ---------------- shared pieces ---------------- */
+
+.eyebrow {
+  margin: 0 0 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--teal-ink);
+}
+[dir="rtl"] .eyebrow { font-family: var(--font-ar); letter-spacing: 0; text-transform: none; font-size: 13px; }
+
+.lede { color: var(--text-2); font-size: 18px; max-inline-size: 62ch; margin-block-end: 0; }
+
+.sec-head { max-inline-size: 720px; margin-block-end: 44px; }
+.sec-head h2 { margin-block-end: 14px; }
+
+.sec-close {
+  margin-block-start: 40px;
+  color: var(--text-2);
+  font-size: 17px;
+}
+
+.num { direction: ltr; unicode-bidi: isolate; }
+
+.fig {
+  font-family: var(--font-mono), var(--font-ar);
+  font-variant-numeric: tabular-nums;
+  direction: ltr;
+  unicode-bidi: isolate;
+  white-space: nowrap;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-block: 4px;
+  padding-inline: 11px;
+  border-radius: var(--radius-pill);
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.pill::before {
+  content: "";
+  inline-size: 6px;
+  block-size: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+}
+.pill-ready { background: var(--teal-soft); color: var(--teal-ink); }
+.pill-ask   { background: var(--amber-soft); color: var(--amber); }
+.pill-hold  { background: var(--red-soft); color: var(--red); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-block-size: 44px;
+  padding-block: 11px;
+  padding-inline: 22px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+.btn-primary { background: var(--teal); color: var(--teal-on); }
+.btn-primary:hover { background: #009477; text-decoration: none; }
+.btn-primary:active { transform: translateY(1px); }
+.btn-lg { font-size: 17px; padding-block: 14px; padding-inline: 26px; }
+.btn-block { inline-size: 100%; }
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-block-size: 44px;
+  color: var(--teal-ink);
+  font-weight: 500;
+  font-size: 16px;
+}
+.link-btn {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.link-arrow .arrow { transition: transform .18s ease; }
+.link-arrow:hover .arrow { transform: translateX(calc(var(--dir) * 3px)); }
+[dir="rtl"] .link-arrow .arrow { transform: scaleX(-1); }
+[dir="rtl"] .link-arrow:hover .arrow { transform: scaleX(-1) translateX(3px); }
+
+/* Scoped to html.js on purpose (round 7 §8): with scripting off nothing
+   adds that class, so every .reveal section renders at full opacity and the
+   page is readable. The .visible rule is scoped too — an unscoped
+   .reveal.visible (0,2,0) loses to html.js .reveal (0,2,1) and would leave
+   every section invisible with JavaScript ON. */
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .55s ease, transform .55s cubic-bezier(.2,.8,.2,1);
+  /* THE OTHER HALF OF THE FAILSAFE (round 8). Hiding these sections is the
+     price of the entrance animation, and script is what pays it back. If
+     script stops without throwing — a dead rAF, a dead setTimeout, no error
+     event — the CSS failsafe on .film takes the overlay away and, without
+     this, hands the visitor an EMPTY page: fourteen sections still at
+     opacity 0 and nothing left alive to reveal them. So the hiding is armed
+     for ten seconds and no longer. The clock starts when script adds the
+     `js` class, runs on the browser's own animation timeline (it needs
+     neither rAF callbacks nor timers), and is disarmed below the moment the
+     page is genuinely ready — which on every healthy path is seconds
+     earlier. */
+  animation: revealFailsafe 10s step-end forwards;
+}
+html.js .reveal.visible { opacity: 1; transform: none; animation: none; }
+/* disarmed: the page reached its ready state, so the entrance belongs to
+   script again and sections reveal on scroll as designed */
+html.js body.ui-ready .reveal { animation: none; }
+@keyframes revealFailsafe {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---------------- nav ---------------- */
+
+.nav {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 50;
+  background: rgba(248,246,242,.86);
+  backdrop-filter: saturate(160%) blur(12px);
+  border-block-end: 1px solid transparent;
+  transition: border-color .2s ease, background-color .2s ease;
+}
+.nav.scrolled { border-block-end-color: var(--border); background: rgba(248,246,242,.94); }
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-block-size: 68px;
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: .04em;
+  color: var(--text-1);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.wordmark:hover { text-decoration: none; color: var(--teal-ink); }
+
+.nav-menu { display: flex; align-items: center; gap: 26px; }
+.nav-link { color: var(--text-2); font-size: 15.5px; }
+.nav-link:hover { color: var(--text-1); text-decoration: none; }
+
+.nav-lang {
+  color: var(--text-1);
+  font-size: 15px;
+  font-weight: 500;
+  padding-block: 6px;
+  padding-inline: 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+}
+.nav-lang:hover { text-decoration: none; background: var(--surface); }
+
+.nav-toggle {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  min-block-size: 44px;
+  padding-inline: 10px;
+  background: none;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  color: var(--text-1);
+  font-family: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+.nav-burger { display: inline-grid; gap: 4px; inline-size: 16px; }
+.nav-burger span { display: block; block-size: 1.5px; background: currentColor; }
+
+/* ---------------- hero ----------------
+   Text-first since 2026-09-02. The animated product-UI stage that used to
+   sit beside this text was shelved by founder instruction; its CSS was
+   deleted rather than left dead. History: cc186c2. ------------------- */
+
+.hero { padding-block-start: 104px; padding-block-end: 112px; }
+
+.hero-inner {
+  max-inline-size: 820px;
+  text-align: center;
+}
+
+.hero-h1 { margin-block-end: 20px; }
+
+/* The explanatory sub-paragraph below this line was removed in round 7, so
+   the supporting line now carries the space that separated it from the
+   actions. Its own rule is deleted rather than left dead. */
+.hero-support {
+  margin: 0 0 34px;
+  font-size: 19px;
+  font-weight: 500;
+  color: var(--teal-ink);
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-block-end: 26px;
+}
+
+.hero-fact {
+  margin: 0;
+  color: var(--text-3);
+  font-size: 14px;
+}
+
+/* ---------------- 2 · how it works ---------------- */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+.card-b {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 26px 24px 24px;
+}
+.card-b h3 { margin-block-end: 10px; }
+.card-b > p { margin: 16px 0 0; color: var(--text-2); font-size: 15.5px; }
+
+.ex {
+  margin-block-start: 16px;
+  background: var(--surface-2);
+  border-radius: var(--radius-input);
+  padding: 12px 13px;
+}
+.ex-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+.ex-label { font-size: 13.5px; font-weight: 500; }
+.ex-amt { font-size: 13px; color: var(--text-2); }
+.ex-sub { margin-block-start: 5px; font-size: 13px; color: var(--text-2); }
+
+/* ---------------- 3 · ask ---------------- */
+
+#ask { padding-block: 0; }
+.band {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  box-shadow: var(--shadow-card);
+  padding: 56px 48px;
+  text-align: start;
+  max-inline-size: 760px;
+}
+.band h2 { margin-block-end: 14px; }
+.band .lede { margin-block-end: 22px; }
+
+/* ---------------- 4 · kuwait ---------------- */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.chips li {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding-block: 9px;
+  padding-inline: 18px;
+  font-size: 15px;
+  color: var(--text-2);
+}
+
+/* ---------------- 5 · founding cohort ---------------- */
+
+.cohort-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 440px);
+  gap: 56px;
+  align-items: start;
+}
+.cohort-text h2 { margin-block-end: 14px; }
+.bullets {
+  margin: 26px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+.bullets li {
+  position: relative;
+  padding-inline-start: 28px;
+  color: var(--text-2);
+  font-size: 16.5px;
+}
+.bullets li::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: .62em;
+  inline-size: 8px;
+  block-size: 8px;
+  border-radius: 50%;
+  background: var(--teal);
+}
+
+.apply-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 30px 28px;
+  scroll-margin-block-start: 96px;
+}
+.apply-card h3 { margin-block-end: 8px; }
+.apply-intro { color: var(--text-2); font-size: 15px; margin-block-end: 20px; }
+
+.field { margin-block-end: 16px; }
+.field label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-block-end: 6px;
+}
+.field input {
+  inline-size: 100%;
+  min-block-size: 46px;
+  padding-block: 11px;
+  padding-inline: 13px;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-input);
+  color: var(--text-1);
+  font-family: inherit;
+  font-size: 16px;
+  text-align: start;
+  transition: border-color .16s ease, box-shadow .16s ease;
+}
+.field input::placeholder { color: var(--text-3); }
+.field input:focus-visible {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px var(--teal-soft);
+}
+.field input[aria-invalid="true"] { border-color: var(--red); }
+.field-err:not([hidden]) {
+  display: block;
+  margin: 6px 0 0;
+  font-size: 13.5px;
+  color: var(--red);
+}
+
+.form-note { margin: 16px 0 0; font-size: 13px; color: var(--text-3); line-height: 1.6; }
+.form-status { margin: 14px 0 0; font-size: 14.5px; }
+.form-status.ok { color: var(--teal-ink); }
+.form-status.bad { color: var(--red); }
+
+.founder-link {
+  display: inline-block;
+  margin-block-start: 18px;
+  font-size: 14.5px;
+}
+
+/* ---------------- footer ---------------- */
+
+.foot {
+  border-block-start: 1px solid var(--border);
+  padding-block: 40px 56px;
+  background: var(--surface-2);
+}
+.foot-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px 32px;
+}
+.foot-mark { font-size: 18px; }
+.foot-links { display: flex; flex-wrap: wrap; gap: 22px; font-size: 14.5px; }
+.foot-links a { color: var(--text-2); }
+.foot-links a:hover { color: var(--text-1); }
+.foot-contact-l { color: var(--text-3); }
+.foot-lang { display: flex; align-items: center; gap: 10px; font-size: 14.5px; color: var(--text-3); }
+.foot-lang-current { color: var(--text-1); font-weight: 500; }
+.foot-copy { inline-size: 100%; margin: 0; font-size: 13.5px; color: var(--text-3); }
+
+/* ---------------- mobile sticky CTA ---------------- */
+
+.sticky-cta {
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: 60;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+  background: rgba(248,246,242,.94);
+  backdrop-filter: blur(10px);
+  border-block-start: 1px solid var(--border);
+  transform: translateY(100%);
+  transition: transform .28s ease;
+}
+.sticky-cta { display: none; }
+.sticky-cta.up { transform: none; }
+.sticky-cta a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 46px;
+  border-radius: var(--radius-pill);
+  background: var(--teal);
+  color: var(--teal-on);
+  font-weight: 600;
+  font-size: 16px;
+}
+.sticky-cta a:hover { text-decoration: none; }
+
+/* ---------------- conversation drawer · guided demo ----------------
+   A faithful recreation of the product's in-app accounting-conversation
+   drawer: 440px slide-over from the inline-end edge, 12px/18px header,
+   16px/18px body, 13px messages, 9px disclaimer. Logical properties only,
+   so the Arabic page mirrors the whole thing to the left edge.
+   -------------------------------------------------------------------- */
+
+.sr-only {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- launcher --- */
+
+.bot-launcher {
+  position: fixed;
+  z-index: 70;
+  inset-block-end: 22px;
+  inset-inline-end: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-inline-size: min(400px, calc(100vw - 44px));
+  padding-block: 10px;
+  padding-inline: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-lift);
+  color: var(--text-1);
+  font-family: inherit;
+  font-size: 14.5px;
+  text-align: start;
+  cursor: pointer;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.bot-launcher:hover { transform: translateY(-2px); }
+.bot-ico {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 34px; block-size: 34px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: var(--teal-on);
+  flex: none;
+}
+[dir="rtl"] .bot-ico svg { transform: scaleX(-1); }
+.bot-launcher-text { line-height: 1.35; }
+.bot-launcher-tag {
+  flex: none;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--teal-ink);
+  background: var(--teal-soft);
+  border-radius: var(--radius-pill);
+  padding-block: 3px;
+  padding-inline: 9px;
+  white-space: nowrap;
+}
+
+/* --- backdrop --- */
+
+.bot-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 75;
+  background: rgba(0,0,0,.35);
+}
+.bot-backdrop[hidden] { display: none; }
+
+/* --- drawer shell --- */
+
+.bot-drawer {
+  position: fixed;
+  z-index: 80;
+  inset-block: 0;
+  inset-inline-end: 0;
+  inline-size: 440px;
+  max-inline-size: calc(100vw - 32px);
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-inline-start: 1px solid var(--border);
+  box-shadow: var(--shadow-lift);
+  color: var(--text-1);
+}
+.bot-drawer[hidden] { display: none; }
+.bot-drawer.entering { animation: botEnter .2s ease-out both; }
+
+@keyframes botEnter {
+  from { opacity: 0; transform: translateX(calc(var(--dir) * 28px)); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* --- header --- */
+
+.bot-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-block-end: 1px solid var(--border);
+  flex: none;
+}
+.bot-head-text { flex: 1; min-inline-size: 0; display: grid; gap: 3px; }
+.bot-head-line { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+/* The drawer's identity is the wordmark and nothing else (round 7 §3): the
+   same Bebas Neue text as the nav, Latin and LTR-isolated on both pages,
+   exactly as the wordmark behaves everywhere else on the site. There is no
+   [dir=rtl] override any more — an Arabic-face override would make it a
+   different mark on the Arabic page. */
+.bot-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  color: var(--text-1);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.bot-status { font-size: 9px; font-weight: 600; color: var(--teal-ink); }
+.bot-badge {
+  justify-self: start;
+  max-inline-size: 100%;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--teal-ink);
+  background: var(--teal-soft);
+  border-radius: var(--radius-pill);
+  padding-block: 2px;
+  padding-inline: 8px;
+}
+.bot-head-acts { flex: none; display: flex; align-items: center; gap: 6px; }
+.bot-new {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-block-size: 28px;
+  padding-inline: 8px;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  color: var(--text-2);
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+.bot-new:hover { background: var(--surface-2); color: var(--text-1); }
+.bot-plus { font-size: 14px; line-height: 1; }
+.bot-close {
+  inline-size: 28px; block-size: 28px;
+  display: inline-grid; place-items: center;
+  background: none;
+  border: 0;
+  border-radius: 8px;
+  color: var(--text-3);
+  font-size: 13px;
+  cursor: pointer;
+}
+.bot-close:hover { background: var(--surface-2); color: var(--text-1); }
+
+/* --- transcript --- */
+
+.bot-body { flex: 1; overflow-y: auto; padding: 16px 18px; }
+
+.bot-empty { text-align: center; padding-block: 34px 16px; }
+.bot-empty[hidden] { display: none; }
+.bot-empty-title { margin: 0 0 4px; font-size: 16px; font-weight: 600; color: var(--text-1); }
+.bot-empty-sub { margin: 0 0 20px; font-size: 12px; line-height: 1.5; color: var(--text-3); }
+.bot-sugg-label {
+  margin: 0 0 8px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text-3);
+}
+[dir="rtl"] .bot-sugg-label { letter-spacing: 0; }
+
+/* Suggestions live in one place for the whole conversation: each is removed
+   as it is used, the block disappears when all three are gone, and
+   "New conversation" puts all three back. They are never cloned into the
+   transcript. */
+.bot-suggest { margin-block-start: 6px; }
+.bot-suggest[hidden] { display: none; }
+
+.bot-chips { display: flex; flex-direction: column; align-items: stretch; gap: 6px; }
+.bot-chip {
+  inline-size: 100%;
+  padding: 10px 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text-2);
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.45;
+  text-align: start;
+  cursor: pointer;
+  transition: border-color .16s ease, background-color .16s ease;
+}
+.bot-chip:hover { border-color: var(--teal); background: var(--teal-soft); color: var(--text-1); }
+/* disabled while an answer is being prepared — a disabled control is exempt
+   from WCAG 1.4.3, and the state is transient by construction */
+.bot-chip[disabled] { opacity: .55; cursor: not-allowed; }
+.bot-chip[disabled]:hover { border-color: var(--border); background: var(--surface-2); color: var(--text-2); }
+
+.bot-msg { display: flex; margin-block-end: 10px; }
+.bot-msg-user { justify-content: flex-end; }
+.bot-msg-assistant { justify-content: flex-start; }
+
+.bot-user {
+  max-inline-size: 80%;
+  padding: 10px 14px;
+  background: rgba(0,166,132,.10);
+  border: 1px solid rgba(0,166,132,.35);
+  border-radius: 12px;
+  border-end-end-radius: 4px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-1);
+  overflow-wrap: anywhere;
+}
+.bot-answer {
+  max-inline-size: 95%;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+.bot-thinking {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-block-end: 10px;
+  font-size: 11px;
+  color: var(--text-3);
+}
+.bot-spin {
+  inline-size: 12px; block-size: 12px;
+  border: 2px solid var(--border-strong);
+  border-block-start-color: var(--teal);
+  border-radius: 50%;
+  animation: botSpin .8s linear infinite;
+}
+@keyframes botSpin { to { transform: rotate(360deg); } }
+
+.bot-store { display: none; }
+
+/* --- input --- */
+
+.bot-input {
+  flex: none;
+  padding: 12px 18px 16px;
+  border-block-start: 1px solid var(--border);
+}
+.bot-input-row { display: flex; gap: 8px; align-items: flex-end; }
+.bot-text {
+  flex: 1;
+  min-inline-size: 0;
+  /* two lines: the round-7 placeholder ("This website demo answers the
+     suggested questions only.") wraps at this width, and a one-line box
+     clipped its second line */
+  min-block-size: 56px;
+  max-block-size: 100px;
+  padding: 10px 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text-1);
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.4;
+  resize: none;
+}
+.bot-text::placeholder { color: var(--text-3); }
+.bot-send {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  min-block-size: 40px;
+  padding-inline: 12px;
+  background: var(--teal);
+  color: var(--teal-on);
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.bot-send[disabled] { background: var(--surface-2); color: var(--text-3); cursor: not-allowed; }
+[dir="rtl"] .bot-send svg { transform: scaleX(-1); }
+
+.bot-disclaimer {
+  margin: 6px 0 0;
+  font-size: 9px;
+  line-height: 1.5;
+  color: var(--text-3);
+  text-align: center;
+}
+
+/* the drawer owns the screen while it is open */
+body.bot-open { overflow: hidden; }
+body.bot-open .sticky-cta,
+body.bot-open .bot-launcher { display: none; }
+
+/* ---------------- responsive ---------------- */
+
+@media (max-width: 1080px) {
+  .cohort-grid { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  .cards { grid-template-columns: minmax(0, 1fr); }
+  .band { padding: 44px 32px; }
+}
+
+@media (max-width: 899px) {
+  .nav-toggle { display: inline-flex; }
+  .nav-menu {
+    display: none;
+    position: absolute;
+    inset-block-start: 100%;
+    inset-inline: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: var(--surface);
+    border-block: 1px solid var(--border);
+    padding: 8px 24px 16px;
+    box-shadow: var(--shadow-card);
+  }
+  .nav-menu.open { display: flex; }
+  .nav-link, .nav-lang {
+    display: flex;
+    align-items: center;
+    min-block-size: 48px;
+    border: 0;
+    padding-inline: 0;
+    font-size: 17px;
+  }
+  .nav-lang { border-block-start: 1px solid var(--border); }
+  .nav-cta { display: none; }
+  .nav { position: sticky; }
+  .nav-inner { position: relative; }
+
+  /* With scripting off the burger cannot open anything, so below 900px the
+     menu is simply a stacked list under the wordmark and the toggle is not
+     offered at all. Without this the three section links and the language
+     switch are unreachable on a phone with JavaScript disabled — they are
+     plain <a> elements, but behind a disclosure only script can open.
+     Nothing here touches the scripted layout. */
+  html:not(.js) .nav-toggle { display: none; }
+  html:not(.js) .nav-inner { flex-wrap: wrap; }
+  html:not(.js) .nav-menu {
+    display: flex;
+    position: static;
+    /* The stacked list bleeds to the viewport edges and carries the SAME
+       24px of inner padding as the scripted panel above. It used to sit
+       inside the wrap with padding-inline: 0, and the language switch — a
+       full-width row whose divider is drawn by border-block-start on a
+       999px pill — then curved its rule down and off both edges of the
+       white box. The padding gives that curve room to close inside the box;
+       the negative margin is what keeps the links aligned with the wordmark
+       while it does. */
+    inline-size: calc(100% + 48px);
+    margin-inline: -24px;
+    padding-inline: 24px;
+    padding-block: 2px 10px;
+    border-block-end: 0;
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 719px) {
+  :root { --sec-pad: 64px; }
+  body { font-size: 16.5px; }
+  .hero { padding-block-start: 64px; padding-block-end: 72px; }
+  .hero-actions { gap: 18px; }
+  .band { padding: 34px 22px; border-radius: 18px; }
+  .apply-card { padding: 24px 20px; }
+  .foot-inner { gap: 14px 22px; }
+  main { padding-block-end: 84px; }
+
+  /* compact launcher pill: icon + the guided-demo tag stay visible */
+  .bot-launcher {
+    inset-block-end: calc(var(--sticky-h) + 12px);
+    inset-inline-end: 16px;
+    gap: 8px;
+    padding-block: 8px;
+    padding-inline: 10px;
+    max-inline-size: calc(100vw - 32px);
+  }
+  .bot-launcher-text { display: none; }
+  .bot-ico { inline-size: 30px; block-size: 30px; }
+
+  /* full-width drawer */
+  .bot-drawer {
+    inline-size: 100%;
+    max-inline-size: 100%;
+    border-inline-start: 0;
+  }
+
+  /* 44px touch targets */
+  .bot-close { inline-size: 44px; block-size: 44px; }
+  .bot-new { min-block-size: 44px; min-inline-size: 44px; }
+  .bot-chip { min-block-size: 44px; }
+  .bot-send { min-block-size: 44px; min-inline-size: 44px; }
+
+  .sticky-cta:not([hidden]) { display: block; }
+}
+
+@media (max-width: 400px) {
+  .bot-head { gap: 8px; }
+  .bot-new-label { display: none; }
+}
+
+/* ---------------- reduced motion ---------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+  html.js .reveal { opacity: 1; transform: none; }
+  .bot-drawer.entering { animation: none; }
+}
+
+/* FILM-CSS:START ─────────────────  OPENING FILM  ─────────────────────────
+   A fixed overlay above the fully rendered page, about 7.6 s long, with
+   genuine continuous motion from the first frame to the hand-off.
+
+   There is almost nothing to declare here. Layer A is a <canvas> the module
+   repaints on every animation frame; the statements, the wordmark and the
+   overlay's own dissolve are written as inline styles by the SAME rAF loop,
+   so no element carries a CSS transition or a CSS animation of its own and
+   nothing can be "switched" behind the loop's back. That is also why
+   document.getAnimations() is empty the moment the film is gone.
+
+   Every measurement is against the FIELD (container query units) and never
+   the viewport, so this same block drives the 16:10 frame on
+   docs/film-proof.html, which copies it verbatim. Logical properties
+   throughout: the Arabic page mirrors by construction.
+   -------------------------------------------------------------------- */
+
+:root {
+  --film-bg:       #F8F6F2;  /* warm white, the site --bg */
+  --film-ink:      #2A2E35;  /* charcoal, 11.9:1 on warm white */
+  --film-teal:     #00A684;  /* the teal current, and the wordmark's glow */
+  --film-teal-ink: #00795F;  /* teal used AS TEXT (4.7:1 on warm white) */
+}
+
+.film {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--film-bg);
+  overflow: hidden;
+}
+.film[hidden] { display: none; }
+
+/* the field is decorative and aria-hidden; the Skip button is its sibling */
+.film-field {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  container-name: film;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: var(--film-ink);
+}
+.film-field > * { grid-area: 1 / 1; }
+
+/* ---- layer A: the token field ----------------------------------------
+   Business words and KWD / د.ك amounts from the fixture vocabulary, drifting
+   in lanes at different speeds and sizes, crossing and overlapping. The teal
+   current, the ordering of the field into rows, its slow fade and the glow
+   the wordmark condenses out of are all painted here. Nothing about it is
+   declarative — see assets/site.js, FILM-MODULE. */
+.film-canvas {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  display: block;
+}
+
+/* ---- the three statements: ONE block, formed line by line ----
+   They are grid ROWS, not overlapping slides: line 1 forms, line 2 forms
+   beneath it, line 3 beneath that, and the three stand together as a block
+   before it condenses and dissolves. */
+.film-lines {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  row-gap: clamp(4px, 1.2cqh, 16px);
+  inline-size: min(94cqi, 1260px);
+  will-change: transform, opacity;
+}
+.film-line {
+  margin: 0;
+  text-align: center;
+  text-wrap: balance;
+  font-weight: 700;
+  font-size: clamp(24px, 4.1cqi, 58px);
+  letter-spacing: .01em;
+  line-height: 1.1;
+  opacity: 0;
+  will-change: transform, opacity, filter;
+}
+[dir="rtl"] .film-line {
+  font-family: var(--font-ar);
+  letter-spacing: 0;
+  line-height: 1.4;
+}
+.film-teal { color: var(--film-teal-ink); }
+
+/* ---- the wordmark: the film's only mark ----
+   Bebas Neue, exactly as the nav writes it. There is no square "H", no
+   icon and no rule: the founder's direction of 2026-09-03 is that the
+   wordmark IS the identity. It forms at the centre out of the teal current
+   and then FLIPs into the nav's own wordmark position. */
+.film-mark {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.film-mark-word {
+  font-family: var(--font-display);
+  font-size: clamp(34px, 5.2cqi, 66px);
+  letter-spacing: .04em;
+  line-height: 1;
+  color: var(--film-ink);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* ---- Skip: outside the aria-hidden field, visible from frame one ---- */
+
+.film-skip {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: 16px;
+  inset-inline-end: 16px;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 44px;
+  padding-inline: 20px;
+  border: 1px solid rgba(42,46,53,.24);
+  border-radius: var(--radius-pill);
+  background: rgba(255,255,255,.76);
+  color: var(--film-ink);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.film-skip:hover { background: #fff; }
+
+/* ---- reduced motion: there is no film at all ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  .film { display: none !important; }
+}
+/* FILM-CSS:END */
+
+/* ---- the film owns the screen while it runs, and the two floating
+        controls do not exist until it has handed off ---- */
+
+body.film-playing {
+  overflow: hidden;
+  /* and the lock is armed for ten seconds, not for ever (round 8). The class
+     is removed by teardown() on every healthy path; if script is gone the
+     browser's own animation clock releases the scroll here, because a page
+     that cannot scroll is as broken as a page that cannot be read. */
+  animation: filmLockRelease 10s step-end forwards;
+}
+@keyframes filmLockRelease {
+  from { overflow: hidden; }
+  to   { overflow: visible; }
+}
+
+/* ---- CSS-ONLY FAILSAFE (round 7 §8, completed in round 8) -------------
+   If the script dies mid-film the overlay must not sit on top of a working
+   page for ever. This runs on the element itself, needs no JavaScript at
+   all, and takes the overlay out of sight and out of the hit-test at ten
+   seconds — nearly three seconds after the longest legitimate run.
+
+   Round 8: hiding the overlay was never enough on its own. The other two
+   things the visitor is left with are handled beside the declarations that
+   cause them — the reveal hiding disarms itself (html.js .reveal above) and
+   the scroll lock releases itself (immediately above). The one thing CSS
+   cannot put back is the `inert` attribute, so site.js no longer applies it
+   until the loop has proven itself, and listens for this animation's
+   `animationend` — an event the browser dispatches from the same animation
+   clock, with no rAF callback and no timer involved — to remove it.
+
+   It is deliberately NOT inside FILM-CSS:START/END: docs/film-proof.html
+   copies that region verbatim and replays the film on a button press
+   minutes after load, where a ten-second self-destruct would be a bug.
+
+   An element that is display:none generates no box, so this does not start
+   ticking while .film is still [hidden] before the module shows it. */
+.film { animation: filmFailsafe 10s step-end forwards; }
+@keyframes filmFailsafe {
+  from { visibility: visible; pointer-events: auto; }
+  to   { visibility: hidden; pointer-events: none; }
+}
+
+.bot-launcher {
+  opacity: 0;
+  visibility: hidden;
+  transition: transform .18s ease, box-shadow .18s ease, opacity .3s ease;
+}
+body.launcher-ready .bot-launcher { opacity: 1; visibility: visible; }

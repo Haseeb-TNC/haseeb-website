@@ -1,0 +1,178 @@
+{
+  "html": {
+    "lang": "en",
+    "dir": "ltr",
+    "canonical": "https://haseeb.app/",
+    "altLang": "ar",
+    "altHref": "https://haseeb.app/ar",
+    "legalBackHref": "haseeb.html"
+  },
+  "brand": {
+    "wordmark": "HASEEB.",
+    "name": "Haseeb"
+  },
+  "meta": {
+    "title": "Haseeb — Accounting software that understands your business.",
+    "description": "Haseeb is built for Kuwaiti businesses. It prepares the accounting, asks when something is missing, and answers your questions in plain language. Founding cohort now forming."
+  },
+  "nav": {
+    "how": "How it works",
+    "kuwait": "Kuwait",
+    "cohort": "Founding cohort",
+    "lang": "العربية",
+    "langAria": "Switch to Arabic",
+    "cta": "Join the founding cohort",
+    "menu": "Menu",
+    "aria": "Main navigation"
+  },
+  "hero": {
+    "h1": "Get ahead with accounting software that understands your business.",
+    "support": "Haseeb is built for Kuwaiti businesses.",
+    "cta": "Join the founding cohort",
+    "secondary": "See how it works",
+    "fact": "Founding cohort · 8–12 Kuwaiti businesses · Supervised from day one"
+  },
+  "how": {
+    "h2": "Haseeb prepares the work. You approve it.",
+    "intro": "Haseeb reads your bank transactions, prepares the accounting, and separates what is clear from what needs your attention.",
+    "prepares": {
+      "label": "Prepares",
+      "status": "Ready to approve",
+      "body": "When the information is clear, Haseeb prepares the entry. You approve it, one by one or as a batch.",
+      "rowLabel": "ZAIN TELECOM",
+      "rowCategory": "Telecommunications",
+      "rowAmount": "−{row1Amount} KWD · {row1Date}"
+    },
+    "asks": {
+      "label": "Asks",
+      "status": "Needs an answer",
+      "body": "When something is missing, Haseeb asks you one question. Answer it and the entry is ready.",
+      "rowLabel": "Transfer",
+      "rowQuestion": "What was this payment for?",
+      "rowAmount": "−{row2Amount} KWD · {row2Date}"
+    },
+    "holds": {
+      "label": "Holds",
+      "status": "Held for review",
+      "body": "When there is not enough information, Haseeb stops. Nothing is posted until you or your accountant decide.",
+      "rowLabel": "Supplier invoice",
+      "rowNote": "Document missing",
+      "rowAmount": "−{row3Amount} KWD · {row3Date}"
+    },
+    "close": "You stay in control of what gets approved."
+  },
+  "ask": {
+    "eyebrow": "Plain-language questions",
+    "h2": "Ask your books a question, in plain language.",
+    "body": "Ask which customers still owe you, or how much cash you have today, and get an answer in plain language.",
+    "cta": "Try the guided demo"
+  },
+  "kuwait": {
+    "eyebrow": "Built for here",
+    "h2": "It doesn't just work in Kuwait. It understands Kuwait.",
+    "body": "Kuwaiti merchants. Supported local bank-statement formats. Kuwaiti business and reporting requirements.",
+    "chips": [
+      "KNET settlements",
+      "Local statement formats",
+      "Kuwaiti merchants"
+    ]
+  },
+  "cohort": {
+    "eyebrow": "Founding cohort",
+    "h2": "Be one of the first businesses in Kuwait to use Haseeb.",
+    "body": "We are selecting 8–12 Kuwaiti service businesses for Haseeb's founding cohort.",
+    "bullets": [
+      "Close onboarding",
+      "Direct access to the founding team",
+      "A carefully supervised start"
+    ]
+  },
+  "form": {
+    "h3": "Apply for a founding place",
+    "intro": "Every application is reviewed personally. No financial information is required to apply.",
+    "name": "Name",
+    "phone": "Phone number",
+    "email": "Email",
+    "namePh": "Your name",
+    "phonePh": "+965 …",
+    "emailPh": "you@company.com",
+    "submit": "Send your application",
+    "errName": "Please add your name.",
+    "errPhone": "Please add your phone number.",
+    "errEmail": "Please add a valid email address.",
+    "errSummary": "Please complete the highlighted fields.",
+    "note": "This opens your email app with a pre-filled message to founder@haseeb.app. Nothing is sent until you press send there, and nothing is stored on this site. Please don't include financial statements or bank details; we'll never ask for them in this form.",
+    "success": "Your email app should now be open with your application to founder@haseeb.app. Press send there to submit it. If nothing opened, email founder@haseeb.app directly.",
+    "founderLink": "Speak with the founder",
+    "founderSubject": "Haseeb — Conversation with the Founder",
+    "mailSubject": "Haseeb Founding Cohort Application — {name}",
+    "mailHeading": "Haseeb Founding Cohort Application",
+    "mailtoTrailer": "— sent from the founding-cohort form on haseeb.app"
+  },
+  "footer": {
+    "terms": "Website Terms",
+    "privacy": "Privacy Policy",
+    "contact": "info@haseeb.app",
+    "contactLabel": "General enquiries",
+    "copyright": "© 2026 Haseeb. All rights reserved.",
+    "lang": "العربية",
+    "langCurrent": "English"
+  },
+  "sticky": {
+    "cta": "Join the cohort →"
+  },
+  "bot": {
+    "launcher": "Talk to Haseeb like you talk to your accountant.",
+    "launcherTag": "Guided demo",
+    "launcherAria": "Open the guided demo",
+    "title": "HASEEB.",
+    "status": "Ready to help",
+    "badge": "Guided demo · sample data",
+    "newConversation": "New conversation",
+    "close": "Close",
+    "emptyTitle": "Ask about your books",
+    "emptySub": "I can help you understand your financials, spot issues, and answer questions about your books.",
+    "suggestedLabel": "SUGGESTED QUESTIONS",
+    "q1": "Which unpaid invoices need my attention?",
+    "a1": "{customerCount} customers have unpaid invoices totalling {openTotal} KWD. The largest open invoice is {largestInvoiceNo} from {largestCustomer}, {largestAmount} KWD.",
+    "q2": "How much cash do we have right now?",
+    "a2": "{cash} KWD available across {accountCount} bank accounts, as of {asOfDate}.",
+    "q3": "What were our revenue, expenses and net income this month?",
+    "a3": "{month}: revenue {revenue} KWD, operating expenses {opex} KWD, net income {net} KWD. Compared with {prevMonth}: revenue {revenueChangePct}, operating expenses {opexChangePct}, net income {netChangeAbs} KWD {netChangeDir}.",
+    "thinking": "Thinking...",
+    "demoBoundary": "This is a guided demonstration on sample figures, so I can only answer the suggested questions here. In the product, answers come from your own books.",
+    "inputLabel": "Ask a question",
+    "placeholder": "This website demo answers the suggested questions only.",
+    "send": "Send",
+    "disclaimer": "Guided demo on sample data. Answers in the product come from your own books."
+  },
+  "film": {
+    "line1": "YOU RUN THE BUSINESS.",
+    "line2": "HASEEB PREPARES THE ACCOUNTING.",
+    "line3": "YOU STAY IN CONTROL.",
+    "skip": "Skip",
+    "skipAria": "Skip the opening",
+    "tokens": [
+      "Sale",
+      "Invoice #1042",
+      "Payment",
+      "Expense",
+      "Supplier",
+      "Customer",
+      "Rent",
+      "Salaries",
+      "KNET",
+      "Delivery",
+      "Receipt",
+      "Bank transfer",
+      "{row1Amount} KWD",
+      "{row2Amount} KWD",
+      "{row3Amount} KWD",
+      "{largestAmount} KWD",
+      "{openTotal} KWD",
+      "فاتورة",
+      "مورّد",
+      "د.ك {row1Amount}"
+    ]
+  }
+}

@@ -1,0 +1,1176 @@
+<title>Arabic Copy Context — HASEEB-4113</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F8F6F2; --surface:#fff; --ink:#2A2E35; --ink-2:#5A6270; --ink-3:#8A93A0;
+  --line:#E3DFD7; --line-2:#CFC9BE; --teal:#00A684; --teal-ink:#00795F; --teal-soft:#E3F5F0;
+  --amber:#8A5A00; --amber-soft:#FBF0DA;
+  --font:'DM Sans',system-ui,-apple-system,Segoe UI,sans-serif;
+  --font-ar:'Noto Sans Arabic','DM Sans',system-ui,sans-serif;
+  --mono:'DM Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:14px;line-height:1.5}
+.wrap{max-width:1680px;margin:0 auto;padding:32px 24px 96px}
+h1{font-size:30px;line-height:1.15;margin:0 0 6px;letter-spacing:-.01em}
+.sub{color:var(--ink-2);margin:0 0 26px;font-size:15px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:18px}
+.panel h2{font-size:13px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);margin:0 0 12px;font-weight:500}
+.brief{font-size:17px;line-height:1.55;border-inline-start:3px solid var(--teal);padding-inline-start:16px;margin:0;color:var(--ink)}
+.brief .src{display:block;margin-top:8px;font-size:12.5px;color:var(--ink-3);border:0;padding:0}
+.counts{display:flex;flex-wrap:wrap;gap:10px;margin:0}
+.count{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:110px}
+.count b{display:block;font-size:24px;line-height:1.1;font-variant-numeric:tabular-nums}
+.count span{font-size:12px;color:var(--ink-2)}
+.count.warn{background:var(--amber-soft);border-color:#E8D3A8}
+.count.warn b{color:var(--amber)}
+ul.legend{margin:0;padding-inline-start:18px;color:var(--ink-2)}
+ul.legend li{margin-bottom:6px}
+ul.legend b{color:var(--ink)}
+table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+thead th{position:sticky;top:0;z-index:2;background:#EFEBE4;border-bottom:1px solid var(--line-2);
+  text-align:start;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-2);padding:11px 12px;font-weight:500}
+tbody td{border-bottom:1px solid var(--line);padding:14px 12px;vertical-align:top}
+tr.sec th{background:var(--teal-soft);color:var(--teal-ink);text-align:start;padding:9px 12px;
+  font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;font-weight:700;border-bottom:1px solid var(--line-2)}
+td.key{width:12%;min-width:150px}
+td.key code{font-family:var(--mono);font-size:12px;color:var(--ink);word-break:break-word;display:block}
+td.en{width:17%;min-width:180px;color:var(--ink)}
+td.arcell{width:17%;min-width:190px}
+td.loc{width:16%;min-width:170px;color:var(--ink-2);font-size:13px}
+td.shot{width:20%;min-width:240px}
+td.len{width:18%;min-width:200px;color:var(--ink-2);font-size:12.5px}
+.ar{font-family:var(--font-ar);font-size:15.5px;line-height:1.85;text-align:start}
+.await{background:var(--amber-soft);border:1px solid #E8D3A8;color:var(--amber);border-radius:8px;padding:7px 10px;font-size:12.5px;font-weight:500}
+.ar-shown{margin-top:8px;font-size:12.5px;color:var(--ink-2)}
+.ar-shown .lbl{display:block;color:var(--ink-3);font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+.ar-shown .en{color:var(--ink)}
+.badge{display:inline-block;margin-top:7px;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;
+  border-radius:999px;padding:3px 8px;font-weight:500;white-space:nowrap}
+.b-await{background:var(--amber-soft);color:var(--amber);border:1px solid #E8D3A8}
+.b-same{background:#ECEFF3;color:var(--ink-2);border:1px solid #DCE1E8}
+.why{margin-top:7px;font-size:12px;color:var(--ink-3);line-height:1.5}
+.chars{margin-top:7px;font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+td.shot img{display:block;width:100%;max-width:460px;height:auto;border:1px solid var(--line-2);border-radius:8px;background:#fff}
+td.shot .fn{margin-top:6px;font-family:var(--mono);font-size:10.5px;color:var(--ink-3);word-break:break-all}
+.noshot{color:var(--ink-3);font-style:italic;font-size:12.5px}
+code{font-family:var(--mono);font-size:11.5px;background:#F1EEE8;border-radius:4px;padding:1px 4px}
+td.len b{color:var(--ink);font-weight:500}
+.foot{margin-top:26px;color:var(--ink-3);font-size:12.5px}
+@media (max-width:1100px){
+  thead{display:none}
+  table,tbody,tr,td{display:block;width:auto}
+  tbody tr{border-bottom:2px solid var(--line-2);padding:6px 0}
+  tbody td{border-bottom:1px solid var(--line);padding:10px 14px}
+  tr.sec th{display:block}
+}
+</style>
+
+<div class="wrap">
+<h1>Arabic copy context — the Haseeb public website</h1>
+<p class="sub">HASEEB-4113, round 7, founder requirement §7. One row per Arabic string: what it says in English, what it says today in Arabic, exactly where it appears on <code>/ar</code>, a picture of that spot with the string outlined in teal, and how much room it actually has.</p>
+
+<div class="panel">
+  <h2>Register brief — from the founder, verbatim</h2>
+  <p class="brief">“natural Kuwaiti commercial language — not literal translation and not forced slang; reviewed separately by the founder and partnership lead.”
+  <span class="src">Nothing in this table is an approved translation. It is the current state of <code>src/copy/ar.json</code>, laid out so it can be reviewed line by line.</span></p>
+</div>
+
+<div class="panel">
+  <h2>Counts</h2>
+  <div class="counts">
+    <div class="count"><b>129</b><span>Arabic strings in scope<br>(every key in <code>ar.json</code> except <code>html.*</code>)</span></div>
+    <div class="count warn"><b>8</b><span>awaiting Kuwaiti copy review<br>(still showing English on <code>/ar</code>)</span></div>
+    <div class="count"><b>6</b><span>identical to English by design<br>(wordmark, addresses, a merchant name)</span></div>
+    <div class="count"><b>115</b><span>Arabic drafted<br>(needs a register pass)</span></div>
+    <div class="count"><b>106</b><span>screenshots</span></div>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>Legend</h2>
+  <ul class="legend">
+    <li><b>Key</b> — the path in <code>src/copy/ar.json</code>. Array items are shown as <code>name[0]</code>, <code>name[1]</code> …</li>
+    <li><b>English source</b> — the same key in <code>en.json</code>, with every <code>{placeholder}</code> replaced by the value the build actually renders from <code>src/fixture/sample-company.json</code>. The copy files never contain a figure.</li>
+    <li><b>Current Arabic</b> — exactly what <code>ar.json</code> holds today. <span class="badge b-await">awaiting review</span> marks the 8 strings round 7 deliberately left in English (founder §3 and §5: no new Arabic was authored this round); the Arabic page shows the English sentence, printed underneath. <span class="badge b-same">same as EN — by design</span> marks the 6 strings that are identical because there is nothing to translate — a Latin wordmark, a mailbox address, a merchant name as it prints on a statement.</li>
+    <li><b>Where it appears</b> — page, section, element and, where it matters, the state and the moment in time.</li>
+    <li><b>Screenshot</b> — a crop of the live Arabic page at <code>localhost:4113/ar</code> with that string's own element outlined in a 2 px teal box. One image per string, so the outline always points at the string in its row; click it for the full-size PNG. Desktop crops are 1440 px wide; the phone-only rows (the burger label, the sticky bar) are 390 px. The opening film was frozen with its own clock and captured at 1.2 s (the drifting field) and 5.4 s (the three-line block).</li>
+    <li><b>Length limitation</b> — measured in the browser, not estimated: the element's available content width at 1440 and 390, how many lines the current text takes, and any hard single-line constraint.</li>
+  </ul>
+</div>
+
+<div class="panel">
+  <h2>Before reading the rows</h2>
+  <ul class="legend">
+    <li><b>Growth is mostly free, height is not.</b> Almost every element here wraps. The ones that cannot are the three status pills, the amount cells, the launcher's teal tag and the two form inputs — those are called out in the last column. Everywhere else, a longer Arabic line pushes the block taller rather than clipping.</li>
+    <li><b>The film's word list is sampled, and the sample is fixed.</b> The 34 tokens on a 1440 field are drawn from the 19-entry vocabulary by a seeded generator, so the same entries appear on every run. Five of the nineteen — <span dir="rtl" lang="ar" style="font-family:var(--font-ar)">سداد · توصيل · إيصال · تحويل بنكي</span> and <code>Invoice</code> — are never drawn at 1440. They are still worth reviewing (the sample changes the moment the vocabulary does), but they are not on screen today.</li>
+    <li><b>Two full film frames</b>, for the moments the crops are cut from: <a href="screenshots/HASEEB-4113/ar-context/film-field--tokens.png">the drifting field at 1.2 s</a> and <a href="screenshots/HASEEB-4113/ar-context/film-statements--block.png">the three-line block at 5.4 s</a>.</li>
+    <li><b>The Arabic film vocabulary is one entry shorter than the English.</b> <code>ar.json</code> has 19 tokens, <code>en.json</code> has 20; the English list ends with an Arabic garnish token (<code>د.ك {row1Amount}</code>) that the Arabic list does not mirror. Nothing breaks — the build only needs at least one word and one amount — but the two lists are not a key-for-key pair.</li>
+  </ul>
+</div>
+
+<table>
+<thead><tr>
+<th>Key</th><th>English source</th><th>Current Arabic</th><th>Where it appears</th><th>Screenshot (Arabic page)</th><th>Length limitation (measured)</th>
+</tr></thead>
+<tbody>
+<tr class="sec"><th colspan="6">brand — the wordmark and the brand word</th></tr>
+<tr id="k-brand.wordmark">
+  <td class="key"><code>brand.wordmark</code><span class="badge b-same">same as EN — by design</span></td>
+  <td class="en" dir="ltr">HASEEB.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">HASEEB.</div><div class="why">Latin wordmark — the identity is the same mark in both languages.</div><div class="chars">7 characters</div></td>
+  <td class="loc">Nav bar, top-inline-start — the wordmark link (also repeated in the footer, and as the mark the opening film ends on). Latin letterforms (Bebas Neue), never mirrored.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/nav--brand.wordmark.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/nav--brand.wordmark.png" alt="Arabic page, brand.wordmark"></a><div class="fn">nav--brand.wordmark.png</div></td>
+  <td class="len"><b>1440 px:</b> 61 px wide inside a 1072 px container — it grows with the text; text runs 61 px on 1 line · 22px.<br><b>390 px:</b> 61 px wide inside a 342 px container — it grows with the text; text runs 61 px on 1 line · 22px.</td>
+</tr>
+<tr id="k-brand.name">
+  <td class="key"><code>brand.name</code></td>
+  <td class="en" dir="ltr">Haseeb</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">حسيب</div><div class="chars">4 characters</div></td>
+  <td class="loc">Film, statement 2 — the one word set in teal ink. Build-time only: renderFilmLine2() finds this word inside film.line2 and wraps it; it renders nowhere else on the page.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-statements--brand.name.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-statements--brand.name.png" alt="Arabic page, brand.name"></a><div class="fn">film-statements--brand.name.png</div></td>
+  <td class="len"><b>1440 px:</b> 186 px wide inside a 578 px container — it grows with the text; text runs 186 px on 1 line · 58px.<br><b>390 px:</b> 77 px wide inside a 239 px container — it grows with the text; text runs 77 px on 1 line · 24px.</td>
+</tr>
+<tr class="sec"><th colspan="6">meta — tab title and search snippet</th></tr>
+<tr id="k-meta.title">
+  <td class="key"><code>meta.title</code></td>
+  <td class="en" dir="ltr">Haseeb — Accounting software that understands your business.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">حسيب — برنامج محاسبة يفهم عملك.</div><div class="chars">31 characters</div></td>
+  <td class="loc">Meta: browser tab / search snippet / og:title — no on-page location.</td>
+  <td class="shot"><div class="noshot">no on-page location — nothing to show</div></td>
+  <td class="len"><span class="noshot">not rendered — no width to measure</span></td>
+</tr>
+<tr id="k-meta.description">
+  <td class="key"><code>meta.description</code></td>
+  <td class="en" dir="ltr">Haseeb is built for Kuwaiti businesses. It prepares the accounting, asks when something is missing, and answers your questions in plain language. Founding cohort now forming.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">حسيب مصمّم للأعمال الكويتية. يجهّز لك المحاسبة، ويسألك عندما تنقص معلومة، ويجيب عن أسئلتك بلغة بسيطة. الدفعة التأسيسية قيد التشكيل.</div><div class="chars">131 characters</div></td>
+  <td class="loc">Meta: search snippet / og:description — no on-page location.</td>
+  <td class="shot"><div class="noshot">no on-page location — nothing to show</div></td>
+  <td class="len"><span class="noshot">not rendered — no width to measure</span></td>
+</tr>
+<tr class="sec"><th colspan="6">nav — the top bar and the phone menu</th></tr>
+<tr id="k-nav.how">
+  <td class="key"><code>nav.how</code></td>
+  <td class="en" dir="ltr">How it works</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">كيف يعمل</div><div class="chars">8 characters</div></td>
+  <td class="loc">Nav bar, link 1 of 3 (1440). At ≤899 px it is row 1 of the drop-down menu.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/nav--nav.how.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/nav--nav.how.png" alt="Arabic page, nav.how"></a><div class="fn">nav--nav.how.png</div></td>
+  <td class="len"><b>1440 px:</b> 66 px wide inside a 618 px container — it grows with the text; text runs 66 px on 1 line · 15.5px.<br><b>390 px:</b> not rendered (<code>hidden</code>).<br><b>390 px, menu open:</b> 342 px available, 1 line.</td>
+</tr>
+<tr id="k-nav.kuwait">
+  <td class="key"><code>nav.kuwait</code></td>
+  <td class="en" dir="ltr">Kuwait</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">الكويت</div><div class="chars">6 characters</div></td>
+  <td class="loc">Nav bar, link 2 of 3 (1440). At ≤899 px it is row 2 of the drop-down menu.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/nav--nav.kuwait.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/nav--nav.kuwait.png" alt="Arabic page, nav.kuwait"></a><div class="fn">nav--nav.kuwait.png</div></td>
+  <td class="len"><b>1440 px:</b> 45 px wide inside a 618 px container — it grows with the text; text runs 45 px on 1 line · 15.5px.<br><b>390 px:</b> not rendered (<code>hidden</code>).<br><b>390 px, menu open:</b> 342 px available, 1 line.</td>
+</tr>
+<tr id="k-nav.cohort">
+  <td class="key"><code>nav.cohort</code></td>
+  <td class="en" dir="ltr">Founding cohort</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">الدفعة التأسيسية</div><div class="chars">16 characters</div></td>
+  <td class="loc">Nav bar, link 3 of 3 (1440). At ≤899 px it is row 3 of the drop-down menu.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/nav--nav.cohort.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/nav--nav.cohort.png" alt="Arabic page, nav.cohort"></a><div class="fn">nav--nav.cohort.png</div></td>
+  <td class="len"><b>1440 px:</b> 105 px wide inside a 618 px container — it grows with the text; text runs 105 px on 1 line · 15.5px.<br><b>390 px:</b> not rendered (<code>hidden</code>).<br><b>390 px, menu open:</b> 342 px available, 1 line.</td>
+</tr>
+<tr id="k-nav.lang">
+  <td class="key"><code>nav.lang</code></td>
+  <td class="en" dir="ltr">العربية</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">English</div><div class="chars">7 characters</div></td>
+  <td class="loc">Nav bar, language switch — on the Arabic page it reads "English" and points at "/". Last row of the drop-down menu at ≤899 px.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/nav--nav.lang.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/nav--nav.lang.png" alt="Arabic page, nav.lang"></a><div class="fn">nav--nav.lang.png</div></td>
+  <td class="len"><b>1440 px:</b> 52 px wide inside a 618 px container — it grows with the text; text runs 52 px on 1 line · 15px.<br><b>390 px:</b> not rendered (<code>hidden</code>).<br><b>390 px, menu open:</b> 342 px available, 1 line.</td>
+</tr>
+<tr id="k-nav.langAria">
+  <td class="key"><code>nav.langAria</code></td>
+  <td class="en" dir="ltr">Switch to Arabic</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">التبديل إلى الإنجليزية</div><div class="chars">22 characters</div></td>
+  <td class="loc">Not visible. aria-label on the nav language switch (and on the footer one) — screen-reader text only.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/nav--nav.langAria.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/nav--nav.langAria.png" alt="Arabic page, nav.langAria"></a><div class="fn">nav--nav.langAria.png</div></td>
+  <td class="len"><b>No visual limit.</b> Never painted — it is the accessible name of the language-switch links, announced in full by a screen reader however long it is. The only cost of length is how long it takes to speak, so keep it to a short phrase.</td>
+</tr>
+<tr id="k-nav.cta">
+  <td class="key"><code>nav.cta</code></td>
+  <td class="en" dir="ltr">Join the founding cohort</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">انضم إلى الدفعة التأسيسية</div><div class="chars">25 characters</div></td>
+  <td class="loc">Nav bar, the filled button at the inline-end. display:none at ≤899 px — the sticky bar carries the call to action on a phone.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/nav--nav.cta.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/nav--nav.cta.png" alt="Arabic page, nav.cta"></a><div class="fn">nav--nav.cta.png</div></td>
+  <td class="len"><b>1440 px:</b> 175 px wide inside a 618 px container — it grows with the text; text runs 175 px on 1 line · 16px.<br><b>390 px:</b> not rendered (<code>display:none</code>).<br>CSS <code>display:none</code> at ≤899 px — the sticky bar carries the action on a phone.</td>
+</tr>
+<tr id="k-nav.menu">
+  <td class="key"><code>nav.menu</code></td>
+  <td class="en" dir="ltr">Menu</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">القائمة</div><div class="chars">7 characters</div></td>
+  <td class="loc">Burger toggle label, ≤899 px only (not rendered at 1440).</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/nav-390--nav.menu.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/nav-390--nav.menu.png" alt="Arabic page, nav.menu"></a><div class="fn">nav-390--nav.menu.png</div></td>
+  <td class="len"><b>1440 px:</b> not rendered (<code>hidden</code>).<br><b>390 px:</b> 39 px wide inside a 65 px container — it grows with the text; text runs 39 px on 1 line · 15px.<br>Rendered at ≤899 px only (the burger); no box at all at 1440.</td>
+</tr>
+<tr id="k-nav.aria">
+  <td class="key"><code>nav.aria</code></td>
+  <td class="en" dir="ltr">Main navigation</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">التنقل الرئيسي</div><div class="chars">14 characters</div></td>
+  <td class="loc">Not visible. aria-label on the <nav> landmark — screen-reader / landmark list only.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/nav--nav.aria.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/nav--nav.aria.png" alt="Arabic page, nav.aria"></a><div class="fn">nav--nav.aria.png</div></td>
+  <td class="len"><b>No visual limit.</b> Never painted — it is the accessible name of the <code>&lt;nav&gt;</code> landmark, announced in full by a screen reader however long it is. The only cost of length is how long it takes to speak, so keep it to a short phrase.</td>
+</tr>
+<tr class="sec"><th colspan="6">hero — the first screen</th></tr>
+<tr id="k-hero.h1">
+  <td class="key"><code>hero.h1</code></td>
+  <td class="en" dir="ltr">Get ahead with accounting software that understands your business.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">كن في المقدّمة مع برنامج محاسبة يفهم عملك.</div><div class="chars">42 characters</div></td>
+  <td class="loc">Hero, the page H1 — first thing under the nav after the film hands off.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/hero--hero.h1.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/hero--hero.h1.png" alt="Arabic page, hero.h1"></a><div class="fn">hero--hero.h1.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 772 px column; text runs 631 px on 2 lines · 60px.<br><b>390 px:</b> fills its 342 px column; text runs 303 px on 3 lines · 36px.</td>
+</tr>
+<tr id="k-hero.support">
+  <td class="key"><code>hero.support</code></td>
+  <td class="en" dir="ltr">Haseeb is built for Kuwaiti businesses.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">حسيب مصمّم للأعمال الكويتية.</div><div class="chars">28 characters</div></td>
+  <td class="loc">Hero, the supporting line directly under the H1.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/hero--hero.support.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/hero--hero.support.png" alt="Arabic page, hero.support"></a><div class="fn">hero--hero.support.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 772 px column; text runs 244 px on 1 line · 19px.<br><b>390 px:</b> fills its 342 px column; text runs 244 px on 1 line · 19px.</td>
+</tr>
+<tr id="k-hero.cta">
+  <td class="key"><code>hero.cta</code></td>
+  <td class="en" dir="ltr">Join the founding cohort</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">انضم إلى الدفعة التأسيسية</div><div class="chars">25 characters</div></td>
+  <td class="loc">Hero, the primary filled button.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/hero--hero.cta.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/hero--hero.cta.png" alt="Arabic page, hero.cta"></a><div class="fn">hero--hero.cta.png</div></td>
+  <td class="len"><b>1440 px:</b> 186 px wide inside a 772 px container — it grows with the text; text runs 186 px on 1 line · 17px.<br><b>390 px:</b> 186 px wide inside a 342 px container — it grows with the text; text runs 186 px on 1 line · 17px.</td>
+</tr>
+<tr id="k-hero.secondary">
+  <td class="key"><code>hero.secondary</code></td>
+  <td class="en" dir="ltr">See how it works</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">شاهد كيف يعمل</div><div class="chars">13 characters</div></td>
+  <td class="loc">Hero, the text link beside the button (carries a → arrow that mirrors in RTL).</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/hero--hero.secondary.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/hero--hero.secondary.png" alt="Arabic page, hero.secondary"></a><div class="fn">hero--hero.secondary.png</div></td>
+  <td class="len"><b>1440 px:</b> 133 px wide inside a 772 px container — it grows with the text; text runs 110 px on 1 line · 16px.<br><b>390 px:</b> 133 px wide inside a 342 px container — it grows with the text; text runs 110 px on 1 line · 16px.</td>
+</tr>
+<tr id="k-hero.fact">
+  <td class="key"><code>hero.fact</code></td>
+  <td class="en" dir="ltr">Founding cohort · 8–12 Kuwaiti businesses · Supervised from day one</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">الدفعة التأسيسية · 8–12 شركة كويتية · بإشراف منذ اليوم الأول</div><div class="chars">60 characters</div></td>
+  <td class="loc">Hero, the small dotted fact line under the actions.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/hero--hero.fact.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/hero--hero.fact.png" alt="Arabic page, hero.fact"></a><div class="fn">hero--hero.fact.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 772 px column; text runs 205 px on 1 line · 14px.<br><b>390 px:</b> fills its 342 px column; text runs 174 px on 2 lines · 14px.</td>
+</tr>
+<tr class="sec"><th colspan="6">how — “Haseeb prepares the work. You approve it.”</th></tr>
+<tr id="k-how.h2">
+  <td class="key"><code>how.h2</code></td>
+  <td class="en" dir="ltr">Haseeb prepares the work. You approve it.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">حسيب يجهّز العمل، وأنت تعتمده.</div><div class="chars">30 characters</div></td>
+  <td class="loc">Section 2 "how it works", section heading.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/how--how.h2.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/how--how.h2.png" alt="Arabic page, how.h2"></a><div class="fn">how--how.h2.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 720 px column; text runs 568 px on 1 line · 40px.<br><b>390 px:</b> fills its 342 px column; text runs 302 px on 2 lines · 28px.</td>
+</tr>
+<tr id="k-how.intro">
+  <td class="key"><code>how.intro</code></td>
+  <td class="en" dir="ltr">Haseeb reads your bank transactions, prepares the accounting, and separates what is clear from what needs your attention.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">يقرأ حسيب معاملاتك البنكية، ويجهّز لك المحاسبة، ويفصل ما هو واضح عمّا يحتاج إلى انتباهك.</div><div class="chars">88 characters</div></td>
+  <td class="loc">Section 2, the lede paragraph under the heading.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/how--how.intro.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/how--how.intro.png" alt="Arabic page, how.intro"></a><div class="fn">how--how.intro.png</div></td>
+  <td class="len"><b>1440 px:</b> 638 px wide inside a 720 px container — it grows with the text; text runs 603 px on 2 lines · 18px.<br><b>390 px:</b> fills its 342 px column; text runs 317 px on 3 lines · 18px.</td>
+</tr>
+<tr id="k-how.prepares.label">
+  <td class="key"><code>how.prepares.label</code></td>
+  <td class="en" dir="ltr">Prepares</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">يجهّز</div><div class="chars">5 characters</div></td>
+  <td class="loc">Section 2, card 1 of 3 ("prepares"), card title.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/how--how.prepares.label.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/how--how.prepares.label.png" alt="Arabic page, how.prepares.label"></a><div class="fn">how--how.prepares.label.png</div></td>
+  <td class="len"><b>1440 px:</b> 293 px wide inside a 295 px container — it grows with the text; text runs 39 px on 1 line · 20px.<br><b>390 px:</b> 292 px wide inside a 294 px container — it grows with the text; text runs 39 px on 1 line · 20px.</td>
+</tr>
+<tr id="k-how.prepares.status">
+  <td class="key"><code>how.prepares.status</code></td>
+  <td class="en" dir="ltr">Ready to approve</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">جاهزة للاعتماد</div><div class="chars">14 characters</div></td>
+  <td class="loc">Section 2, card 1, the status pill beside the title.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/how--how.prepares.status.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/how--how.prepares.status.png" alt="Arabic page, how.prepares.status"></a><div class="fn">how--how.prepares.status.png</div></td>
+  <td class="len"><b>1440 px:</b> 84 px wide inside a 295 px container — it grows with the text; text runs 72 px on 1 line and <b>cannot wrap</b> (<code>white-space:nowrap</code>) · 12.5px.<br><b>390 px:</b> 84 px wide inside a 294 px container — it grows with the text; text runs 72 px on 1 line and <b>cannot wrap</b> (<code>white-space:nowrap</code>) · 12.5px.<br>.pill is <code>white-space:nowrap</code> — a longer label makes the pill wider, it can never wrap.</td>
+</tr>
+<tr id="k-how.prepares.body">
+  <td class="key"><code>how.prepares.body</code></td>
+  <td class="en" dir="ltr">When the information is clear, Haseeb prepares the entry. You approve it, one by one or as a batch.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">عندما تكون المعلومات واضحة، يجهّز حسيب القيد. وأنت تعتمده — كل قيد بمفرده، أو الكل معًا.</div><div class="chars">88 characters</div></td>
+  <td class="loc">Section 2, card 1, the body paragraph under the example.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/how--how.prepares.body.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/how--how.prepares.body.png" alt="Arabic page, how.prepares.body"></a><div class="fn">how--how.prepares.body.png</div></td>
+  <td class="len"><b>1440 px:</b> 293 px wide inside a 295 px container — it grows with the text; text runs 276 px on 3 lines · 15.5px.<br><b>390 px:</b> 292 px wide inside a 294 px container — it grows with the text; text runs 276 px on 3 lines · 15.5px.</td>
+</tr>
+<tr id="k-how.prepares.rowLabel">
+  <td class="key"><code>how.prepares.rowLabel</code><span class="badge b-same">same as EN — by design</span></td>
+  <td class="en" dir="ltr">ZAIN TELECOM</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">ZAIN TELECOM</div><div class="why">A merchant name as it prints on a Kuwaiti bank statement, in capitals.</div><div class="chars">12 characters</div></td>
+  <td class="loc">Section 2, card 1, the example transaction row — the merchant as it prints on a bank statement.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/how--how.prepares.rowLabel.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/how--how.prepares.rowLabel.png" alt="Arabic page, how.prepares.rowLabel"></a><div class="fn">how--how.prepares.rowLabel.png</div></td>
+  <td class="len"><b>1440 px:</b> 97 px wide inside a 267 px container — it grows with the text; text runs 97 px on 1 line · 13.5px.<br><b>390 px:</b> 97 px wide inside a 266 px container — it grows with the text; text runs 97 px on 1 line · 13.5px.</td>
+</tr>
+<tr id="k-how.prepares.rowCategory">
+  <td class="key"><code>how.prepares.rowCategory</code></td>
+  <td class="en" dir="ltr">Telecommunications</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">الاتصالات</div><div class="chars">9 characters</div></td>
+  <td class="loc">Section 2, card 1, the sub-line under the example row — the account Haseeb proposes.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/how--how.prepares.rowCategory.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/how--how.prepares.rowCategory.png" alt="Arabic page, how.prepares.rowCategory"></a><div class="fn">how--how.prepares.rowCategory.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 267 px column; text runs 51 px on 1 line · 13px.<br><b>390 px:</b> fills its 266 px column; text runs 51 px on 1 line · 13px.</td>
+</tr>
+<tr id="k-how.prepares.rowAmount">
+  <td class="key"><code>how.prepares.rowAmount</code></td>
+  <td class="en" dir="ltr">−28.500 KWD · 14 Apr</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">−28.500 د.ك · 14 أبريل</div><div class="why">Template: <code>{row1Amount} {row1Date}</code> — filled from the fixture at build time.</div><div class="chars">22 characters</div></td>
+  <td class="loc">Section 2, card 1, the amount at the inline-end of the example row. Figures come from the fixture; ".fig" forces LTR + tabular numerals, so the digits read left-to-right inside the Arabic row.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/how--how.prepares.rowAmount.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/how--how.prepares.rowAmount.png" alt="Arabic page, how.prepares.rowAmount"></a><div class="fn">how--how.prepares.rowAmount.png</div></td>
+  <td class="len"><b>1440 px:</b> 159 px wide inside a 267 px container — it grows with the text; text runs 55 px on 1 line and <b>cannot wrap</b> (<code>white-space:nowrap</code>) · 13px.<br><b>390 px:</b> 159 px wide inside a 266 px container — it grows with the text; text runs 55 px on 1 line and <b>cannot wrap</b> (<code>white-space:nowrap</code>) · 13px.</td>
+</tr>
+<tr id="k-how.asks.label">
+  <td class="key"><code>how.asks.label</code></td>
+  <td class="en" dir="ltr">Asks</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">يسأل</div><div class="chars">4 characters</div></td>
+  <td class="loc">Section 2, card 2 of 3 ("asks"), card title.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/how--how.asks.label.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/how--how.asks.label.png" alt="Arabic page, how.asks.label"></a><div class="fn">how--how.asks.label.png</div></td>
+  <td class="len"><b>1440 px:</b> 293 px wide inside a 295 px container — it grows with the text; text runs 46 px on 1 line · 20px.<br><b>390 px:</b> 292 px wide inside a 294 px container — it grows with the text; text runs 46 px on 1 line · 20px.</td>
+</tr>
+<tr id="k-how.asks.status">
+  <td class="key"><code>how.asks.status</code></td>
+  <td class="en" dir="ltr">Needs an answer</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">بحاجة إلى إجابة</div><div class="chars">15 characters</div></td>
+  <td class="loc">Section 2, card 2, the status pill beside the title.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/how--how.asks.status.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/how--how.asks.status.png" alt="Arabic page, how.asks.status"></a><div class="fn">how--how.asks.status.png</div></td>
+  <td class="len"><b>1440 px:</b> 88 px wide inside a 295 px container — it grows with the text; text runs 76 px on 1 line and <b>cannot wrap</b> (<code>white-space:nowrap</code>) · 12.5px.<br><b>390 px:</b> 88 px wide inside a 294 px container — it grows with the text; text runs 76 px on 1 line and <b>cannot wrap</b> (<code>white-space:nowrap</code>) · 12.5px.<br>.pill is <code>white-space:nowrap</code> — a longer label makes the pill wider, it can never wrap.</td>
+</tr>
+<tr id="k-how.asks.body">
+  <td class="key"><code>how.asks.body</code></td>
+  <td class="en" dir="ltr">When something is missing, Haseeb asks you one question. Answer it and the entry is ready.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">عندما تنقص معلومة، يسألك حسيب سؤالًا واحدًا. أجب عنه، ويصبح القيد جاهزًا.</div><div class="chars">73 characters</div></td>
+  <td class="loc">Section 2, card 2, the body paragraph under the example.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/how--how.asks.body.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/how--how.asks.body.png" alt="Arabic page, how.asks.body"></a><div class="fn">how--how.asks.body.png</div></td>
+  <td class="len"><b>1440 px:</b> 293 px wide inside a 295 px container — it grows with the text; text runs 260 px on 2 lines · 15.5px.<br><b>390 px:</b> 292 px wide inside a 294 px container — it grows with the text; text runs 260 px on 2 lines · 15.5px.</td>
+</tr>
+<tr id="k-how.asks.rowLabel">
+  <td class="key"><code>how.asks.rowLabel</code></td>
+  <td class="en" dir="ltr">Transfer</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">تحويل</div><div class="chars">5 characters</div></td>
+  <td class="loc">Section 2, card 2, the example transaction row label.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/how--how.asks.rowLabel.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/how--how.asks.rowLabel.png" alt="Arabic page, how.asks.rowLabel"></a><div class="fn">how--how.asks.rowLabel.png</div></td>
+  <td class="len"><b>1440 px:</b> 34 px wide inside a 267 px container — it grows with the text; text runs 34 px on 1 line · 13.5px.<br><b>390 px:</b> 34 px wide inside a 266 px container — it grows with the text; text runs 34 px on 1 line · 13.5px.</td>
+</tr>
+<tr id="k-how.asks.rowQuestion">
+  <td class="key"><code>how.asks.rowQuestion</code></td>
+  <td class="en" dir="ltr">What was this payment for?</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">ما الغرض من هذا التحويل؟</div><div class="chars">24 characters</div></td>
+  <td class="loc">Section 2, card 2, the sub-line — the single question Haseeb would ask.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/how--how.asks.rowQuestion.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/how--how.asks.rowQuestion.png" alt="Arabic page, how.asks.rowQuestion"></a><div class="fn">how--how.asks.rowQuestion.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 267 px column; text runs 138 px on 1 line · 13px.<br><b>390 px:</b> fills its 266 px column; text runs 138 px on 1 line · 13px.</td>
+</tr>
+<tr id="k-how.asks.rowAmount">
+  <td class="key"><code>how.asks.rowAmount</code></td>
+  <td class="en" dir="ltr">−450.000 KWD · 15 Apr</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">−450.000 د.ك · 15 أبريل</div><div class="why">Template: <code>{row2Amount} {row2Date}</code> — filled from the fixture at build time.</div><div class="chars">23 characters</div></td>
+  <td class="loc">Section 2, card 2, the amount at the inline-end of the example row. Figures come from the fixture; ".fig" forces LTR + tabular numerals, so the digits read left-to-right inside the Arabic row.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/how--how.asks.rowAmount.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/how--how.asks.rowAmount.png" alt="Arabic page, how.asks.rowAmount"></a><div class="fn">how--how.asks.rowAmount.png</div></td>
+  <td class="len"><b>1440 px:</b> 167 px wide inside a 267 px container — it grows with the text; text runs 62 px on 1 line and <b>cannot wrap</b> (<code>white-space:nowrap</code>) · 13px.<br><b>390 px:</b> 167 px wide inside a 266 px container — it grows with the text; text runs 62 px on 1 line and <b>cannot wrap</b> (<code>white-space:nowrap</code>) · 13px.</td>
+</tr>
+<tr id="k-how.holds.label">
+  <td class="key"><code>how.holds.label</code></td>
+  <td class="en" dir="ltr">Holds</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">يتوقّف</div><div class="chars">6 characters</div></td>
+  <td class="loc">Section 2, card 3 of 3 ("holds"), card title.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/how--how.holds.label.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/how--how.holds.label.png" alt="Arabic page, how.holds.label"></a><div class="fn">how--how.holds.label.png</div></td>
+  <td class="len"><b>1440 px:</b> 293 px wide inside a 295 px container — it grows with the text; text runs 57 px on 1 line · 20px.<br><b>390 px:</b> 292 px wide inside a 294 px container — it grows with the text; text runs 57 px on 1 line · 20px.</td>
+</tr>
+<tr id="k-how.holds.status">
+  <td class="key"><code>how.holds.status</code></td>
+  <td class="en" dir="ltr">Held for review</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">موقوف للمراجعة</div><div class="chars">14 characters</div></td>
+  <td class="loc">Section 2, card 3, the status pill beside the title.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/how--how.holds.status.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/how--how.holds.status.png" alt="Arabic page, how.holds.status"></a><div class="fn">how--how.holds.status.png</div></td>
+  <td class="len"><b>1440 px:</b> 96 px wide inside a 295 px container — it grows with the text; text runs 84 px on 1 line and <b>cannot wrap</b> (<code>white-space:nowrap</code>) · 12.5px.<br><b>390 px:</b> 96 px wide inside a 294 px container — it grows with the text; text runs 84 px on 1 line and <b>cannot wrap</b> (<code>white-space:nowrap</code>) · 12.5px.<br>.pill is <code>white-space:nowrap</code> — a longer label makes the pill wider, it can never wrap.</td>
+</tr>
+<tr id="k-how.holds.body">
+  <td class="key"><code>how.holds.body</code></td>
+  <td class="en" dir="ltr">When there is not enough information, Haseeb stops. Nothing is posted until you or your accountant decide.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">عندما لا تكفي المعلومات، يتوقّف حسيب. لا يُرحَّل شيء حتى تقرّر أنت أو محاسبك.</div><div class="chars">77 characters</div></td>
+  <td class="loc">Section 2, card 3, the body paragraph under the example.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/how--how.holds.body.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/how--how.holds.body.png" alt="Arabic page, how.holds.body"></a><div class="fn">how--how.holds.body.png</div></td>
+  <td class="len"><b>1440 px:</b> 293 px wide inside a 295 px container — it grows with the text; text runs 269 px on 2 lines · 15.5px.<br><b>390 px:</b> 292 px wide inside a 294 px container — it grows with the text; text runs 269 px on 2 lines · 15.5px.</td>
+</tr>
+<tr id="k-how.holds.rowLabel">
+  <td class="key"><code>how.holds.rowLabel</code></td>
+  <td class="en" dir="ltr">Supplier invoice</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">فاتورة مورّد</div><div class="chars">12 characters</div></td>
+  <td class="loc">Section 2, card 3, the example transaction row label.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/how--how.holds.rowLabel.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/how--how.holds.rowLabel.png" alt="Arabic page, how.holds.rowLabel"></a><div class="fn">how--how.holds.rowLabel.png</div></td>
+  <td class="len"><b>1440 px:</b> 60 px wide inside a 267 px container — it grows with the text; text runs 60 px on 1 line · 13.5px.<br><b>390 px:</b> 60 px wide inside a 266 px container — it grows with the text; text runs 60 px on 1 line · 13.5px.</td>
+</tr>
+<tr id="k-how.holds.rowNote">
+  <td class="key"><code>how.holds.rowNote</code></td>
+  <td class="en" dir="ltr">Document missing</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">المستند ناقص</div><div class="chars">12 characters</div></td>
+  <td class="loc">Section 2, card 3, the sub-line — why the entry is held.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/how--how.holds.rowNote.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/how--how.holds.rowNote.png" alt="Arabic page, how.holds.rowNote"></a><div class="fn">how--how.holds.rowNote.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 267 px column; text runs 75 px on 1 line · 13px.<br><b>390 px:</b> fills its 266 px column; text runs 75 px on 1 line · 13px.</td>
+</tr>
+<tr id="k-how.holds.rowAmount">
+  <td class="key"><code>how.holds.rowAmount</code></td>
+  <td class="en" dir="ltr">−1,840.000 KWD · 15 Apr</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">−1,840.000 د.ك · 15 أبريل</div><div class="why">Template: <code>{row3Amount} {row3Date}</code> — filled from the fixture at build time.</div><div class="chars">25 characters</div></td>
+  <td class="loc">Section 2, card 3, the amount at the inline-end of the example row. Figures come from the fixture; ".fig" forces LTR + tabular numerals, so the digits read left-to-right inside the Arabic row.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/how--how.holds.rowAmount.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/how--how.holds.rowAmount.png" alt="Arabic page, how.holds.rowAmount"></a><div class="fn">how--how.holds.rowAmount.png</div></td>
+  <td class="len"><b>1440 px:</b> 183 px wide inside a 267 px container — it grows with the text; text runs 78 px on 1 line and <b>cannot wrap</b> (<code>white-space:nowrap</code>) · 13px.<br><b>390 px:</b> 183 px wide inside a 266 px container — it grows with the text; text runs 78 px on 1 line and <b>cannot wrap</b> (<code>white-space:nowrap</code>) · 13px.</td>
+</tr>
+<tr id="k-how.close">
+  <td class="key"><code>how.close</code></td>
+  <td class="en" dir="ltr">You stay in control of what gets approved.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">أنت من يتحكّم فيما يُعتمد.</div><div class="chars">26 characters</div></td>
+  <td class="loc">Section 2, the closing line centred under the three cards.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/how--how.close.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/how--how.close.png" alt="Arabic page, how.close"></a><div class="fn">how--how.close.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 1072 px column; text runs 179 px on 1 line · 17px.<br><b>390 px:</b> fills its 342 px column; text runs 179 px on 1 line · 17px.</td>
+</tr>
+<tr class="sec"><th colspan="6">ask — the plain-language band</th></tr>
+<tr id="k-ask.eyebrow">
+  <td class="key"><code>ask.eyebrow</code></td>
+  <td class="en" dir="ltr">Plain-language questions</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">أسئلة بلغة بسيطة</div><div class="chars">16 characters</div></td>
+  <td class="loc">Section 3 "ask", the small eyebrow above the heading, inside the tinted band.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/ask--ask.eyebrow.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/ask--ask.eyebrow.png" alt="Arabic page, ask.eyebrow"></a><div class="fn">ask--ask.eyebrow.png</div></td>
+  <td class="len"><b>1440 px:</b> 662 px wide inside a 664 px container — it grows with the text; text runs 90 px on 1 line · 13px.<br><b>390 px:</b> 296 px wide inside a 298 px container — it grows with the text; text runs 90 px on 1 line · 13px.</td>
+</tr>
+<tr id="k-ask.h2">
+  <td class="key"><code>ask.h2</code></td>
+  <td class="en" dir="ltr">Ask your books a question, in plain language.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">اسأل دفاترك بلغة بسيطة.</div><div class="chars">23 characters</div></td>
+  <td class="loc">Section 3, band heading.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/ask--ask.h2.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/ask--ask.h2.png" alt="Arabic page, ask.h2"></a><div class="fn">ask--ask.h2.png</div></td>
+  <td class="len"><b>1440 px:</b> 662 px wide inside a 664 px container — it grows with the text; text runs 432 px on 1 line · 40px.<br><b>390 px:</b> 296 px wide inside a 298 px container — it grows with the text; text runs 206 px on 2 lines · 28px.</td>
+</tr>
+<tr id="k-ask.body">
+  <td class="key"><code>ask.body</code></td>
+  <td class="en" dir="ltr">Ask which customers still owe you, or how much cash you have today, and get an answer in plain language.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">اسأل: «أيّ العملاء لم يسدّدوا بعد؟» أو «كم لدينا من نقد اليوم؟» وستحصل على إجابة بلغة بسيطة.</div><div class="chars">92 characters</div></td>
+  <td class="loc">Section 3, band paragraph. Carries the two guillemet-quoted example questions.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/ask--ask.body.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/ask--ask.body.png" alt="Arabic page, ask.body"></a><div class="fn">ask--ask.body.png</div></td>
+  <td class="len"><b>1440 px:</b> 638 px wide inside a 664 px container — it grows with the text; text runs 618 px on 2 lines · 18px.<br><b>390 px:</b> 296 px wide inside a 298 px container — it grows with the text; text runs 293 px on 3 lines · 18px.</td>
+</tr>
+<tr id="k-ask.cta">
+  <td class="key"><code>ask.cta</code></td>
+  <td class="en" dir="ltr">Try the guided demo</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">جرّب العرض التوضيحي</div><div class="chars">19 characters</div></td>
+  <td class="loc">Section 3, the text link/button that opens the guided-demo popup (second opener beside the launcher pill).</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/ask--ask.cta.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/ask--ask.cta.png" alt="Arabic page, ask.cta"></a><div class="fn">ask--ask.cta.png</div></td>
+  <td class="len"><b>1440 px:</b> 173 px wide inside a 664 px container — it grows with the text; text runs 150 px on 1 line · 16px.<br><b>390 px:</b> 173 px wide inside a 298 px container — it grows with the text; text runs 150 px on 1 line · 16px.</td>
+</tr>
+<tr class="sec"><th colspan="6">kuwait — “built for here”</th></tr>
+<tr id="k-kuwait.eyebrow">
+  <td class="key"><code>kuwait.eyebrow</code></td>
+  <td class="en" dir="ltr">Built for here</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">مصمّم لهنا</div><div class="chars">10 characters</div></td>
+  <td class="loc">Section 4 "Kuwait", eyebrow above the heading.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/kuwait--kuwait.eyebrow.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/kuwait--kuwait.eyebrow.png" alt="Arabic page, kuwait.eyebrow"></a><div class="fn">kuwait--kuwait.eyebrow.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 720 px column; text runs 56 px on 1 line · 13px.<br><b>390 px:</b> fills its 342 px column; text runs 56 px on 1 line · 13px.</td>
+</tr>
+<tr id="k-kuwait.h2">
+  <td class="key"><code>kuwait.h2</code></td>
+  <td class="en" dir="ltr">It doesn't just work in Kuwait. It understands Kuwait.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">لا يعمل في الكويت فقط، بل يفهم الكويت.</div><div class="chars">38 characters</div></td>
+  <td class="loc">Section 4, section heading.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/kuwait--kuwait.h2.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/kuwait--kuwait.h2.png" alt="Arabic page, kuwait.h2"></a><div class="fn">kuwait--kuwait.h2.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 720 px column; text runs 701 px on 1 line · 40px.<br><b>390 px:</b> fills its 342 px column; text runs 327 px on 2 lines · 28px.</td>
+</tr>
+<tr id="k-kuwait.body">
+  <td class="key"><code>kuwait.body</code></td>
+  <td class="en" dir="ltr">Kuwaiti merchants. Supported local bank-statement formats. Kuwaiti business and reporting requirements.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">تجّار الكويت. تنسيقات مدعومة لكشوف الحسابات البنكية المحلية. متطلبات الأعمال والتقارير الكويتية.</div><div class="chars">96 characters</div></td>
+  <td class="loc">Section 4, the lede under the heading.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/kuwait--kuwait.body.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/kuwait--kuwait.body.png" alt="Arabic page, kuwait.body"></a><div class="fn">kuwait--kuwait.body.png</div></td>
+  <td class="len"><b>1440 px:</b> 638 px wide inside a 720 px container — it grows with the text; text runs 590 px on 2 lines · 18px.<br><b>390 px:</b> fills its 342 px column; text runs 306 px on 3 lines · 18px.</td>
+</tr>
+<tr id="k-kuwait.chips[0]">
+  <td class="key"><code>kuwait.chips[0]</code></td>
+  <td class="en" dir="ltr">KNET settlements</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">تسويات كي-نت</div><div class="chars">12 characters</div></td>
+  <td class="loc">Section 4, chip 1 of 3 in the row under the lede.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/kuwait--kuwait.chips-0.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/kuwait--kuwait.chips-0.png" alt="Arabic page, kuwait.chips[0]"></a><div class="fn">kuwait--kuwait.chips-0.png</div></td>
+  <td class="len"><b>1440 px:</b> 95 px wide inside a 1072 px container — it grows with the text; text runs 95 px on 1 line · 15px.<br><b>390 px:</b> 95 px wide inside a 342 px container — it grows with the text; text runs 95 px on 1 line · 15px.</td>
+</tr>
+<tr id="k-kuwait.chips[1]">
+  <td class="key"><code>kuwait.chips[1]</code></td>
+  <td class="en" dir="ltr">Local statement formats</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">تنسيقات الكشوف المحلية</div><div class="chars">22 characters</div></td>
+  <td class="loc">Section 4, chip 2 of 3.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/kuwait--kuwait.chips-1.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/kuwait--kuwait.chips-1.png" alt="Arabic page, kuwait.chips[1]"></a><div class="fn">kuwait--kuwait.chips-1.png</div></td>
+  <td class="len"><b>1440 px:</b> 155 px wide inside a 1072 px container — it grows with the text; text runs 155 px on 1 line · 15px.<br><b>390 px:</b> 155 px wide inside a 342 px container — it grows with the text; text runs 155 px on 1 line · 15px.</td>
+</tr>
+<tr id="k-kuwait.chips[2]">
+  <td class="key"><code>kuwait.chips[2]</code></td>
+  <td class="en" dir="ltr">Kuwaiti merchants</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">التجّار الكويتيون</div><div class="chars">17 characters</div></td>
+  <td class="loc">Section 4, chip 3 of 3.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/kuwait--kuwait.chips-2.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/kuwait--kuwait.chips-2.png" alt="Arabic page, kuwait.chips[2]"></a><div class="fn">kuwait--kuwait.chips-2.png</div></td>
+  <td class="len"><b>1440 px:</b> 92 px wide inside a 1072 px container — it grows with the text; text runs 92 px on 1 line · 15px.<br><b>390 px:</b> 92 px wide inside a 342 px container — it grows with the text; text runs 92 px on 1 line · 15px.</td>
+</tr>
+<tr class="sec"><th colspan="6">cohort — the founding-cohort pitch</th></tr>
+<tr id="k-cohort.eyebrow">
+  <td class="key"><code>cohort.eyebrow</code></td>
+  <td class="en" dir="ltr">Founding cohort</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">الدفعة التأسيسية</div><div class="chars">16 characters</div></td>
+  <td class="loc">Section 5 "founding cohort", eyebrow above the heading (left column at 1440, stacked above the form at ≤1080 px).</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/cohort--cohort.eyebrow.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/cohort--cohort.eyebrow.png" alt="Arabic page, cohort.eyebrow"></a><div class="fn">cohort--cohort.eyebrow.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 576 px column; text runs 88 px on 1 line · 13px.<br><b>390 px:</b> fills its 342 px column; text runs 88 px on 1 line · 13px.</td>
+</tr>
+<tr id="k-cohort.h2">
+  <td class="key"><code>cohort.h2</code></td>
+  <td class="en" dir="ltr">Be one of the first businesses in Kuwait to use Haseeb.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">كن من أوائل الشركات في الكويت التي تستخدم حسيب.</div><div class="chars">47 characters</div></td>
+  <td class="loc">Section 5, section heading.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/cohort--cohort.h2.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/cohort--cohort.h2.png" alt="Arabic page, cohort.h2"></a><div class="fn">cohort--cohort.h2.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 576 px column; text runs 553 px on 2 lines · 40px.<br><b>390 px:</b> fills its 342 px column; text runs 296 px on 3 lines · 28px.</td>
+</tr>
+<tr id="k-cohort.body">
+  <td class="key"><code>cohort.body</code></td>
+  <td class="en" dir="ltr">We are selecting 8–12 Kuwaiti service businesses for Haseeb's founding cohort.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">نختار حاليًا من 8 إلى 12 شركة خدمات كويتية لدفعة حسيب التأسيسية.</div><div class="chars">64 characters</div></td>
+  <td class="loc">Section 5, the lede under the heading.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/cohort--cohort.body.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/cohort--cohort.body.png" alt="Arabic page, cohort.body"></a><div class="fn">cohort--cohort.body.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 576 px column; text runs 331 px on 1 line · 18px.<br><b>390 px:</b> fills its 342 px column; text runs 179 px on 2 lines · 18px.</td>
+</tr>
+<tr id="k-cohort.bullets[0]">
+  <td class="key"><code>cohort.bullets[0]</code></td>
+  <td class="en" dir="ltr">Close onboarding</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">تهيئة عن قرب</div><div class="chars">12 characters</div></td>
+  <td class="loc">Section 5, bullet 1 of 3.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/cohort--cohort.bullets-0.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/cohort--cohort.bullets-0.png" alt="Arabic page, cohort.bullets[0]"></a><div class="fn">cohort--cohort.bullets-0.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 548 px column; text runs 92 px on 1 line · 16.5px.<br><b>390 px:</b> fills its 314 px column; text runs 92 px on 1 line · 16.5px.</td>
+</tr>
+<tr id="k-cohort.bullets[1]">
+  <td class="key"><code>cohort.bullets[1]</code></td>
+  <td class="en" dir="ltr">Direct access to the founding team</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">تواصل مباشر مع الفريق المؤسس</div><div class="chars">28 characters</div></td>
+  <td class="loc">Section 5, bullet 2 of 3.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/cohort--cohort.bullets-1.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/cohort--cohort.bullets-1.png" alt="Arabic page, cohort.bullets[1]"></a><div class="fn">cohort--cohort.bullets-1.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 548 px column; text runs 217 px on 1 line · 16.5px.<br><b>390 px:</b> fills its 314 px column; text runs 217 px on 1 line · 16.5px.</td>
+</tr>
+<tr id="k-cohort.bullets[2]">
+  <td class="key"><code>cohort.bullets[2]</code></td>
+  <td class="en" dir="ltr">A carefully supervised start</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">بداية بإشراف دقيق</div><div class="chars">17 characters</div></td>
+  <td class="loc">Section 5, bullet 3 of 3.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/cohort--cohort.bullets-2.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/cohort--cohort.bullets-2.png" alt="Arabic page, cohort.bullets[2]"></a><div class="fn">cohort--cohort.bullets-2.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 548 px column; text runs 122 px on 1 line · 16.5px.<br><b>390 px:</b> fills its 314 px column; text runs 122 px on 1 line · 16.5px.</td>
+</tr>
+<tr class="sec"><th colspan="6">form — the application card and the email it writes</th></tr>
+<tr id="k-form.h3">
+  <td class="key"><code>form.h3</code></td>
+  <td class="en" dir="ltr">Apply for a founding place</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">قدّم طلبًا لمقعد تأسيسي</div><div class="chars">23 characters</div></td>
+  <td class="loc">Application card (section 5, right column at 1440), card heading.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/form--form.h3.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/form--form.h3.png" alt="Arabic page, form.h3"></a><div class="fn">form--form.h3.png</div></td>
+  <td class="len"><b>1440 px:</b> 382 px wide inside a 384 px container — it grows with the text; text runs 204 px on 1 line · 20px.<br><b>390 px:</b> 300 px wide inside a 302 px container — it grows with the text; text runs 204 px on 1 line · 20px.</td>
+</tr>
+<tr id="k-form.intro">
+  <td class="key"><code>form.intro</code></td>
+  <td class="en" dir="ltr">Every application is reviewed personally. No financial information is required to apply.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">نراجع كل طلب شخصيًا. لا نطلب أي معلومات مالية للتقديم.</div><div class="chars">54 characters</div></td>
+  <td class="loc">Application card, the line under the heading.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/form--form.intro.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/form--form.intro.png" alt="Arabic page, form.intro"></a><div class="fn">form--form.intro.png</div></td>
+  <td class="len"><b>1440 px:</b> 382 px wide inside a 384 px container — it grows with the text; text runs 352 px on 1 line · 15px.<br><b>390 px:</b> 300 px wide inside a 302 px container — it grows with the text; text runs 269 px on 2 lines · 15px.</td>
+</tr>
+<tr id="k-form.name">
+  <td class="key"><code>form.name</code></td>
+  <td class="en" dir="ltr">Name</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">الاسم</div><div class="chars">5 characters</div></td>
+  <td class="loc">Application card, label above field 1. Also reused as the field label inside the generated email body.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/form--form.name.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/form--form.name.png" alt="Arabic page, form.name"></a><div class="fn">form--form.name.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 382 px column; text runs 32 px on 1 line · 14px.<br><b>390 px:</b> fills its 300 px column; text runs 32 px on 1 line · 14px.</td>
+</tr>
+<tr id="k-form.phone">
+  <td class="key"><code>form.phone</code></td>
+  <td class="en" dir="ltr">Phone number</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">رقم الهاتف</div><div class="chars">10 characters</div></td>
+  <td class="loc">Application card, label above field 2. Also reused inside the generated email body.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/form--form.phone.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/form--form.phone.png" alt="Arabic page, form.phone"></a><div class="fn">form--form.phone.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 382 px column; text runs 62 px on 1 line · 14px.<br><b>390 px:</b> fills its 300 px column; text runs 62 px on 1 line · 14px.</td>
+</tr>
+<tr id="k-form.email">
+  <td class="key"><code>form.email</code></td>
+  <td class="en" dir="ltr">Email</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">البريد الإلكتروني</div><div class="chars">17 characters</div></td>
+  <td class="loc">Application card, label above field 3. Also reused inside the generated email body.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/form--form.email.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/form--form.email.png" alt="Arabic page, form.email"></a><div class="fn">form--form.email.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 382 px column; text runs 88 px on 1 line · 14px.<br><b>390 px:</b> fills its 300 px column; text runs 88 px on 1 line · 14px.</td>
+</tr>
+<tr id="k-form.namePh">
+  <td class="key"><code>form.namePh</code></td>
+  <td class="en" dir="ltr">Your name</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">اسمك</div><div class="chars">4 characters</div></td>
+  <td class="loc">Application card, placeholder text inside field 1 (visible only while the field is empty).</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/form--form.namePh.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/form--form.namePh.png" alt="Arabic page, form.namePh"></a><div class="fn">form--form.namePh.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 354 px column; the placeholder is one line and is <b>clipped, never wrapped</b> · 16px.<br><b>390 px:</b> fills its 272 px column; the placeholder is one line and is <b>clipped, never wrapped</b> · 16px.</td>
+</tr>
+<tr id="k-form.phonePh">
+  <td class="key"><code>form.phonePh</code><span class="badge b-same">same as EN — by design</span></td>
+  <td class="en" dir="ltr">+965 …</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">+965 …</div><div class="why">A dialling-code hint in an input that is forced dir="ltr".</div><div class="chars">6 characters</div></td>
+  <td class="loc">Application card, placeholder inside field 2. The input is dir="ltr", so the placeholder stays LTR on the Arabic page.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/form--form.phonePh.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/form--form.phonePh.png" alt="Arabic page, form.phonePh"></a><div class="fn">form--form.phonePh.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 354 px column; the placeholder is one line and is <b>clipped, never wrapped</b> · 16px.<br><b>390 px:</b> fills its 272 px column; the placeholder is one line and is <b>clipped, never wrapped</b> · 16px.</td>
+</tr>
+<tr id="k-form.emailPh">
+  <td class="key"><code>form.emailPh</code><span class="badge b-same">same as EN — by design</span></td>
+  <td class="en" dir="ltr">you@company.com</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">you@company.com</div><div class="why">An example address in an input that is forced dir="ltr".</div><div class="chars">15 characters</div></td>
+  <td class="loc">Application card, placeholder inside field 3. The input is dir="ltr".</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/form--form.emailPh.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/form--form.emailPh.png" alt="Arabic page, form.emailPh"></a><div class="fn">form--form.emailPh.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 354 px column; the placeholder is one line and is <b>clipped, never wrapped</b> · 16px.<br><b>390 px:</b> fills its 272 px column; the placeholder is one line and is <b>clipped, never wrapped</b> · 16px.</td>
+</tr>
+<tr id="k-form.submit">
+  <td class="key"><code>form.submit</code></td>
+  <td class="en" dir="ltr">Send your application</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">قدّم طلبك</div><div class="chars">9 characters</div></td>
+  <td class="loc">Application card, the full-width submit button.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/form--form.submit.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/form--form.submit.png" alt="Arabic page, form.submit"></a><div class="fn">form--form.submit.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 336 px column; text runs 65 px on 1 line · 16px.<br><b>390 px:</b> fills its 254 px column; text runs 65 px on 1 line · 16px.</td>
+</tr>
+<tr id="k-form.errName">
+  <td class="key"><code>form.errName</code></td>
+  <td class="en" dir="ltr">Please add your name.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">يرجى إدخال اسمك.</div><div class="chars">16 characters</div></td>
+  <td class="loc">Form, error under "Name" after an empty submit (hidden until then).</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/form-errors--form.errName.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/form-errors--form.errName.png" alt="Arabic page, form.errName"></a><div class="fn">form-errors--form.errName.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 382 px column; text runs 102 px on 1 line · 13.5px.<br><b>390 px:</b> fills its 300 px column; text runs 102 px on 1 line · 13.5px.</td>
+</tr>
+<tr id="k-form.errPhone">
+  <td class="key"><code>form.errPhone</code></td>
+  <td class="en" dir="ltr">Please add your phone number.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">يرجى إدخال رقم هاتفك.</div><div class="chars">21 characters</div></td>
+  <td class="loc">Form, error under "Phone number" after an empty submit.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/form-errors--form.errPhone.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/form-errors--form.errPhone.png" alt="Arabic page, form.errPhone"></a><div class="fn">form-errors--form.errPhone.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 382 px column; text runs 125 px on 1 line · 13.5px.<br><b>390 px:</b> fills its 300 px column; text runs 125 px on 1 line · 13.5px.</td>
+</tr>
+<tr id="k-form.errEmail">
+  <td class="key"><code>form.errEmail</code></td>
+  <td class="en" dir="ltr">Please add a valid email address.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">يرجى إدخال بريد إلكتروني صحيح.</div><div class="chars">30 characters</div></td>
+  <td class="loc">Form, error under "Email" after an empty or malformed submit.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/form-errors--form.errEmail.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/form-errors--form.errEmail.png" alt="Arabic page, form.errEmail"></a><div class="fn">form-errors--form.errEmail.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 382 px column; text runs 173 px on 1 line · 13.5px.<br><b>390 px:</b> fills its 300 px column; text runs 173 px on 1 line · 13.5px.</td>
+</tr>
+<tr id="k-form.errSummary">
+  <td class="key"><code>form.errSummary</code></td>
+  <td class="en" dir="ltr">Please complete the highlighted fields.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">يرجى إكمال الحقول المحدّدة.</div><div class="chars">27 characters</div></td>
+  <td class="loc">Form, the single live-region line under the submit button after a failed submit (role="status").</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/form-errors--form.errSummary.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/form-errors--form.errSummary.png" alt="Arabic page, form.errSummary"></a><div class="fn">form-errors--form.errSummary.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 382 px column; text runs 162 px on 1 line · 14.5px.<br><b>390 px:</b> fills its 300 px column; text runs 162 px on 1 line · 14.5px.</td>
+</tr>
+<tr id="k-form.note">
+  <td class="key"><code>form.note</code></td>
+  <td class="en" dir="ltr">This opens your email app with a pre-filled message to founder@haseeb.app. Nothing is sent until you press send there, and nothing is stored on this site. Please don't include financial statements or bank details; we'll never ask for them in this form.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">سيفتح هذا تطبيق البريد لديك برسالة جاهزة إلى founder@haseeb.app. لا يُرسل شيء حتى تضغط «إرسال» هناك، ولا يُحفظ شيء على هذا الموقع. يرجى عدم إرفاق قوائم مالية أو بيانات بنكية؛ لن نطلبها في هذا النموذج أبدًا.</div><div class="chars">206 characters</div></td>
+  <td class="loc">Application card, the small print under the submit button.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/form--form.note.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/form--form.note.png" alt="Arabic page, form.note"></a><div class="fn">form--form.note.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 382 px column; text runs 375 px on 3 lines · 13px.<br><b>390 px:</b> fills its 300 px column; text runs 300 px on 5 lines · 13px.</td>
+</tr>
+<tr id="k-form.success">
+  <td class="key"><code>form.success</code></td>
+  <td class="en" dir="ltr">Your email app should now be open with your application to founder@haseeb.app. Press send there to submit it. If nothing opened, email founder@haseeb.app directly.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">يُفترض أن يكون تطبيق البريد قد فُتح الآن ومعه طلبك إلى founder@haseeb.app. اضغط «إرسال» هناك لتقديمه. وإن لم يُفتح، راسل founder@haseeb.app مباشرة.</div><div class="chars">147 characters</div></td>
+  <td class="loc">Form, the same live region after a VALID submit — replaces the error summary in place.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/form-success--form.success.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/form-success--form.success.png" alt="Arabic page, form.success"></a><div class="fn">form-success--form.success.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 382 px column; text runs 323 px on 3 lines · 14.5px.<br><b>390 px:</b> fills its 300 px column; text runs 265 px on 4 lines · 14.5px.</td>
+</tr>
+<tr id="k-form.founderLink">
+  <td class="key"><code>form.founderLink</code></td>
+  <td class="en" dir="ltr">Speak with the founder</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">تحدّث مع المؤسس</div><div class="chars">15 characters</div></td>
+  <td class="loc">Application card, the link under the form; opens a mail draft to founder@haseeb.app.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/form--form.founderLink.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/form--form.founderLink.png" alt="Arabic page, form.founderLink"></a><div class="fn">form--form.founderLink.png</div></td>
+  <td class="len"><b>1440 px:</b> 111 px wide inside a 384 px container — it grows with the text; text runs 111 px on 1 line · 14.5px.<br><b>390 px:</b> 111 px wide inside a 302 px container — it grows with the text; text runs 111 px on 1 line · 14.5px.</td>
+</tr>
+<tr id="k-form.founderSubject">
+  <td class="key"><code>form.founderSubject</code></td>
+  <td class="en" dir="ltr">Haseeb — Conversation with the Founder</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">حسيب — محادثة مع المؤسس</div><div class="chars">23 characters</div></td>
+  <td class="loc">Not on the page. The Subject: line of the mail draft the "speak with the founder" link opens (URL-encoded into its href).</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/form--form.founderSubject.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/form--form.founderSubject.png" alt="Arabic page, form.founderSubject"></a><div class="fn">form--form.founderSubject.png</div></td>
+  <td class="len"><b>1440 px:</b> 111 px wide inside a 384 px container — it grows with the text; text runs 111 px on 1 line · 14.5px.<br><b>390 px:</b> 111 px wide inside a 302 px container — it grows with the text; text runs 111 px on 1 line · 14.5px.</td>
+</tr>
+<tr id="k-form.mailSubject">
+  <td class="key"><code>form.mailSubject</code></td>
+  <td class="en" dir="ltr">Haseeb Founding Cohort Application — {name}</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">طلب الانضمام إلى الدفعة التأسيسية من حسيب — {name}</div><div class="why">Template: <code>{name}</code> — filled from the fixture at build time.</div><div class="chars">50 characters</div></td>
+  <td class="loc">Not on the page. Subject: line of the application email; {name} is replaced with what the visitor typed, at submit time.</td>
+  <td class="shot"><div class="noshot">no on-page location — nothing to show</div></td>
+  <td class="len"><span class="noshot">not rendered — no width to measure</span></td>
+</tr>
+<tr id="k-form.mailHeading">
+  <td class="key"><code>form.mailHeading</code></td>
+  <td class="en" dir="ltr">Haseeb Founding Cohort Application</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">طلب الانضمام إلى الدفعة التأسيسية من حسيب</div><div class="chars">41 characters</div></td>
+  <td class="loc">Not on the page. First line of the application email body, above a dashed rule.</td>
+  <td class="shot"><div class="noshot">no on-page location — nothing to show</div></td>
+  <td class="len"><span class="noshot">not rendered — no width to measure</span></td>
+</tr>
+<tr id="k-form.mailtoTrailer">
+  <td class="key"><code>form.mailtoTrailer</code></td>
+  <td class="en" dir="ltr">— sent from the founding-cohort form on haseeb.app</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">— مُرسَل من نموذج الدفعة التأسيسية في haseeb.app</div><div class="chars">48 characters</div></td>
+  <td class="loc">Not on the page. Last line of the application email body.</td>
+  <td class="shot"><div class="noshot">no on-page location — nothing to show</div></td>
+  <td class="len"><span class="noshot">not rendered — no width to measure</span></td>
+</tr>
+<tr class="sec"><th colspan="6">footer</th></tr>
+<tr id="k-footer.terms">
+  <td class="key"><code>footer.terms</code></td>
+  <td class="en" dir="ltr">Website Terms</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">شروط الموقع (بالإنجليزية)</div><div class="chars">25 characters</div></td>
+  <td class="loc">Footer, link 1. The linked page itself is English-only, which the Arabic label says in parentheses.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/footer--footer.terms.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/footer--footer.terms.png" alt="Arabic page, footer.terms"></a><div class="fn">footer--footer.terms.png</div></td>
+  <td class="len"><b>1440 px:</b> 144 px wide inside a 598 px container — it grows with the text; text runs 144 px on 1 line · 14.5px.<br><b>390 px:</b> 144 px wide inside a 342 px container — it grows with the text; text runs 144 px on 1 line · 14.5px.</td>
+</tr>
+<tr id="k-footer.privacy">
+  <td class="key"><code>footer.privacy</code></td>
+  <td class="en" dir="ltr">Privacy Policy</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">سياسة الخصوصية (بالإنجليزية)</div><div class="chars">28 characters</div></td>
+  <td class="loc">Footer, link 2. The linked page itself is English-only, which the Arabic label says in parentheses.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/footer--footer.privacy.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/footer--footer.privacy.png" alt="Arabic page, footer.privacy"></a><div class="fn">footer--footer.privacy.png</div></td>
+  <td class="len"><b>1440 px:</b> 174 px wide inside a 598 px container — it grows with the text; text runs 174 px on 1 line · 14.5px.<br><b>390 px:</b> 174 px wide inside a 342 px container — it grows with the text; text runs 174 px on 1 line · 14.5px.</td>
+</tr>
+<tr id="k-footer.contact">
+  <td class="key"><code>footer.contact</code><span class="badge b-same">same as EN — by design</span></td>
+  <td class="en" dir="ltr">info@haseeb.app</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">info@haseeb.app</div><div class="why">A literal mailbox address.</div><div class="chars">15 characters</div></td>
+  <td class="loc">Footer, the mailto link at the end of the link row.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/footer--footer.contact.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/footer--footer.contact.png" alt="Arabic page, footer.contact"></a><div class="fn">footer--footer.contact.png</div></td>
+  <td class="len"><b>1440 px:</b> 236 px wide inside a 598 px container — it grows with the text; text runs 119 px on 1 line · 14.5px.<br><b>390 px:</b> 236 px wide inside a 342 px container — it grows with the text; text runs 119 px on 1 line · 14.5px.</td>
+</tr>
+<tr id="k-footer.contactLabel">
+  <td class="key"><code>footer.contactLabel</code></td>
+  <td class="en" dir="ltr">General enquiries</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">للاستفسارات العامة</div><div class="chars">18 characters</div></td>
+  <td class="loc">Footer, the words immediately before the address, inside the same link.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/footer--footer.contactLabel.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/footer--footer.contactLabel.png" alt="Arabic page, footer.contactLabel"></a><div class="fn">footer--footer.contactLabel.png</div></td>
+  <td class="len"><b>1440 px:</b> 113 px wide inside a 236 px container — it grows with the text; text runs 113 px on 1 line · 14.5px.<br><b>390 px:</b> 113 px wide inside a 236 px container — it grows with the text; text runs 113 px on 1 line · 14.5px.</td>
+</tr>
+<tr id="k-footer.copyright">
+  <td class="key"><code>footer.copyright</code></td>
+  <td class="en" dir="ltr">© 2026 Haseeb. All rights reserved.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">© 2026 حسيب. جميع الحقوق محفوظة.</div><div class="chars">32 characters</div></td>
+  <td class="loc">Footer, the copyright line on its own row at the bottom.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/footer--footer.copyright.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/footer--footer.copyright.png" alt="Arabic page, footer.copyright"></a><div class="fn">footer--footer.copyright.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 1072 px column; text runs 172 px on 1 line · 13.5px.<br><b>390 px:</b> fills its 342 px column; text runs 172 px on 1 line · 13.5px.</td>
+</tr>
+<tr id="k-footer.lang">
+  <td class="key"><code>footer.lang</code></td>
+  <td class="en" dir="ltr">العربية</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">English</div><div class="chars">7 characters</div></td>
+  <td class="loc">Footer, the language switch — the other language, as a link.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/footer--footer.lang.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/footer--footer.lang.png" alt="Arabic page, footer.lang"></a><div class="fn">footer--footer.lang.png</div></td>
+  <td class="len"><b>1440 px:</b> 49 px wide inside a 111 px container — it grows with the text; text runs 49 px on 1 line · 14.5px.<br><b>390 px:</b> 49 px wide inside a 111 px container — it grows with the text; text runs 49 px on 1 line · 14.5px.</td>
+</tr>
+<tr id="k-footer.langCurrent">
+  <td class="key"><code>footer.langCurrent</code></td>
+  <td class="en" dir="ltr">English</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">العربية</div><div class="chars">7 characters</div></td>
+  <td class="loc">Footer, the language you are already on, plain text before the separator dot.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/footer--footer.langCurrent.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/footer--footer.langCurrent.png" alt="Arabic page, footer.langCurrent"></a><div class="fn">footer--footer.langCurrent.png</div></td>
+  <td class="len"><b>1440 px:</b> 38 px wide inside a 111 px container — it grows with the text; text runs 38 px on 1 line · 14.5px.<br><b>390 px:</b> 38 px wide inside a 111 px container — it grows with the text; text runs 38 px on 1 line · 14.5px.</td>
+</tr>
+<tr class="sec"><th colspan="6">sticky — the phone action bar</th></tr>
+<tr id="k-sticky.cta">
+  <td class="key"><code>sticky.cta</code></td>
+  <td class="en" dir="ltr">Join the cohort →</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">انضم إلى الدفعة ←</div><div class="chars">17 characters</div></td>
+  <td class="loc">Sticky bar pinned to the bottom of the phone viewport, ≤719 px only. Appears after the hero has scrolled past and hides again near the form. Not rendered at 1440.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/sticky-390--sticky.cta.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/sticky-390--sticky.cta.png" alt="Arabic page, sticky.cta"></a><div class="fn">sticky-390--sticky.cta.png</div></td>
+  <td class="len"><b>1440 px:</b> not rendered (<code>hidden</code>).<br><b>390 px:</b> fills its 358 px column; text runs 125 px on 1 line · 16px.<br>Rendered at ≤719 px only; no box at all at 1440.</td>
+</tr>
+<tr class="sec"><th colspan="6">bot — the guided-demo launcher and popup</th></tr>
+<tr id="k-bot.launcher">
+  <td class="key"><code>bot.launcher</code><span class="badge b-await">awaiting review</span></td>
+  <td class="en" dir="ltr">Talk to Haseeb like you talk to your accountant.</td>
+  <td class="arcell"><div class="await">— awaiting Kuwaiti copy review —</div>
+       <div class="ar-shown"><span class="lbl">shown on /ar today (English):</span> <span dir="ltr" class="en">Talk to Haseeb like you talk to your accountant.</span></div><div class="chars">48 characters</div></td>
+  <td class="loc">Guided-demo launcher pill, fixed bottom inline-end. display:none at ≤719 px — the pill shrinks to icon + tag on a phone.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/launcher--bot.launcher.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/launcher--bot.launcher.png" alt="Arabic page, bot.launcher"></a><div class="fn">launcher--bot.launcher.png</div></td>
+  <td class="len"><b>1440 px:</b> 202 px wide inside a 368 px container — it grows with the text; text runs 184 px on 2 lines · 14.5px.<br><b>390 px:</b> not rendered (<code>display:none</code>).<br>CSS <code>display:none</code> at ≤719 px — on a phone the pill is icon + tag only, so this sentence is never read on a phone.</td>
+</tr>
+<tr id="k-bot.launcherTag">
+  <td class="key"><code>bot.launcherTag</code></td>
+  <td class="en" dir="ltr">Guided demo</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">عرض توضيحي موجّه</div><div class="chars">16 characters</div></td>
+  <td class="loc">Guided-demo launcher pill, the small teal tag at its inline-end. The only text left in the pill on a phone.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/launcher--bot.launcherTag.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/launcher--bot.launcherTag.png" alt="Arabic page, bot.launcherTag"></a><div class="fn">launcher--bot.launcherTag.png</div></td>
+  <td class="len"><b>1440 px:</b> 93 px wide inside a 368 px container — it grows with the text; text runs 93 px on 1 line and <b>cannot wrap</b> (<code>white-space:nowrap</code>) · 11px.<br><b>390 px:</b> 93 px wide inside a 151 px container — it grows with the text; text runs 93 px on 1 line and <b>cannot wrap</b> (<code>white-space:nowrap</code>) · 11px.<br>.bot-launcher-tag is <code>white-space:nowrap</code>; the whole pill is capped at <code>min(400px, 100vw−44px)</code>.</td>
+</tr>
+<tr id="k-bot.launcherAria">
+  <td class="key"><code>bot.launcherAria</code></td>
+  <td class="en" dir="ltr">Open the guided demo</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">افتح العرض التوضيحي الموجّه</div><div class="chars">27 characters</div></td>
+  <td class="loc">Not visible. aria-label on the launcher button — it is what a screen reader announces instead of the pill text.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/launcher--bot.launcherAria.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/launcher--bot.launcherAria.png" alt="Arabic page, bot.launcherAria"></a><div class="fn">launcher--bot.launcherAria.png</div></td>
+  <td class="len"><b>No visual limit.</b> Never painted — it is the accessible name of the launcher button, announced in full by a screen reader however long it is. The only cost of length is how long it takes to speak, so keep it to a short phrase.</td>
+</tr>
+<tr id="k-bot.title">
+  <td class="key"><code>bot.title</code><span class="badge b-same">same as EN — by design</span></td>
+  <td class="en" dir="ltr">HASEEB.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">HASEEB.</div><div class="why">The same Latin wordmark, used as the popup's whole identity.</div><div class="chars">7 characters</div></td>
+  <td class="loc">Popup, header — the drawer's whole identity is this wordmark (round 7 removed the icon and the persona name).</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/popup--bot.title.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/popup--bot.title.png" alt="Arabic page, bot.title"></a><div class="fn">popup--bot.title.png</div></td>
+  <td class="len"><b>1440 px:</b> 43 px wide inside a 272 px container — it grows with the text; text runs 43 px on 1 line · 17px.<br><b>390 px:</b> 43 px wide inside a 252 px container — it grows with the text; text runs 43 px on 1 line · 17px.</td>
+</tr>
+<tr id="k-bot.status">
+  <td class="key"><code>bot.status</code></td>
+  <td class="en" dir="ltr">Ready to help</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">جاهزة للمساعدة</div><div class="chars">14 characters</div></td>
+  <td class="loc">Popup, header status line beside the wordmark, from the moment it opens.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/popup--bot.status.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/popup--bot.status.png" alt="Arabic page, bot.status"></a><div class="fn">popup--bot.status.png</div></td>
+  <td class="len"><b>1440 px:</b> 60 px wide inside a 272 px container — it grows with the text; text runs 60 px on 1 line · 9px.<br><b>390 px:</b> 60 px wide inside a 252 px container — it grows with the text; text runs 60 px on 1 line · 9px.</td>
+</tr>
+<tr id="k-bot.badge">
+  <td class="key"><code>bot.badge</code></td>
+  <td class="en" dir="ltr">Guided demo · sample data</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">عرض توضيحي موجّه · بيانات تجريبية</div><div class="chars">33 characters</div></td>
+  <td class="loc">Popup, header — the demo badge under the wordmark line. Must stay visible in every state.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/popup--bot.badge.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/popup--bot.badge.png" alt="Arabic page, bot.badge"></a><div class="fn">popup--bot.badge.png</div></td>
+  <td class="len"><b>1440 px:</b> 149 px wide inside a 272 px container — it grows with the text; text runs 149 px on 1 line · 10px.<br><b>390 px:</b> 149 px wide inside a 252 px container — it grows with the text; text runs 149 px on 1 line · 10px.</td>
+</tr>
+<tr id="k-bot.newConversation">
+  <td class="key"><code>bot.newConversation</code></td>
+  <td class="en" dir="ltr">New conversation</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">محادثة جديدة</div><div class="chars">12 characters</div></td>
+  <td class="loc">Popup, header action "+" button label. display:none at ≤400 px — on a small phone only the "+" and the aria-label remain.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/popup--bot.newConversation.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/popup--bot.newConversation.png" alt="Arabic page, bot.newConversation"></a><div class="fn">popup--bot.newConversation.png</div></td>
+  <td class="len"><b>1440 px:</b> 59 px wide inside a 71 px container — it grows with the text; text runs 59 px on 1 line · 11px.<br><b>390 px:</b> not rendered (<code>display:none</code>).<br>CSS <code>display:none</code> at ≤400 px — on a small phone only the "+" glyph and the aria-label survive.</td>
+</tr>
+<tr id="k-bot.close">
+  <td class="key"><code>bot.close</code></td>
+  <td class="en" dir="ltr">Close</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">إغلاق</div><div class="chars">5 characters</div></td>
+  <td class="loc">Not visible. aria-label on the ✕ button in the popup header (the glyph itself is aria-hidden).</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/popup--bot.close.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/popup--bot.close.png" alt="Arabic page, bot.close"></a><div class="fn">popup--bot.close.png</div></td>
+  <td class="len"><b>No visual limit.</b> Never painted — it is the accessible name of the ✕ button, announced in full by a screen reader however long it is. The only cost of length is how long it takes to speak, so keep it to a short phrase.</td>
+</tr>
+<tr id="k-bot.emptyTitle">
+  <td class="key"><code>bot.emptyTitle</code></td>
+  <td class="en" dir="ltr">Ask about your books</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">اسأل عن دفاترك</div><div class="chars">14 characters</div></td>
+  <td class="loc">Popup, empty state — heading shown before the first message and again after "new conversation".</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/popup--bot.emptyTitle.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/popup--bot.emptyTitle.png" alt="Arabic page, bot.emptyTitle"></a><div class="fn">popup--bot.emptyTitle.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 403 px column; text runs 111 px on 1 line · 16px.<br><b>390 px:</b> fills its 354 px column; text runs 111 px on 1 line · 16px.</td>
+</tr>
+<tr id="k-bot.emptySub">
+  <td class="key"><code>bot.emptySub</code></td>
+  <td class="en" dir="ltr">I can help you understand your financials, spot issues, and answer questions about your books.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">يمكنني مساعدتك في فهم حساباتك المالية، واكتشاف المشكلات، والإجابة على أسئلتك حول دفاترك.</div><div class="chars">88 characters</div></td>
+  <td class="loc">Popup, empty state — the paragraph under that heading.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/popup--bot.emptySub.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/popup--bot.emptySub.png" alt="Arabic page, bot.emptySub"></a><div class="fn">popup--bot.emptySub.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 403 px column; text runs 366 px on 2 lines · 12px.<br><b>390 px:</b> fills its 354 px column; text runs 344 px on 2 lines · 12px.</td>
+</tr>
+<tr id="k-bot.suggestedLabel">
+  <td class="key"><code>bot.suggestedLabel</code></td>
+  <td class="en" dir="ltr">SUGGESTED QUESTIONS</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">أسئلة مقترحة</div><div class="chars">12 characters</div></td>
+  <td class="loc">Popup, the label above the three suggestion chips. Hidden once all three are spent.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/popup--bot.suggestedLabel.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/popup--bot.suggestedLabel.png" alt="Arabic page, bot.suggestedLabel"></a><div class="fn">popup--bot.suggestedLabel.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 403 px column; text runs 51 px on 1 line · 9px.<br><b>390 px:</b> fills its 354 px column; text runs 51 px on 1 line · 9px.</td>
+</tr>
+<tr id="k-bot.q1">
+  <td class="key"><code>bot.q1</code><span class="badge b-await">awaiting review</span></td>
+  <td class="en" dir="ltr">Which unpaid invoices need my attention?</td>
+  <td class="arcell"><div class="await">— awaiting Kuwaiti copy review —</div>
+       <div class="ar-shown"><span class="lbl">shown on /ar today (English):</span> <span dir="ltr" class="en">Which unpaid invoices need my attention?</span></div><div class="chars">40 characters</div></td>
+  <td class="loc">Popup, suggestion chip 1 of 3. Removed from the list the moment it is chosen, and echoed as the visitor's own message bubble.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/popup--bot.q1.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/popup--bot.q1.png" alt="Arabic page, bot.q1"></a><div class="fn">popup--bot.q1.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 373 px column; text runs 238 px on 1 line · 12px.<br><b>390 px:</b> fills its 324 px column; text runs 238 px on 1 line · 12px.</td>
+</tr>
+<tr id="k-bot.a1">
+  <td class="key"><code>bot.a1</code><span class="badge b-await">awaiting review</span></td>
+  <td class="en" dir="ltr">3 customers have unpaid invoices totalling 12,450.000 KWD. The largest open invoice is 7012 from Example Trading Co. W.L.L., 8,000.000 KWD.</td>
+  <td class="arcell"><div class="await">— awaiting Kuwaiti copy review —</div>
+       <div class="ar-shown"><span class="lbl">shown on /ar today (English):</span> <span dir="ltr" class="en">3 customers have unpaid invoices totalling 12,450.000 KWD. The largest open invoice is 7012 from Example Trading Co. W.L.L., 8,000.000 KWD.</span></div><div class="why">Template: <code>{customerCount} {openTotal} {largestInvoiceNo} {largestCustomer} {largestAmount}</code> — filled from the fixture at build time.</div><div class="chars">139 characters</div></td>
+  <td class="loc">Popup, the answer bubble after chip 1, ~0.6 s after the "thinking" row. Figures are the fixture's, substituted at build time.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/popup-answered--bot.a1.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/popup-answered--bot.a1.png" alt="Arabic page, bot.a1"></a><div class="fn">popup-answered--bot.a1.png</div></td>
+  <td class="len"><b>1440 px:</b> 383 px wide inside a 403 px container — it grows with the text; text runs 256 px on 3 lines · 13px.<br><b>390 px:</b> 336 px wide inside a 354 px container — it grows with the text; text runs 256 px on 3 lines · 13px.</td>
+</tr>
+<tr id="k-bot.q2">
+  <td class="key"><code>bot.q2</code><span class="badge b-await">awaiting review</span></td>
+  <td class="en" dir="ltr">How much cash do we have right now?</td>
+  <td class="arcell"><div class="await">— awaiting Kuwaiti copy review —</div>
+       <div class="ar-shown"><span class="lbl">shown on /ar today (English):</span> <span dir="ltr" class="en">How much cash do we have right now?</span></div><div class="chars">35 characters</div></td>
+  <td class="loc">Popup, suggestion chip 2 of 3.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/popup--bot.q2.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/popup--bot.q2.png" alt="Arabic page, bot.q2"></a><div class="fn">popup--bot.q2.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 373 px column; text runs 219 px on 1 line · 12px.<br><b>390 px:</b> fills its 324 px column; text runs 219 px on 1 line · 12px.</td>
+</tr>
+<tr id="k-bot.a2">
+  <td class="key"><code>bot.a2</code><span class="badge b-await">awaiting review</span></td>
+  <td class="en" dir="ltr">142,850.000 KWD available across 2 bank accounts, as of 30 April 2026.</td>
+  <td class="arcell"><div class="await">— awaiting Kuwaiti copy review —</div>
+       <div class="ar-shown"><span class="lbl">shown on /ar today (English):</span> <span dir="ltr" class="en">142,850.000 KWD available across 2 bank accounts, as of 30 April 2026.</span></div><div class="why">Template: <code>{cash} {accountCount} {asOfDate}</code> — filled from the fixture at build time.</div><div class="chars">70 characters</div></td>
+  <td class="loc">Popup, the answer bubble after chip 2 (shown here with all three spent and the suggestion block gone).</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/popup-all--bot.a2.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/popup-all--bot.a2.png" alt="Arabic page, bot.a2"></a><div class="fn">popup-all--bot.a2.png</div></td>
+  <td class="len"><b>1440 px:</b> 383 px wide inside a 403 px container — it grows with the text; text runs 136 px on 2 lines · 13px.<br><b>390 px:</b> 336 px wide inside a 354 px container — it grows with the text; text runs 136 px on 2 lines · 13px.</td>
+</tr>
+<tr id="k-bot.q3">
+  <td class="key"><code>bot.q3</code><span class="badge b-await">awaiting review</span></td>
+  <td class="en" dir="ltr">What were our revenue, expenses and net income this month?</td>
+  <td class="arcell"><div class="await">— awaiting Kuwaiti copy review —</div>
+       <div class="ar-shown"><span class="lbl">shown on /ar today (English):</span> <span dir="ltr" class="en">What were our revenue, expenses and net income this month?</span></div><div class="chars">58 characters</div></td>
+  <td class="loc">Popup, suggestion chip 3 of 3.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/popup--bot.q3.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/popup--bot.q3.png" alt="Arabic page, bot.q3"></a><div class="fn">popup--bot.q3.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 373 px column; text runs 352 px on 1 line · 12px.<br><b>390 px:</b> fills its 324 px column; text runs 306 px on 2 lines · 12px.</td>
+</tr>
+<tr id="k-bot.a3">
+  <td class="key"><code>bot.a3</code><span class="badge b-await">awaiting review</span></td>
+  <td class="en" dir="ltr">April 2026: revenue 48,420.750 KWD, operating expenses 39,190.590 KWD, net income 9,230.160 KWD. Compared with March 2026: revenue up 14.0%, operating expenses up 3.4%, net income 4,655.160 KWD higher.</td>
+  <td class="arcell"><div class="await">— awaiting Kuwaiti copy review —</div>
+       <div class="ar-shown"><span class="lbl">shown on /ar today (English):</span> <span dir="ltr" class="en">April 2026: revenue 48,420.750 KWD, operating expenses 39,190.590 KWD, net income 9,230.160 KWD. Compared with March 2026: revenue up 14.0%, operating expenses up 3.4%, net income 4,655.160 KWD higher.</span></div><div class="why">Template: <code>{month} {revenue} {opex} {net} {prevMonth} {revenueChangePct} {opexChangePct} {netChangeAbs} {netChangeDir}</code> — filled from the fixture at build time.</div><div class="chars">201 characters</div></td>
+  <td class="loc">Popup, the answer bubble after chip 3 — the longest string on the site.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/popup-all--bot.a3.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/popup-all--bot.a3.png" alt="Arabic page, bot.a3"></a><div class="fn">popup-all--bot.a3.png</div></td>
+  <td class="len"><b>1440 px:</b> 383 px wide inside a 403 px container — it grows with the text; text runs 160 px on 4 lines · 13px.<br><b>390 px:</b> 336 px wide inside a 354 px container — it grows with the text; text runs 143 px on 5 lines · 13px.</td>
+</tr>
+<tr id="k-bot.thinking">
+  <td class="key"><code>bot.thinking</code></td>
+  <td class="en" dir="ltr">Thinking...</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">جارٍ التفكير...</div><div class="chars">15 characters</div></td>
+  <td class="loc">Popup, the transient row between the question and the answer (≈0.6 s; not shown at all under prefers-reduced-motion).</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/popup-thinking--bot.thinking.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/popup-thinking--bot.thinking.png" alt="Arabic page, bot.thinking"></a><div class="fn">popup-thinking--bot.thinking.png</div></td>
+  <td class="len"><b>1440 px:</b> 55 px wide inside a 403 px container — it grows with the text; text runs 55 px on 1 line · 11px.<br><b>390 px:</b> 55 px wide inside a 354 px container — it grows with the text; text runs 55 px on 1 line · 11px.</td>
+</tr>
+<tr id="k-bot.demoBoundary">
+  <td class="key"><code>bot.demoBoundary</code></td>
+  <td class="en" dir="ltr">This is a guided demonstration on sample figures, so I can only answer the suggested questions here. In the product, answers come from your own books.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">هذا عرض توضيحي موجّه على أرقام تجريبية، لذلك أجيب هنا عن الأسئلة المقترحة فقط. داخل المنتج تأتي الإجابات من دفاترك أنت.</div><div class="chars">119 characters</div></td>
+  <td class="loc">Popup, the reply to anything typed into the box that is not one of the three suggestions.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/popup-boundary--bot.demoBoundary.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/popup-boundary--bot.demoBoundary.png" alt="Arabic page, bot.demoBoundary"></a><div class="fn">popup-boundary--bot.demoBoundary.png</div></td>
+  <td class="len"><b>1440 px:</b> 383 px wide inside a 403 px container — it grows with the text; text runs 361 px on 2 lines · 13px.<br><b>390 px:</b> 336 px wide inside a 354 px container — it grows with the text; text runs 335 px on 2 lines · 13px.</td>
+</tr>
+<tr id="k-bot.inputLabel">
+  <td class="key"><code>bot.inputLabel</code></td>
+  <td class="en" dir="ltr">Ask a question</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">اطرح سؤالًا</div><div class="chars">11 characters</div></td>
+  <td class="loc">Not visible. The sr-only <label> for the message box (outlined here on the box it labels).</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/popup--bot.inputLabel.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/popup--bot.inputLabel.png" alt="Arabic page, bot.inputLabel"></a><div class="fn">popup--bot.inputLabel.png</div></td>
+  <td class="len"><b>No visual limit.</b> Never painted — it is the accessible name of the message box, announced in full by a screen reader however long it is. The only cost of length is how long it takes to speak, so keep it to a short phrase.</td>
+</tr>
+<tr id="k-bot.placeholder">
+  <td class="key"><code>bot.placeholder</code><span class="badge b-await">awaiting review</span></td>
+  <td class="en" dir="ltr">This website demo answers the suggested questions only.</td>
+  <td class="arcell"><div class="await">— awaiting Kuwaiti copy review —</div>
+       <div class="ar-shown"><span class="lbl">shown on /ar today (English):</span> <span dir="ltr" class="en">This website demo answers the suggested questions only.</span></div><div class="chars">55 characters</div></td>
+  <td class="loc">Popup, placeholder inside the message box (visible until the visitor types).</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/popup--bot.placeholder.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/popup--bot.placeholder.png" alt="Arabic page, bot.placeholder"></a><div class="fn">popup--bot.placeholder.png</div></td>
+  <td class="len"><b>1440 px:</b> 326 px wide inside a 403 px container — it grows with the text; the placeholder is one line and is <b>clipped, never wrapped</b> · 13px.<br><b>390 px:</b> 272 px wide inside a 354 px container — it grows with the text; the placeholder is one line and is <b>clipped, never wrapped</b> · 13px.</td>
+</tr>
+<tr id="k-bot.send">
+  <td class="key"><code>bot.send</code></td>
+  <td class="en" dir="ltr">Send</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">إرسال</div><div class="chars">5 characters</div></td>
+  <td class="loc">Not visible. aria-label on the send button (the paper-plane glyph is aria-hidden).</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/popup--bot.send.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/popup--bot.send.png" alt="Arabic page, bot.send"></a><div class="fn">popup--bot.send.png</div></td>
+  <td class="len"><b>No visual limit.</b> Never painted — it is the accessible name of the send button, announced in full by a screen reader however long it is. The only cost of length is how long it takes to speak, so keep it to a short phrase.</td>
+</tr>
+<tr id="k-bot.disclaimer">
+  <td class="key"><code>bot.disclaimer</code></td>
+  <td class="en" dir="ltr">Guided demo on sample data. Answers in the product come from your own books.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">عرض توضيحي على بيانات تجريبية. داخل المنتج تأتي الإجابات من دفاترك أنت.</div><div class="chars">71 characters</div></td>
+  <td class="loc">Popup, the line under the message box, present in every state.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/popup--bot.disclaimer.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/popup--bot.disclaimer.png" alt="Arabic page, bot.disclaimer"></a><div class="fn">popup--bot.disclaimer.png</div></td>
+  <td class="len"><b>1440 px:</b> fills its 403 px column; text runs 277 px on 1 line · 9px.<br><b>390 px:</b> fills its 354 px column; text runs 277 px on 1 line · 9px.</td>
+</tr>
+<tr class="sec"><th colspan="6">film — the opening animation</th></tr>
+<tr id="k-film.line1">
+  <td class="key"><code>film.line1</code></td>
+  <td class="en" dir="ltr">YOU RUN THE BUSINESS.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">أنت تدير أعمالك.</div><div class="chars">16 characters</div></td>
+  <td class="loc">Film, statement 1 — forms at ≈1.6 s and stays until the block condenses at ≈6.0 s. Captured here at 5.0 s with the film paused.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-statements--film.line1.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-statements--film.line1.png" alt="Arabic page, film.line1"></a><div class="fn">film-statements--film.line1.png</div></td>
+  <td class="len"><b>1440 px:</b> 424 px wide inside a 1260 px container — it grows with the text; text runs 424 px on 1 line · 58px.<br><b>390 px:</b> 176 px wide inside a 367 px container — it grows with the text; text runs 176 px on 1 line · 24px.</td>
+</tr>
+<tr id="k-film.line2">
+  <td class="key"><code>film.line2</code></td>
+  <td class="en" dir="ltr">HASEEB PREPARES THE ACCOUNTING.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">حسيب يجهّز حساباتك.</div><div class="chars">19 characters</div></td>
+  <td class="loc">Film, statement 2 — forms at ≈3.2 s beneath statement 1, with the brand word in teal.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-statements--film.line2.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-statements--film.line2.png" alt="Arabic page, film.line2"></a><div class="fn">film-statements--film.line2.png</div></td>
+  <td class="len"><b>1440 px:</b> 578 px wide inside a 1260 px container — it grows with the text; text runs 393 px on 1 line · 58px.<br><b>390 px:</b> 239 px wide inside a 367 px container — it grows with the text; text runs 163 px on 1 line · 24px.</td>
+</tr>
+<tr id="k-film.line3">
+  <td class="key"><code>film.line3</code></td>
+  <td class="en" dir="ltr">YOU STAY IN CONTROL.</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">وأنت صاحب القرار.</div><div class="chars">17 characters</div></td>
+  <td class="loc">Film, statement 3 — forms at ≈4.6 s; the three then stand as one block.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-statements--film.line3.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-statements--film.line3.png" alt="Arabic page, film.line3"></a><div class="fn">film-statements--film.line3.png</div></td>
+  <td class="len"><b>1440 px:</b> 482 px wide inside a 1260 px container — it grows with the text; text runs 482 px on 1 line · 58px.<br><b>390 px:</b> 199 px wide inside a 367 px container — it grows with the text; text runs 199 px on 1 line · 24px.</td>
+</tr>
+<tr id="k-film.skip">
+  <td class="key"><code>film.skip</code></td>
+  <td class="en" dir="ltr">Skip</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">تخطّي</div><div class="chars">5 characters</div></td>
+  <td class="loc">Film, the Skip button at the top inline-end, present and focused from frame one.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-field--film.skip.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-field--film.skip.png" alt="Arabic page, film.skip"></a><div class="fn">film-field--film.skip.png</div></td>
+  <td class="len"><b>1440 px:</b> 37 px wide inside a 1440 px container — it grows with the text; text runs 37 px on 1 line · 15px.<br><b>390 px:</b> 37 px wide inside a 390 px container — it grows with the text; text runs 37 px on 1 line · 15px.</td>
+</tr>
+<tr id="k-film.skipAria">
+  <td class="key"><code>film.skipAria</code></td>
+  <td class="en" dir="ltr">Skip the opening</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">تخطّي الافتتاح</div><div class="chars">14 characters</div></td>
+  <td class="loc">Not visible. aria-label on the Skip button.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-field--film.skipAria.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-field--film.skipAria.png" alt="Arabic page, film.skipAria"></a><div class="fn">film-field--film.skipAria.png</div></td>
+  <td class="len"><b>No visual limit.</b> Never painted — it is the accessible name of the Skip button, announced in full by a screen reader however long it is. The only cost of length is how long it takes to speak, so keep it to a short phrase.</td>
+</tr>
+<tr id="k-film.tokens[0]">
+  <td class="key"><code>film.tokens[0]</code></td>
+  <td class="en" dir="ltr">Sale</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">بيع</div><div class="chars">3 characters</div></td>
+  <td class="loc">Film, the drifting token field — Canvas 2D, aria-hidden, behind the statements. Visible from frame 0 to ≈6.5 s; from ≈2.4 s the tokens settle into two ordered columns (words in one, amounts aligned on the decimal point in the other). The field is a sample of this 19-entry vocabulary, so see the last column for how often this entry is actually drawn.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-field--tokens.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-field--tokens.png" alt="Arabic page, film.tokens[0]"></a><div class="fn">film-field--tokens.png</div></td>
+  <td class="len">Canvas text, <b>always one line, never wraps</b>. At the base size it measures 18.1 px on a 1440 field (15 px) and 14.5 px on a phone field (12 px); each instance is scaled 0.86–1.71×, so ≈16–31 px at 1440. Words share one ordered column whose width is the widest word in the sample, so a long entry widens the whole ordered block. Instances in the seeded sample: <b>1</b> of 34 at 1440, <b>1</b> of 16 at 390.</td>
+</tr>
+<tr id="k-film.tokens[1]">
+  <td class="key"><code>film.tokens[1]</code></td>
+  <td class="en" dir="ltr">Invoice #1042</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">فاتورة رقم 1042</div><div class="chars">15 characters</div></td>
+  <td class="loc">Film, the drifting token field — Canvas 2D, aria-hidden, behind the statements. Visible from frame 0 to ≈6.5 s; from ≈2.4 s the tokens settle into two ordered columns (words in one, amounts aligned on the decimal point in the other). The field is a sample of this 19-entry vocabulary, so see the last column for how often this entry is actually drawn.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-field--tokens.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-field--tokens.png" alt="Arabic page, film.tokens[1]"></a><div class="fn">film-field--tokens.png</div></td>
+  <td class="len">Canvas text, <b>always one line, never wraps</b>. At the base size it measures 98.2 px on a 1440 field (15 px) and 78.5 px on a phone field (12 px); each instance is scaled 0.86–1.71×, so ≈84–168 px at 1440. Words share one ordered column whose width is the widest word in the sample, so a long entry widens the whole ordered block. Instances in the seeded sample: <b>2</b> of 34 at 1440, <b>2</b> of 16 at 390.</td>
+</tr>
+<tr id="k-film.tokens[2]">
+  <td class="key"><code>film.tokens[2]</code></td>
+  <td class="en" dir="ltr">Payment</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">سداد</div><div class="chars">4 characters</div></td>
+  <td class="loc">Film, the drifting token field — Canvas 2D, aria-hidden, behind the statements. Visible from frame 0 to ≈6.5 s; from ≈2.4 s the tokens settle into two ordered columns (words in one, amounts aligned on the decimal point in the other). The field is a sample of this 19-entry vocabulary, so see the last column for how often this entry is actually drawn.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-field--tokens.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-field--tokens.png" alt="Arabic page, film.tokens[2]"></a><div class="fn">film-field--tokens.png</div></td>
+  <td class="len">Canvas text, <b>always one line, never wraps</b>. At the base size it measures 31.7 px on a 1440 field (15 px) and 25.4 px on a phone field (12 px); each instance is scaled 0.86–1.71×, so ≈27–54 px at 1440. Words share one ordered column whose width is the widest word in the sample, so a long entry widens the whole ordered block. Instances in the seeded sample: <b>0</b> of 34 at 1440, <b>0</b> of 16 at 390. <b>Never drawn at 1440</b> — the sampling seed is fixed, so this entry is absent from every desktop run.</td>
+</tr>
+<tr id="k-film.tokens[3]">
+  <td class="key"><code>film.tokens[3]</code></td>
+  <td class="en" dir="ltr">Expense</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">مصروف</div><div class="chars">5 characters</div></td>
+  <td class="loc">Film, the drifting token field — Canvas 2D, aria-hidden, behind the statements. Visible from frame 0 to ≈6.5 s; from ≈2.4 s the tokens settle into two ordered columns (words in one, amounts aligned on the decimal point in the other). The field is a sample of this 19-entry vocabulary, so see the last column for how often this entry is actually drawn.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-field--tokens.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-field--tokens.png" alt="Arabic page, film.tokens[3]"></a><div class="fn">film-field--tokens.png</div></td>
+  <td class="len">Canvas text, <b>always one line, never wraps</b>. At the base size it measures 50.6 px on a 1440 field (15 px) and 40.5 px on a phone field (12 px); each instance is scaled 0.86–1.71×, so ≈44–87 px at 1440. Words share one ordered column whose width is the widest word in the sample, so a long entry widens the whole ordered block. Instances in the seeded sample: <b>4</b> of 34 at 1440, <b>1</b> of 16 at 390.</td>
+</tr>
+<tr id="k-film.tokens[4]">
+  <td class="key"><code>film.tokens[4]</code></td>
+  <td class="en" dir="ltr">Supplier</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">مورّد</div><div class="chars">5 characters</div></td>
+  <td class="loc">Film, the drifting token field — Canvas 2D, aria-hidden, behind the statements. Visible from frame 0 to ≈6.5 s; from ≈2.4 s the tokens settle into two ordered columns (words in one, amounts aligned on the decimal point in the other). The field is a sample of this 19-entry vocabulary, so see the last column for how often this entry is actually drawn.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-field--tokens.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-field--tokens.png" alt="Arabic page, film.tokens[4]"></a><div class="fn">film-field--tokens.png</div></td>
+  <td class="len">Canvas text, <b>always one line, never wraps</b>. At the base size it measures 28 px on a 1440 field (15 px) and 22.4 px on a phone field (12 px); each instance is scaled 0.86–1.71×, so ≈24–48 px at 1440. Words share one ordered column whose width is the widest word in the sample, so a long entry widens the whole ordered block. Instances in the seeded sample: <b>1</b> of 34 at 1440, <b>0</b> of 16 at 390. Not drawn at 390 in the seeded phone sample.</td>
+</tr>
+<tr id="k-film.tokens[5]">
+  <td class="key"><code>film.tokens[5]</code></td>
+  <td class="en" dir="ltr">Customer</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">عميل</div><div class="chars">4 characters</div></td>
+  <td class="loc">Film, the drifting token field — Canvas 2D, aria-hidden, behind the statements. Visible from frame 0 to ≈6.5 s; from ≈2.4 s the tokens settle into two ordered columns (words in one, amounts aligned on the decimal point in the other). The field is a sample of this 19-entry vocabulary, so see the last column for how often this entry is actually drawn.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-field--tokens.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-field--tokens.png" alt="Arabic page, film.tokens[5]"></a><div class="fn">film-field--tokens.png</div></td>
+  <td class="len">Canvas text, <b>always one line, never wraps</b>. At the base size it measures 33.6 px on a 1440 field (15 px) and 26.9 px on a phone field (12 px); each instance is scaled 0.86–1.71×, so ≈29–57 px at 1440. Words share one ordered column whose width is the widest word in the sample, so a long entry widens the whole ordered block. Instances in the seeded sample: <b>3</b> of 34 at 1440, <b>1</b> of 16 at 390.</td>
+</tr>
+<tr id="k-film.tokens[6]">
+  <td class="key"><code>film.tokens[6]</code></td>
+  <td class="en" dir="ltr">Rent</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">إيجار</div><div class="chars">5 characters</div></td>
+  <td class="loc">Film, the drifting token field — Canvas 2D, aria-hidden, behind the statements. Visible from frame 0 to ≈6.5 s; from ≈2.4 s the tokens settle into two ordered columns (words in one, amounts aligned on the decimal point in the other). The field is a sample of this 19-entry vocabulary, so see the last column for how often this entry is actually drawn.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-field--tokens.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-field--tokens.png" alt="Arabic page, film.tokens[6]"></a><div class="fn">film-field--tokens.png</div></td>
+  <td class="len">Canvas text, <b>always one line, never wraps</b>. At the base size it measures 28.2 px on a 1440 field (15 px) and 22.6 px on a phone field (12 px); each instance is scaled 0.86–1.71×, so ≈24–48 px at 1440. Words share one ordered column whose width is the widest word in the sample, so a long entry widens the whole ordered block. Instances in the seeded sample: <b>2</b> of 34 at 1440, <b>0</b> of 16 at 390. Not drawn at 390 in the seeded phone sample.</td>
+</tr>
+<tr id="k-film.tokens[7]">
+  <td class="key"><code>film.tokens[7]</code></td>
+  <td class="en" dir="ltr">Salaries</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">رواتب</div><div class="chars">5 characters</div></td>
+  <td class="loc">Film, the drifting token field — Canvas 2D, aria-hidden, behind the statements. Visible from frame 0 to ≈6.5 s; from ≈2.4 s the tokens settle into two ordered columns (words in one, amounts aligned on the decimal point in the other). The field is a sample of this 19-entry vocabulary, so see the last column for how often this entry is actually drawn.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-field--tokens.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-field--tokens.png" alt="Arabic page, film.tokens[7]"></a><div class="fn">film-field--tokens.png</div></td>
+  <td class="len">Canvas text, <b>always one line, never wraps</b>. At the base size it measures 37.7 px on a 1440 field (15 px) and 30.2 px on a phone field (12 px); each instance is scaled 0.86–1.71×, so ≈32–64 px at 1440. Words share one ordered column whose width is the widest word in the sample, so a long entry widens the whole ordered block. Instances in the seeded sample: <b>1</b> of 34 at 1440, <b>1</b> of 16 at 390.</td>
+</tr>
+<tr id="k-film.tokens[8]">
+  <td class="key"><code>film.tokens[8]</code></td>
+  <td class="en" dir="ltr">KNET</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">كي نت</div><div class="chars">5 characters</div></td>
+  <td class="loc">Film, the drifting token field — Canvas 2D, aria-hidden, behind the statements. Visible from frame 0 to ≈6.5 s; from ≈2.4 s the tokens settle into two ordered columns (words in one, amounts aligned on the decimal point in the other). The field is a sample of this 19-entry vocabulary, so see the last column for how often this entry is actually drawn.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-field--tokens.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-field--tokens.png" alt="Arabic page, film.tokens[8]"></a><div class="fn">film-field--tokens.png</div></td>
+  <td class="len">Canvas text, <b>always one line, never wraps</b>. At the base size it measures 42.4 px on a 1440 field (15 px) and 34 px on a phone field (12 px); each instance is scaled 0.86–1.71×, so ≈36–73 px at 1440. Words share one ordered column whose width is the widest word in the sample, so a long entry widens the whole ordered block. Instances in the seeded sample: <b>2</b> of 34 at 1440, <b>1</b> of 16 at 390.</td>
+</tr>
+<tr id="k-film.tokens[9]">
+  <td class="key"><code>film.tokens[9]</code></td>
+  <td class="en" dir="ltr">Delivery</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">توصيل</div><div class="chars">5 characters</div></td>
+  <td class="loc">Film, the drifting token field — Canvas 2D, aria-hidden, behind the statements. Visible from frame 0 to ≈6.5 s; from ≈2.4 s the tokens settle into two ordered columns (words in one, amounts aligned on the decimal point in the other). The field is a sample of this 19-entry vocabulary, so see the last column for how often this entry is actually drawn.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-field--tokens.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-field--tokens.png" alt="Arabic page, film.tokens[9]"></a><div class="fn">film-field--tokens.png</div></td>
+  <td class="len">Canvas text, <b>always one line, never wraps</b>. At the base size it measures 42.9 px on a 1440 field (15 px) and 34.3 px on a phone field (12 px); each instance is scaled 0.86–1.71×, so ≈37–73 px at 1440. Words share one ordered column whose width is the widest word in the sample, so a long entry widens the whole ordered block. Instances in the seeded sample: <b>0</b> of 34 at 1440, <b>0</b> of 16 at 390. <b>Never drawn at 1440</b> — the sampling seed is fixed, so this entry is absent from every desktop run.</td>
+</tr>
+<tr id="k-film.tokens[10]">
+  <td class="key"><code>film.tokens[10]</code></td>
+  <td class="en" dir="ltr">Receipt</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">إيصال</div><div class="chars">5 characters</div></td>
+  <td class="loc">Film, the drifting token field — Canvas 2D, aria-hidden, behind the statements. Visible from frame 0 to ≈6.5 s; from ≈2.4 s the tokens settle into two ordered columns (words in one, amounts aligned on the decimal point in the other). The field is a sample of this 19-entry vocabulary, so see the last column for how often this entry is actually drawn.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-field--tokens.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-field--tokens.png" alt="Arabic page, film.tokens[10]"></a><div class="fn">film-field--tokens.png</div></td>
+  <td class="len">Canvas text, <b>always one line, never wraps</b>. At the base size it measures 38 px on a 1440 field (15 px) and 30.4 px on a phone field (12 px); each instance is scaled 0.86–1.71×, so ≈33–65 px at 1440. Words share one ordered column whose width is the widest word in the sample, so a long entry widens the whole ordered block. Instances in the seeded sample: <b>0</b> of 34 at 1440, <b>0</b> of 16 at 390. <b>Never drawn at 1440</b> — the sampling seed is fixed, so this entry is absent from every desktop run.</td>
+</tr>
+<tr id="k-film.tokens[11]">
+  <td class="key"><code>film.tokens[11]</code></td>
+  <td class="en" dir="ltr">Bank transfer</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">تحويل بنكي</div><div class="chars">10 characters</div></td>
+  <td class="loc">Film, the drifting token field — Canvas 2D, aria-hidden, behind the statements. Visible from frame 0 to ≈6.5 s; from ≈2.4 s the tokens settle into two ordered columns (words in one, amounts aligned on the decimal point in the other). The field is a sample of this 19-entry vocabulary, so see the last column for how often this entry is actually drawn.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-field--tokens.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-field--tokens.png" alt="Arabic page, film.tokens[11]"></a><div class="fn">film-field--tokens.png</div></td>
+  <td class="len">Canvas text, <b>always one line, never wraps</b>. At the base size it measures 70.1 px on a 1440 field (15 px) and 56.1 px on a phone field (12 px); each instance is scaled 0.86–1.71×, so ≈60–120 px at 1440. Words share one ordered column whose width is the widest word in the sample, so a long entry widens the whole ordered block. Instances in the seeded sample: <b>0</b> of 34 at 1440, <b>0</b> of 16 at 390. <b>Never drawn at 1440</b> — the sampling seed is fixed, so this entry is absent from every desktop run.</td>
+</tr>
+<tr id="k-film.tokens[12]">
+  <td class="key"><code>film.tokens[12]</code></td>
+  <td class="en" dir="ltr">28.500 KWD</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">28.500 د.ك</div><div class="why">Template: <code>{row1Amount}</code> — filled from the fixture at build time.</div><div class="chars">10 characters</div></td>
+  <td class="loc">Film, the drifting token field — Canvas 2D, aria-hidden, behind the statements. Visible from frame 0 to ≈6.5 s; from ≈2.4 s the tokens settle into two ordered columns (words in one, amounts aligned on the decimal point in the other). The field is a sample of this 19-entry vocabulary, so see the last column for how often this entry is actually drawn.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-field--tokens.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-field--tokens.png" alt="Arabic page, film.tokens[12]"></a><div class="fn">film-field--tokens.png</div></td>
+  <td class="len">Canvas text, <b>always one line, never wraps</b>. At the base size it measures 90 px on a 1440 field (15 px) and 72 px on a phone field (12 px); each instance is scaled 0.86–1.71×, so ≈77–154 px at 1440. Amounts are drawn in DM Mono and split on the three-decimal point so the ordered column aligns on it. Instances in the seeded sample: <b>2</b> of 34 at 1440, <b>0</b> of 16 at 390. Not drawn at 390 in the seeded phone sample.</td>
+</tr>
+<tr id="k-film.tokens[13]">
+  <td class="key"><code>film.tokens[13]</code></td>
+  <td class="en" dir="ltr">450.000 KWD</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">450.000 د.ك</div><div class="why">Template: <code>{row2Amount}</code> — filled from the fixture at build time.</div><div class="chars">11 characters</div></td>
+  <td class="loc">Film, the drifting token field — Canvas 2D, aria-hidden, behind the statements. Visible from frame 0 to ≈6.5 s; from ≈2.4 s the tokens settle into two ordered columns (words in one, amounts aligned on the decimal point in the other). The field is a sample of this 19-entry vocabulary, so see the last column for how often this entry is actually drawn.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-field--tokens.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-field--tokens.png" alt="Arabic page, film.tokens[13]"></a><div class="fn">film-field--tokens.png</div></td>
+  <td class="len">Canvas text, <b>always one line, never wraps</b>. At the base size it measures 99 px on a 1440 field (15 px) and 79.2 px on a phone field (12 px); each instance is scaled 0.86–1.71×, so ≈85–169 px at 1440. Amounts are drawn in DM Mono and split on the three-decimal point so the ordered column aligns on it. Instances in the seeded sample: <b>3</b> of 34 at 1440, <b>2</b> of 16 at 390.</td>
+</tr>
+<tr id="k-film.tokens[14]">
+  <td class="key"><code>film.tokens[14]</code></td>
+  <td class="en" dir="ltr">1,840.000 KWD</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">1,840.000 د.ك</div><div class="why">Template: <code>{row3Amount}</code> — filled from the fixture at build time.</div><div class="chars">13 characters</div></td>
+  <td class="loc">Film, the drifting token field — Canvas 2D, aria-hidden, behind the statements. Visible from frame 0 to ≈6.5 s; from ≈2.4 s the tokens settle into two ordered columns (words in one, amounts aligned on the decimal point in the other). The field is a sample of this 19-entry vocabulary, so see the last column for how often this entry is actually drawn.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-field--tokens.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-field--tokens.png" alt="Arabic page, film.tokens[14]"></a><div class="fn">film-field--tokens.png</div></td>
+  <td class="len">Canvas text, <b>always one line, never wraps</b>. At the base size it measures 117 px on a 1440 field (15 px) and 93.6 px on a phone field (12 px); each instance is scaled 0.86–1.71×, so ≈101–200 px at 1440. Amounts are drawn in DM Mono and split on the three-decimal point so the ordered column aligns on it. Instances in the seeded sample: <b>3</b> of 34 at 1440, <b>2</b> of 16 at 390.</td>
+</tr>
+<tr id="k-film.tokens[15]">
+  <td class="key"><code>film.tokens[15]</code></td>
+  <td class="en" dir="ltr">8,000.000 KWD</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">8,000.000 د.ك</div><div class="why">Template: <code>{largestAmount}</code> — filled from the fixture at build time.</div><div class="chars">13 characters</div></td>
+  <td class="loc">Film, the drifting token field — Canvas 2D, aria-hidden, behind the statements. Visible from frame 0 to ≈6.5 s; from ≈2.4 s the tokens settle into two ordered columns (words in one, amounts aligned on the decimal point in the other). The field is a sample of this 19-entry vocabulary, so see the last column for how often this entry is actually drawn.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-field--tokens.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-field--tokens.png" alt="Arabic page, film.tokens[15]"></a><div class="fn">film-field--tokens.png</div></td>
+  <td class="len">Canvas text, <b>always one line, never wraps</b>. At the base size it measures 117 px on a 1440 field (15 px) and 93.6 px on a phone field (12 px); each instance is scaled 0.86–1.71×, so ≈101–200 px at 1440. Amounts are drawn in DM Mono and split on the three-decimal point so the ordered column aligns on it. Instances in the seeded sample: <b>2</b> of 34 at 1440, <b>1</b> of 16 at 390.</td>
+</tr>
+<tr id="k-film.tokens[16]">
+  <td class="key"><code>film.tokens[16]</code></td>
+  <td class="en" dir="ltr">12,450.000 KWD</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">12,450.000 د.ك</div><div class="why">Template: <code>{openTotal}</code> — filled from the fixture at build time.</div><div class="chars">14 characters</div></td>
+  <td class="loc">Film, the drifting token field — Canvas 2D, aria-hidden, behind the statements. Visible from frame 0 to ≈6.5 s; from ≈2.4 s the tokens settle into two ordered columns (words in one, amounts aligned on the decimal point in the other). The field is a sample of this 19-entry vocabulary, so see the last column for how often this entry is actually drawn.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-field--tokens.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-field--tokens.png" alt="Arabic page, film.tokens[16]"></a><div class="fn">film-field--tokens.png</div></td>
+  <td class="len">Canvas text, <b>always one line, never wraps</b>. At the base size it measures 126 px on a 1440 field (15 px) and 100.8 px on a phone field (12 px); each instance is scaled 0.86–1.71×, so ≈108–215 px at 1440. Amounts are drawn in DM Mono and split on the three-decimal point so the ordered column aligns on it. Instances in the seeded sample: <b>4</b> of 34 at 1440, <b>1</b> of 16 at 390.</td>
+</tr>
+<tr id="k-film.tokens[17]">
+  <td class="key"><code>film.tokens[17]</code></td>
+  <td class="en" dir="ltr">فاتورة</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">KNET</div><div class="why">Deliberately Latin. The Arabic film carries a couple of English tokens as texture, exactly as the English film carries a couple of Arabic ones — so this is not a translation of whatever sits at the same index in en.json. The two vocabularies are independent lists.</div><div class="chars">4 characters</div></td>
+  <td class="loc">Film, the drifting token field — Canvas 2D, aria-hidden, behind the statements. Visible from frame 0 to ≈6.5 s; from ≈2.4 s the tokens settle into two ordered columns (words in one, amounts aligned on the decimal point in the other). The field is a sample of this 19-entry vocabulary, so see the last column for how often this entry is actually drawn.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-field--tokens.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-field--tokens.png" alt="Arabic page, film.tokens[17]"></a><div class="fn">film-field--tokens.png</div></td>
+  <td class="len">Canvas text, <b>always one line, never wraps</b>. At the base size it measures 37.9 px on a 1440 field (15 px) and 30.3 px on a phone field (12 px); each instance is scaled 0.86–1.71×, so ≈33–65 px at 1440. Words share one ordered column whose width is the widest word in the sample, so a long entry widens the whole ordered block. Instances in the seeded sample: <b>4</b> of 34 at 1440, <b>3</b> of 16 at 390.</td>
+</tr>
+<tr id="k-film.tokens[18]">
+  <td class="key"><code>film.tokens[18]</code></td>
+  <td class="en" dir="ltr">مورّد</td>
+  <td class="arcell"><div class="ar" dir="auto" lang="ar">Invoice</div><div class="why">Deliberately Latin. The Arabic film carries a couple of English tokens as texture, exactly as the English film carries a couple of Arabic ones — so this is not a translation of whatever sits at the same index in en.json. The two vocabularies are independent lists.</div><div class="chars">7 characters</div></td>
+  <td class="loc">Film, the drifting token field — Canvas 2D, aria-hidden, behind the statements. Visible from frame 0 to ≈6.5 s; from ≈2.4 s the tokens settle into two ordered columns (words in one, amounts aligned on the decimal point in the other). The field is a sample of this 19-entry vocabulary, so see the last column for how often this entry is actually drawn.</td>
+  <td class="shot"><a href="screenshots/HASEEB-4113/ar-context/film-field--tokens.png"><img loading="lazy" src="screenshots/HASEEB-4113/ar-context/film-field--tokens.png" alt="Arabic page, film.tokens[18]"></a><div class="fn">film-field--tokens.png</div></td>
+  <td class="len">Canvas text, <b>always one line, never wraps</b>. At the base size it measures 51.8 px on a 1440 field (15 px) and 41.4 px on a phone field (12 px); each instance is scaled 0.86–1.71×, so ≈45–89 px at 1440. Words share one ordered column whose width is the widest word in the sample, so a long entry widens the whole ordered block. Instances in the seeded sample: <b>0</b> of 34 at 1440, <b>0</b> of 16 at 390. <b>Never drawn at 1440</b> — the sampling seed is fixed, so this entry is absent from every desktop run.</td>
+</tr>
+</tbody>
+</table>
+
+<p class="foot">Generated from <code>src/copy/ar.json</code>, <code>src/copy/en.json</code>, <code>src/fixture/sample-company.json</code> and <code>src/site.template.html</code> at <code>f46d61c</code>. Measurements and screenshots taken with Playwright 1.59.1 (Chromium) against the review server at <code>http://localhost:4113/ar</code>, viewports 1440×900 and 390×844, device scale 1. Plain-text twin of this page: <code>docs/HASEEB-4113-arabic-context.md</code>.</p>
+</div>
