@@ -42,6 +42,18 @@
     readyQueue.splice(0).forEach(function (fn) { fn(); });
   }
 
+  /* THE PAGE-LEVEL FLOOR (round 8). This timer belongs to the PAGE, not to
+     the film, and it is armed here — before any module below it can throw,
+     and without asking whether there is a film at all. Whatever happens
+     further down this file, the gate opens. On every healthy path it is a
+     no-op: the film hands off at ~6.8 s, and a page with no film to play
+     releases the gate immediately. Ten and a half seconds is deliberately
+     just past the film's own 10.2 s guard, so this is the last JavaScript
+     layer to fire and never the one that pre-empts a working film. Below it
+     there is only CSS, which reveals the sections and releases the scroll
+     lock on the browser's own animation clock. */
+  window.setTimeout(markPageReady, 10500);
+
   /* ---------------------------------------------------------
      Reveal on scroll
      --------------------------------------------------------- */
@@ -222,6 +234,14 @@
       return Array.prototype.slice.call(chips.querySelectorAll('.bot-chip'));
     }
 
+    /* The thread carries tabindex="-1" in the markup so it can take focus
+       without entering the tab order; focusables() skips tabindex="-1", so
+       the drawer's tab cycle is unchanged by this. */
+    function moveFocusToThread() {
+      if (!thread || !thread.focus) return;
+      try { thread.focus({ preventScroll: true }); } catch (e) { thread.focus(); }
+    }
+
     /* the one place that decides what is clickable */
     function syncControls() {
       remaining().forEach(function (c) { c.disabled = busy; });
@@ -355,6 +375,17 @@
       if (busy) return;
       var key = chip.getAttribute('data-answer');
       var label = chip.textContent.trim();
+      /* FOCUS MOVES FIRST, AND ONLY THEN IS THE CHIP REMOVED (round 8).
+         Taking the focused element out of the document drops focus to
+         <body>: the keyboard visitor loses their place inside an open
+         dialog, and the next Tab starts again from the top of the page.
+         The next chip cannot hold focus either — syncControls() disables
+         every remaining chip while the answer composes, and disabling the
+         focused element blurs it — so focus goes to the thread, which is
+         the live region the answer is about to land in and the one thing
+         here that survives the whole thinking phase. finish() hands it on
+         to the next chip afterwards. */
+      moveFocusToThread();
       /* spent the moment it is chosen: a second click has nothing to hit */
       if (chip.parentNode) chip.parentNode.removeChild(chip);
       addUser(label);
@@ -1169,12 +1200,22 @@
     window.addEventListener('error', rescue);
     window.addEventListener('unhandledrejection', rescue);
 
+    /* THE LAYER THAT SURVIVES A DEAD CLOCK (round 8). `inert` is the one
+       thing the CSS failsafe cannot put back, and the film's own guard
+       timer cannot put it back either if setTimeout is what died. This
+       listener is driven by the browser's animation clock: the ten-second
+       filmFailsafe keyframe on .film ends whether or not a single rAF
+       callback or timer has run since load, and its animationend runs the
+       same teardown as everything else. */
+    root.addEventListener('animationend', function (ev) {
+      if (ev.animationName === 'filmFailsafe') rescue();
+    });
+
     var film = createFilm(root, {
       handoffTarget: function () { return document.querySelector('.nav .wordmark'); },
       onStart: function () {
         scrollY = window.scrollY;
         document.body.classList.add('film-playing');
-        setInert(true);
       },
       onHandoff: markPageReady,
       onEnd: function () {
@@ -1198,12 +1239,26 @@
     if (status !== 'playing') {
       teardown();
     } else {
+      /* INERT IS NOT SET UNTIL THE LOOP HAS PROVEN ITSELF (round 8). It used
+         to be set in onStart, before a single frame had been drawn — so a
+         requestAnimationFrame that never called anything back left the whole
+         page inert with nothing alive to undo it. `inert` is not a class or
+         a style: no stylesheet can remove an attribute, so every layer that
+         puts it on has to be one that can take it off again. It is armed on
+         the SECOND animation frame, which is the cheapest available proof
+         that the browser is still calling this page back. */
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(function () {
+          if (root.parentNode && document.body.classList.contains('film-playing')) setInert(true);
+        });
+      });
+
       /* A last-resort timer that belongs to the PAGE, not to the film. The
-         film has its own watchdog, but if the module's loop and its timers
-         are lost together this one is still armed, and it is the only layer
-         that can put back the two things CSS cannot: the `inert` attribute
-         on nav/main/footer and the body scroll lock. Beyond it there is only
-         the CSS failsafe, which hides the overlay and nothing more. */
+         film has its own watchdog; if the module's loop and its timers are
+         lost together this one is still armed. Beyond it lie the two layers
+         that need no timer at all: the CSS failsafe, which hides the overlay,
+         reveals the sections and releases the scroll lock, and the
+         animationend handler above, which removes the inert attribute. */
       guard = window.setTimeout(teardown, 10200);
     }
   })();

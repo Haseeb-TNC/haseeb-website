@@ -167,15 +167,43 @@ check(3, 'removed-section copy is gone from the WHOLE file and the section id se
      not a removed section. It is allowed in meta.description and nowhere else,
      so it is asserted separately and only against <body>. */
   const announcement = ['Founding cohort now forming', 'الدفعة التأسيسية قيد التشكيل'];
+
+  /* ROUND 8. Two more things were removed by founder instruction on
+     2026-09-03, and neither had a tripwire, so both could have come back in
+     a copy edit without anything going red:
+
+       · the hero's explanatory sub-paragraph — the .hero-sub ELEMENT and the
+         hero.sub KEY it was rendered from. Asserting only the phrase would
+         miss a rewritten sub-paragraph, which is the likelier regression, so
+         what is asserted is that the element and the key do not exist;
+       · the "KWD · 3 decimals" chip. Its wording is asserted in every form
+         it shipped in and in both languages, because the objection was to
+         telling a visitor about decimal places at all, not to one phrasing.
+
+     The three-decimal RULE is untouched by this: it lives in the fixture and
+     in tripwires 16 and 17, which is where a decimal-place claim belongs. */
+  const removedChip = ['KWD · 3 decimals', 'three decimals', 'منازل عشرية'];
   const want = ['cohort', 'how', 'kuwait', 'top', 'ask'].sort().join(',');
   const problems = [];
   const notes = [];
+
+  for (const file of ['src/copy/en.json', 'src/copy/ar.json']) {
+    const copy = JSON.parse(read(file));
+    if (copy.hero && Object.prototype.hasOwnProperty.call(copy.hero, 'sub')) {
+      problems.push(`${file}: the removed hero.sub key is back`);
+    }
+  }
 
   for (const page of BUILT) {
     const html = read(page);
     for (const phrase of gone) {
       if (html.includes(phrase)) problems.push(`${page}: "${phrase}" (whole-file scan)`);
     }
+    for (const phrase of removedChip) {
+      if (html.includes(phrase)) problems.push(`${page}: the removed decimals chip wording "${phrase}" (whole-file scan)`);
+    }
+    const heroSub = (html.match(/<[a-zA-Z]+[^>]*\sclass="[^"]*\bhero-sub\b[^"]*"[^>]*>/g) || []).length;
+    if (heroSub) problems.push(`${page}: ${heroSub} .hero-sub element(s), removed in round 7`);
     const body = bodyOf(html);
     const bodyText = renderedText(body).replace(/\s+/g, ' ');
     for (const phrase of announcement) {
@@ -188,7 +216,7 @@ check(3, 'removed-section copy is gone from the WHOLE file and the section id se
 
   return {
     ok: problems.length === 0,
-    detail: problems.join(' · ') || `${gone.length} phrases scanned whole-file · announcement absent from both bodies · ids = [${want}]` + (notes.length ? ` · ${notes.join(' · ')}` : ''),
+    detail: problems.join(' · ') || `${gone.length} phrases scanned whole-file · announcement absent from both bodies · ids = [${want}] · no .hero-sub element and no hero.sub key in either copy file · ${removedChip.length} decimals-chip wordings absent from both pages` + (notes.length ? ` · ${notes.join(' · ')}` : ''),
     exempt: ['"Founding cohort now forming" / "الدفعة التأسيسية قيد التشكيل" may appear in <head> (meta.description) — asserted absent from <body> only. Every other removed-section phrase has NO exemption and is scanned across the whole file.']
   };
 });
@@ -901,6 +929,113 @@ check(19, 'no HTML comment survives into any deployed page', () => {
     ok: problems.length === 0,
     detail: problems.join(' · ') || `${seen.join(' · ')} — internal notes live in docs/, which .vercelignore keeps out of the deployment`
   };
+});
+
+/* ══════════════  round 8 · tripwires 20 and 21  ══════════════════════════
+   Two things that were true of the shipped pages and asserted by nothing. */
+
+/* The launcher sentence, held HERE as a literal exactly as the founder wrote
+   it (docs/HASEEB-4113-round7-spec.md: "Launcher headline EXACTLY"). This is
+   the same discipline tripwire 7 applies to the hero's supporting line, and
+   for the same reason: comparing the page against src/copy/*.json passes on
+   any rewrite of those files, which is precisely the edit being guarded
+   against. Asserted on the ELEMENT, because the sentence appears nowhere
+   else on the page and a whole-file test would pass on a deleted launcher.
+
+   ONE literal covers both pages: src/copy/ar.json carries the English line
+   today, and the Arabic wording in docs/HASEEB-4113-arabic-copy-for-approval
+   .txt has not been approved. When it is, this constant is where that change
+   is recorded — a copy edit on its own goes red here, which is the point. */
+const LAUNCHER_LOCKED = 'Talk to Haseeb like you talk to your accountant.';
+
+check(20, 'the rendered .bot-launcher-text element IS the locked launcher sentence, both pages', () => {
+  const problems = [];
+  const seen = [];
+  for (const page of BUILT) {
+    const html = read(page);
+    const els = html.match(/<span[^>]*\sclass="[^"]*\bbot-launcher-text\b[^"]*"[^>]*>([\s\S]*?)<\/span>/g) || [];
+    if (els.length !== 1) {
+      problems.push(`${page}: ${els.length} .bot-launcher-text element(s), expected exactly 1`);
+      continue;
+    }
+    const rendered = plainText(els[0].replace(/^<span[^>]*>/, '').replace(/<\/span>$/, ''));
+    seen.push(`${page}: "${rendered}"`);
+    if (rendered !== LAUNCHER_LOCKED) {
+      problems.push(`${page}: the launcher renders "${rendered}", the locked sentence is "${LAUNCHER_LOCKED}"`);
+    }
+  }
+  return { ok: problems.length === 0, detail: problems.join(' · ') || seen.join(' · ') };
+});
+
+check(21, 'the script-death failsafe is complete: CSS alone reveals the page and releases the scroll, and inert is never left behind', () => {
+  /* The round-7 failsafe hid the overlay and stopped there, so a script that
+     died without throwing left a blank, unscrollable, inert page underneath
+     a now-invisible film. Every layer that closes that is asserted here, in
+     the file that owns it. What this cannot assert is the behaviour — that
+     is the Playwright death-path run in the round-8 commit body — but it can
+     assert that no layer has been deleted. */
+  const css = read('assets/site.css');
+  const js = read('assets/site.js');
+  const problems = [];
+  const seen = [];
+
+  /* ---- 1. CSS reveals the sections without any script ---- */
+  if (!/html\.js\s\.reveal\s*\{[^}]*animation:\s*revealFailsafe\s+10s/.test(css)) {
+    problems.push('assets/site.css: html.js .reveal does not carry the revealFailsafe animation, so a dead script leaves the page blank');
+  }
+  const revealKf = css.match(/@keyframes\s+revealFailsafe\s*\{([\s\S]*?)\n\}/);
+  if (!revealKf || !/to\s*\{[^}]*opacity:\s*1/.test(revealKf[1])) {
+    problems.push('assets/site.css: @keyframes revealFailsafe does not end at opacity 1');
+  }
+  if (!/body\.ui-ready\s\.reveal\s*\{[^}]*animation:\s*none/.test(css)) {
+    problems.push('assets/site.css: nothing disarms revealFailsafe once the page is ready, so sections would reveal themselves on a healthy page');
+  }
+  else seen.push('CSS: html.js .reveal armed with revealFailsafe 10s, disarmed by body.ui-ready');
+
+  /* ---- 2. CSS gives the scroll back without any script ---- */
+  if (!/body\.film-playing\s*\{[^}]*overflow:\s*hidden[^}]*animation:\s*filmLockRelease\s+10s/.test(css)) {
+    problems.push('assets/site.css: body.film-playing locks the scroll with no CSS release, so a dead script leaves the page unscrollable');
+  }
+  const lockKf = css.match(/@keyframes\s+filmLockRelease\s*\{([\s\S]*?)\n\}/);
+  const lockEnd = lockKf && (lockKf[1].match(/to\s*\{[^}]*overflow:\s*([a-z]+)/) || [])[1];
+  if (!lockEnd || lockEnd === 'hidden' || lockEnd === 'clip') {
+    problems.push(`assets/site.css: @keyframes filmLockRelease ends at overflow ${lockEnd || '(none)'} — the lock is never released`);
+  } else seen.push(`CSS: body.film-playing releases to overflow ${lockEnd} at 10s`);
+
+  /* ---- 3. the film overlay's own failsafe, and the ten-second clocks ---- */
+  const durations = [...css.matchAll(/animation:\s*(?:filmFailsafe|revealFailsafe|filmLockRelease)\s+(\d+)s/g)].map((m) => m[1]);
+  if (durations.length !== 3 || new Set(durations).size !== 1) {
+    problems.push(`assets/site.css: the three failsafe clocks are [${durations.join(', ')}]s — they must all be the same one`);
+  } else seen.push(`CSS: three failsafe animations, all ${durations[0]}s`);
+
+  /* ---- 4. inert is applied only after the loop has proven itself ---- */
+  const wiringAt = js.indexOf('function openingFilm()');
+  if (wiringAt < 0) problems.push('assets/site.js: no openingFilm wiring');
+  const wiring = wiringAt < 0 ? '' : js.slice(wiringAt);
+  const onStart = wiring.match(/onStart:\s*function\s*\([^)]*\)\s*\{([\s\S]*?)\n\s{6}\},/);
+  if (!onStart) problems.push('assets/site.js: cannot find the film onStart handler');
+  else if (/setInert\(true\)/.test(onStart[1])) {
+    problems.push('assets/site.js: onStart applies inert before a frame has been drawn — CSS cannot remove an attribute, so a rAF that never calls back leaves the page inert for ever');
+  }
+  if (!/requestAnimationFrame\([\s\S]{0,160}?requestAnimationFrame\([\s\S]{0,240}?setInert\(true\)/.test(wiring)) {
+    problems.push('assets/site.js: inert is not armed from a second animation frame');
+  } else seen.push('site.js: inert armed on the second rAF tick only');
+
+  /* ---- 5. the one layer that can take inert off again with no timer ---- */
+  if (!/addEventListener\('animationend'[\s\S]{0,240}?animationName\s*===\s*'filmFailsafe'/.test(wiring)) {
+    problems.push("assets/site.js: nothing listens for the CSS failsafe's animationend, so inert survives a dead rAF and a dead setTimeout together");
+  } else seen.push('site.js: animationend on filmFailsafe tears the overlay down and removes inert');
+
+  /* ---- 6. the page-level ready floor, armed outside the film ---- */
+  const floor = js.match(/window\.setTimeout\(markPageReady,\s*(\d+)\)/);
+  if (!floor) problems.push('assets/site.js: no page-level markPageReady floor');
+  else if (wiringAt >= 0 && js.indexOf(floor[0]) > wiringAt) {
+    problems.push('assets/site.js: the markPageReady floor is armed inside the film wiring, so it cannot cover a film that never runs');
+  } else if (Number(floor[1]) <= 10000) {
+    problems.push(`assets/site.js: the markPageReady floor at ${floor[1]}ms pre-empts the 10s film`);
+  } else seen.push(`site.js: page-level markPageReady floor at ${floor[1]}ms, armed before the film wiring`);
+
+  return { ok: problems.length === 0, detail: problems.join(' · ') || seen.join(' · ') };
 });
 
 /* ------------------------------------------------------------------ */

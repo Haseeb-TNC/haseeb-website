@@ -247,7 +247,11 @@
       <p class="bot-empty-title">{{bot.emptyTitle}}</p>
       <p class="bot-empty-sub">{{bot.emptySub}}</p>
     </div>
-    <div class="bot-thread" id="botThread" aria-live="polite"></div>
+    <!-- tabindex="-1" so the thread can TAKE focus without joining the tab
+         order: choosing a suggestion removes the chip the visitor is
+         standing on, and site.js moves focus here first so it never falls to
+         <body> for the length of the thinking phase. -->
+    <div class="bot-thread" id="botThread" aria-live="polite" tabindex="-1"></div>
     <div class="bot-suggest" id="botSuggest">
       <p class="bot-sugg-label">{{bot.suggestedLabel}}</p>
       <!-- dir="auto" so a chip whose text is still English on the Arabic

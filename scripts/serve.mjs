@@ -13,9 +13,22 @@
    The rewrite table is READ FROM vercel.json so this server cannot drift
    away from production, and the refusal list is READ FROM .vercelignore for
    the same reason: docs/, src/, scripts/, package.json and *.md are not part
-   of the deployment, so they are 404 here too. .git is refused on top of
-   that list — it is not in .vercelignore because Vercel never uploads it,
-   but this server is pointed at a working clone.
+   of the deployment, so they are 404 here too.
+
+   TWO THINGS ARE REFUSED ON TOP OF THAT LIST, and neither of them can simply
+   be added to .vercelignore:
+
+     .git         — not in .vercelignore because Vercel never uploads it,
+                    but this server is pointed at a working clone.
+     vercel.json  — deployment configuration rather than content. Putting it
+                    in .vercelignore would stop the platform reading it, and
+                    would stop loadRewrites() below reading it too — the
+                    rewrites are the whole reason this server exists. So it
+                    is refused HERE, which is the only way to review the site
+                    without also serving its configuration at a URL.
+
+   Both are named in the DENIED lists built below and both are printed in the
+   "refused" line at start-up, so nothing is refused invisibly.
 
    Nothing is cached (Cache-Control: no-store), so a rebuild is visible on
    reload without a hard refresh.
@@ -56,8 +69,10 @@ function loadRewrites() {
 /* ── the refusal list, from .vercelignore ─────────────────────────────── */
 
 function loadDenied() {
+  /* the two built-in refusals, for the reasons given in the header: both are
+     outside .vercelignore by necessity, not by oversight */
   const dirs = ['.git'];
-  const files = [];
+  const files = ['vercel.json'];
   const suffixes = [];
   const raw = existsSync(join(ROOT, '.vercelignore'))
     ? readFileSync(join(ROOT, '.vercelignore'), 'utf8')

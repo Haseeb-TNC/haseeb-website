@@ -230,8 +230,27 @@ html.js .reveal {
   opacity: 0;
   transform: translateY(14px);
   transition: opacity .55s ease, transform .55s cubic-bezier(.2,.8,.2,1);
+  /* THE OTHER HALF OF THE FAILSAFE (round 8). Hiding these sections is the
+     price of the entrance animation, and script is what pays it back. If
+     script stops without throwing — a dead rAF, a dead setTimeout, no error
+     event — the CSS failsafe on .film takes the overlay away and, without
+     this, hands the visitor an EMPTY page: fourteen sections still at
+     opacity 0 and nothing left alive to reveal them. So the hiding is armed
+     for ten seconds and no longer. The clock starts when script adds the
+     `js` class, runs on the browser's own animation timeline (it needs
+     neither rAF callbacks nor timers), and is disarmed below the moment the
+     page is genuinely ready — which on every healthy path is seconds
+     earlier. */
+  animation: revealFailsafe 10s step-end forwards;
 }
-html.js .reveal.visible { opacity: 1; transform: none; }
+html.js .reveal.visible { opacity: 1; transform: none; animation: none; }
+/* disarmed: the page reached its ready state, so the entrance belongs to
+   script again and sections reveal on scroll as designed */
+html.js body.ui-ready .reveal { animation: none; }
+@keyframes revealFailsafe {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
 
 /* ---------------- nav ---------------- */
 
@@ -906,8 +925,17 @@ body.bot-open .bot-launcher { display: none; }
   html:not(.js) .nav-menu {
     display: flex;
     position: static;
-    inline-size: 100%;
-    padding-inline: 0;
+    /* The stacked list bleeds to the viewport edges and carries the SAME
+       24px of inner padding as the scripted panel above. It used to sit
+       inside the wrap with padding-inline: 0, and the language switch — a
+       full-width row whose divider is drawn by border-block-start on a
+       999px pill — then curved its rule down and off both edges of the
+       white box. The padding gives that curve room to close inside the box;
+       the negative margin is what keeps the links aligned with the wordmark
+       while it does. */
+    inline-size: calc(100% + 48px);
+    margin-inline: -24px;
+    padding-inline: 24px;
     padding-block: 2px 10px;
     border-block-end: 0;
     box-shadow: none;
@@ -1116,13 +1144,33 @@ body.bot-open .bot-launcher { display: none; }
 /* ---- the film owns the screen while it runs, and the two floating
         controls do not exist until it has handed off ---- */
 
-body.film-playing { overflow: hidden; }
+body.film-playing {
+  overflow: hidden;
+  /* and the lock is armed for ten seconds, not for ever (round 8). The class
+     is removed by teardown() on every healthy path; if script is gone the
+     browser's own animation clock releases the scroll here, because a page
+     that cannot scroll is as broken as a page that cannot be read. */
+  animation: filmLockRelease 10s step-end forwards;
+}
+@keyframes filmLockRelease {
+  from { overflow: hidden; }
+  to   { overflow: visible; }
+}
 
-/* ---- CSS-ONLY FAILSAFE (round 7 §8) -----------------------------------
+/* ---- CSS-ONLY FAILSAFE (round 7 §8, completed in round 8) -------------
    If the script dies mid-film the overlay must not sit on top of a working
    page for ever. This runs on the element itself, needs no JavaScript at
    all, and takes the overlay out of sight and out of the hit-test at ten
    seconds — nearly three seconds after the longest legitimate run.
+
+   Round 8: hiding the overlay was never enough on its own. The other two
+   things the visitor is left with are handled beside the declarations that
+   cause them — the reveal hiding disarms itself (html.js .reveal above) and
+   the scroll lock releases itself (immediately above). The one thing CSS
+   cannot put back is the `inert` attribute, so site.js no longer applies it
+   until the loop has proven itself, and listens for this animation's
+   `animationend` — an event the browser dispatches from the same animation
+   clock, with no rAF callback and no timer involved — to remove it.
 
    It is deliberately NOT inside FILM-CSS:START/END: docs/film-proof.html
    copies that region verbatim and replays the film on a button press
