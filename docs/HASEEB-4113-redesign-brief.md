@@ -1,5 +1,31 @@
 # HASEEB-4113 — Public-website redesign brief · v2 (Lane 1, founder dispatch 2026-09-02)
 
+> **⚠️ SUPERSEDED IN PART BY `docs/HASEEB-4113-round7-spec.md` (founder,
+> 2026-09-03). Read that first.** Everything in this brief still binds except
+> the following, which round 7 changed:
+> - §4 hero: `hero.sub`, the explanatory sub-paragraph, is REMOVED. The hero
+>   is headline, the locked supporting line, the actions and the cohort fact.
+> - §4 Kuwait: the standalone “KWD · 3 decimals” chip and the “KWD to three
+>   decimals.” sentence are REMOVED from both pages.
+> - §4 drawer: the header's teal “H” mark is REMOVED. The drawer's identity is
+>   the `HASEEB.` wordmark, in Bebas Neue, as in the nav. The empty state's
+>   mark is removed too. `bot.launcher` is now “Talk to Haseeb like you talk
+>   to your accountant.”, shown in ENGLISH on the Arabic page pending Kuwaiti
+>   copy review, and the three suggested questions and their answers change
+>   with it. Each suggestion is single-use per conversation (round 7 §4).
+> - §5: sample figures no longer live in the copy files at all. `src/fixture/
+>   sample-company.json` is the one fixture; the copy tables carry
+>   `{placeholders}` and tripwire 18 fails on any literal figure in them.
+> - §5 / §8 tripwire 4: the form now CARRIES an action —
+>   `action="mailto:founder@haseeb.app" method="post" enctype="text/plain"` —
+>   so it works with scripting off. The tripwire changed from “no action” to
+>   “exactly that action and nothing else”.
+> - §8: fourteen tripwires became nineteen (15–16 film, 17 fixture
+>   reconciliation, 18 no literal figure in copy, 19 no HTML comment in a
+>   deployed page).
+> - §6 / the opening film: see the note at the head of
+>   `docs/HASEEB-4113-opening-film-spec.md`.
+
 v2 folds in an adversarial review (35 findings, 6 blocking) and the Arabic copy
 review (`docs/HASEEB-4113-arabic-review.md`). This is the build spec for the
 redesign of haseeb.app and the first-checkpoint artifact (section map +

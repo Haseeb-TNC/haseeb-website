@@ -4,10 +4,13 @@
   "version": "1.0.0",
   "description": "Static public website for Haseeb. Built from src/site.template.html and src/copy/*.json.",
   "type": "module",
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "site:build": "node scripts/build.mjs",
     "site:check": "node scripts/check.mjs",
+    "site:serve": "node scripts/serve.mjs",
     "site:axe": "node scripts/axe.mjs"
   }
 }

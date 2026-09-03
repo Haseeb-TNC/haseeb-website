@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 /* ============================================================
    Haseeb public site — definition-of-done tripwires.
-   Brief §8: fourteen checks, plus 15 and 16 for the opening film
-   (docs/HASEEB-4113-opening-film-spec.md). Exit 1 on any failure.
+   Brief §8: fourteen checks, plus 15 and 16 for the opening film and
+   17, 18 and 19 for round 7 (docs/HASEEB-4113-round7-spec.md) — the one
+   fixture, the copy files that may not carry a figure, and the deployed
+   pages that may not carry a comment. Exit 1 on any failure.
    node >= 18, zero dependencies.
    ============================================================ */
 
@@ -191,27 +193,50 @@ check(3, 'removed-section copy is gone from the WHOLE file and the section id se
   };
 });
 
-check(4, 'three-field form, no endpoint, no network call in site.js', () => {
+/* Tripwire 4 changed in round 7 (§8): the form used to be asserted to have
+   NO action at all, which is exactly what made it useless with scripting
+   off. It now must carry the mailto action, that method and that encoding,
+   and nothing that could reach a server. */
+const FORM_ACTION = 'mailto:founder@haseeb.app';
+
+check(4, 'three-field form with the mailto action and nothing that reaches a server', () => {
   const problems = [];
+  const seen = [];
   for (const page of BUILT) {
     const html = read(page);
     const form = html.match(/<form[^>]*id="cohortForm"[\s\S]*?<\/form>/);
     if (!form) { problems.push(`${page}: #cohortForm missing`); continue; }
     const f = form[0];
+    const openTag = f.match(/^<form[^>]*>/)[0];
     const inputs = f.match(/<input[^>]*>/g) || [];
     const types = inputs.map((i) => attr(i, 'type')).sort().join(',');
     if (inputs.length !== 3) problems.push(`${page}: ${inputs.length} inputs`);
     if (types !== 'email,tel,text') problems.push(`${page}: input types = ${types}`);
     if (/<select/i.test(f)) problems.push(`${page}: <select> present`);
     if (/<textarea/i.test(f)) problems.push(`${page}: <textarea> present`);
-    if (/<form[^>]*\saction\s*=/.test(f)) problems.push(`${page}: form has an action attribute`);
+
+    const action = attr(openTag, 'action');
+    const method = (attr(openTag, 'method') || '').toLowerCase();
+    const enc = (attr(openTag, 'enctype') || '').toLowerCase();
+    if (action !== FORM_ACTION) problems.push(`${page}: #cohortForm action = ${action === null ? '(absent)' : `"${action}"`}, must be exactly "${FORM_ACTION}"`);
+    if (method !== 'post') problems.push(`${page}: #cohortForm method = "${method}", must be post`);
+    if (enc !== 'text/plain') problems.push(`${page}: #cohortForm enctype = "${enc}", must be text/plain`);
+
+    /* no form ANYWHERE on the page may post to a host */
+    for (const tag of (html.match(/<form[^>]*>/g) || [])) {
+      const a = attr(tag, 'action');
+      if (a && /^https?:/i.test(a)) problems.push(`${page}: a <form> has an http(s) action "${a}"`);
+      if (a && a !== FORM_ACTION) problems.push(`${page}: a <form> has an unexpected action "${a}"`);
+    }
     if (!html.includes('mailto:founder@haseeb.app')) problems.push(`${page}: founder mailto missing`);
+    seen.push(`${page}: 3 inputs [${types}], action="${action}" method=${method} enctype=${enc}`);
   }
   const js = read('assets/site.js');
   for (const banned of ['fetch(', 'XMLHttpRequest', 'sendBeacon', 'WebSocket']) {
     if (js.includes(banned)) problems.push(`site.js contains ${banned}`);
   }
-  return { ok: problems.length === 0, detail: problems.join(' · ') || 'ok' };
+  seen.push('assets/site.js: no fetch / XMLHttpRequest / sendBeacon / WebSocket');
+  return { ok: problems.length === 0, detail: problems.join(' · ') || seen.join(' · ') };
 });
 
 check(5, 'info@haseeb.app and both legal pages are linked everywhere required', () => {
@@ -394,33 +419,42 @@ check(14, 'the build is idempotent (a second run produces no diff)', () => {
   };
 });
 
-/* ══════════════════  the opening film · tripwires 15 and 16  ══════════════════
-   docs/HASEEB-4113-opening-film-spec.md. The film markup is delimited on both
-   built pages by the FILM:START / FILM:END comments, and every assertion below
-   is scoped to that region — the page around it legitimately says "approve"
-   and "Kuwait", the film may not. */
+/* ══════════════  the opening film · tripwires 15 and 16  ══════════════
+   docs/HASEEB-4113-round7-spec.md §2. The film markup is the .film overlay
+   element on both built pages, located by DIV NESTING rather than by the
+   FILM:START / FILM:END comments it used to be delimited by — round 7 strips
+   every comment out of the deployed HTML (tripwire 19), so those markers now
+   live only inside the build. Every assertion below is scoped to that
+   element: the page around it legitimately says "approve" and "Kuwait", the
+   film may not. */
+
+function divEnd(html, at) {
+  const re = /<div\b|<\/div>/g;
+  re.lastIndex = at;
+  let depth = 0;
+  let m;
+  while ((m = re.exec(html))) {
+    depth += m[0] === '</div>' ? -1 : 1;
+    if (depth === 0) return m.index + m[0].length;
+  }
+  return -1;
+}
 
 function filmMarkup(html, page) {
-  const start = html.indexOf('<!-- FILM:START');
-  const end = html.indexOf('<!-- FILM:END -->');
-  if (start < 0 || end < 0) throw new Error(`${page}: FILM:START / FILM:END markers missing`);
-  const afterComment = html.indexOf('-->', start);
-  return html.slice(afterComment + 3, end);
+  const open = html.search(/<div[^>]*\sclass="film"/);
+  if (open < 0) throw new Error(`${page}: no .film overlay element`);
+  const end = divEnd(html, open);
+  if (end < 0) throw new Error(`${page}: .film is not closed`);
+  return html.slice(open, end);
 }
 
 /* the [start,end) span of the first <div class="film-field">, by div nesting */
 function fieldSpan(markup, page) {
   const open = markup.search(/<div[^>]*\sclass="[^"]*\bfilm-field\b[^"]*"/);
   if (open < 0) throw new Error(`${page}: no .film-field element`);
-  const re = /<div\b|<\/div>/g;
-  re.lastIndex = open;
-  let depth = 0;
-  let m;
-  while ((m = re.exec(markup))) {
-    depth += m[0] === '</div>' ? -1 : 1;
-    if (depth === 0) return [open, m.index + m[0].length];
-  }
-  throw new Error(`${page}: .film-field is not closed`);
+  const end = divEnd(markup, open);
+  if (end < 0) throw new Error(`${page}: .film-field is not closed`);
+  return [open, end];
 }
 
 const decodeEntities = (t) => t
@@ -439,15 +473,22 @@ const FILM_LOCKED = {
     skipAria: 'Skip the opening'
   },
   'ar.html': {
-    lines: ['\u0623\u0646\u062A \u062A\u062F\u064A\u0631 \u0623\u0639\u0645\u0627\u0644\u0643.',
-            '\u062D\u0633\u064A\u0628 \u064A\u062C\u0647\u0651\u0632 \u062D\u0633\u0627\u0628\u0627\u062A\u0643.',
-            '\u0648\u0623\u0646\u062A \u0635\u0627\u062D\u0628 \u0627\u0644\u0642\u0631\u0627\u0631.'],
-    skip: '\u062A\u062E\u0637\u0651\u064A',
-    skipAria: '\u062A\u062E\u0637\u0651\u064A \u0627\u0644\u0627\u0641\u062A\u062A\u0627\u062D'
+    lines: ['أنت تدير أعمالك.',
+            'حسيب يجهّز حساباتك.',
+            'وأنت صاحب القرار.'],
+    skip: 'تخطّي',
+    skipAria: 'تخطّي الافتتاح'
   }
 };
 
-check(15, 'the opening film: three statements verbatim, a real Skip outside the aria-hidden field, and both reduced-motion guards', () => {
+/* The square "H" mark: retired 2026-09-03. Its classes, and any element whose
+   entire content is a bare H, must be gone from source AND output.
+   Assembled from fragments because this file is inside the scan set it drives
+   — written as literals, the scan reported itself and axe.mjs's prose as
+   surviving uses of a class neither of them defines. */
+const MARK_CLASSES = ['bot-' + 'mark', 'bot-' + 'empty-mark', 'film-' + 'mark-h'];
+
+check(15, 'the opening film: wordmark only, three statements verbatim, a real Skip outside the aria-hidden field, and the no-film guards', () => {
   const problems = [];
   const seen = [];
 
@@ -470,6 +511,11 @@ check(15, 'the opening film: three statements verbatim, a real Skip outside the 
     const teal = line2.match(/<span class="film-teal">([^<]+)<\/span>/g) || [];
     if (teal.length !== 1) problems.push(`${page}: statement 2 has ${teal.length} teal words, expected exactly 1`);
 
+    /* the film ends on the wordmark and on nothing else */
+    const wordEl = markup.match(/<span[^>]*\sclass="[^"]*\bfilm-mark-word\b[^"]*"[^>]*>([\s\S]*?)<\/span>/);
+    if (!wordEl) problems.push(`${page}: the film has no .film-mark-word element`);
+    else if (plainText(wordEl[1]) !== 'HASEEB.') problems.push(`${page}: the film mark renders "${plainText(wordEl[1])}", expected "HASEEB."`);
+
     /* Skip: a real button, the locked label, and OUTSIDE the hidden field */
     const buttons = markup.match(/<button[^>]*\sclass="[^"]*\bfilm-skip\b[^"]*"[^>]*>[\s\S]*?<\/button>/g) || [];
     if (buttons.length !== 1) {
@@ -491,10 +537,25 @@ check(15, 'the opening film: three statements verbatim, a real Skip outside the 
     const av = tags.filter((t) => /^<(video|audio)/i.test(t));
     if (av.length) problems.push(`${page}: ${av.length} <video>/<audio> element(s)`);
 
-    seen.push(`${page}: 3 statements verbatim, 1 teal word, Skip "${want.skip}" outside the aria-hidden field, 0 <video>/<audio>`);
+    seen.push(`${page}: 3 statements verbatim, 1 teal word, HASEEB. mark, Skip "${want.skip}" outside the aria-hidden field, 0 <video>/<audio>`);
   }
 
-  /* the reduced-motion guard, in BOTH layers */
+  /* the retired square "H" mark, across source and output */
+  const markScan = [...SOURCE_DIRS.flatMap((d) => walk(d)), ...ALL_PAGES]
+    .filter((f) => existsSync(join(ROOT, f)));
+  for (const file of markScan) {
+    const src = read(file);
+    for (const cls of MARK_CLASSES) {
+      if (src.includes(cls)) problems.push(`${file}: the retired mark class "${cls}" is still present`);
+    }
+  }
+  for (const page of ALL_PAGES) {
+    const hits = (read(page).match(/>\s*H\s*</g) || []).length;
+    if (hits) problems.push(`${page}: ${hits} element(s) whose entire content is a bare "H"`);
+  }
+  seen.push(`no ${MARK_CLASSES.join(' / ')} in ${markScan.length} scanned files · no bare-"H" element on any of the ${ALL_PAGES.length} pages`);
+
+  /* the no-film guards, in BOTH layers */
   const css = read('assets/site.css');
   const js = read('assets/site.js');
   const filmCss = css.slice(css.indexOf('/* FILM-CSS:START'), css.indexOf('/* FILM-CSS:END */'));
@@ -507,29 +568,147 @@ check(15, 'the opening film: three statements verbatim, a real Skip outside the 
   if (!/prefers-reduced-motion:\s*reduce/.test(filmJs) || !/reduceQuery\.matches/.test(filmJs)) {
     problems.push('assets/site.js: the film module does not test prefers-reduced-motion before playing');
   }
+  if (!/saveData\(\)/.test(filmJs)) problems.push('assets/site.js: the film module does not test Save-Data before playing');
   if (!/sessionStorage/.test(filmJs) || /localStorage/.test(filmJs)) {
     problems.push('assets/site.js: the film module must gate on sessionStorage and never localStorage');
   }
   if (!/'Escape'/.test(filmJs)) problems.push('assets/site.js: the film module has no Esc handler');
 
-  seen.push('reduced-motion guard in site.css (display:none) and in site.js (checked before play) · sessionStorage only · Esc handled');
+  /* the CSS-only failsafe, which lives OUTSIDE the copied film region */
+  const outside = css.slice(css.indexOf('/* FILM-CSS:END */'));
+  if (!/\.film\s*\{\s*animation:\s*filmFailsafe/.test(outside) ||
+      !/@keyframes\s+filmFailsafe[\s\S]*?visibility:\s*hidden/.test(outside)) {
+    problems.push('assets/site.css: no CSS-only 10s failsafe on .film outside the FILM-CSS region');
+  }
+  if (!/addEventListener\('error'/.test(js)) {
+    problems.push("assets/site.js: no window error handler to tear the overlay down");
+  }
+  /* the other half of "the page works with scripting off": the reveal
+     animation must be hidden ONLY under html.js, and site.js must be what
+     adds that class */
+  if (!/html\.js\s\.reveal\s*\{[^}]*opacity:\s*0/.test(css) || /(?<!html\.js )\.reveal\s*\{[^}]*opacity:\s*0/.test(css)) {
+    problems.push('assets/site.css: .reveal is hidden outside the html.js scope, so the page is blank with scripting off');
+  }
+  if (!/documentElement\.classList\.add\('js'\)/.test(js)) {
+    problems.push("assets/site.js: nothing adds the js class to <html>");
+  }
+
+  seen.push('no film under prefers-reduced-motion (CSS display:none + JS check) or Save-Data · sessionStorage only · Esc handled · CSS 10s failsafe + window error tear-down');
 
   return { ok: problems.length === 0, detail: problems.join(' · ') || seen.join(' · ') };
 });
 
+/* ══════════════  the fixture · tripwires 17 and 18  ══════════════════════
+   ONE fixture feeds every sample figure on the site. These two tripwires are
+   the reason the copy files may not carry a figure of their own.
+
+   THE ARITHMETIC BELOW IS DELIBERATELY NOT IMPORTED FROM build.mjs. It is a
+   second implementation of the same rules — integer fils, its own grouping,
+   its own percentage — so that a formatter bug has to be made twice in the
+   same way to survive. What it compares against is the text that actually
+   shipped in haseeb.html and ar.html. */
+
+const FIXTURE = JSON.parse(read('src/fixture/sample-company.json'));
+
+/* an amount is a string of exactly three decimals; read it as fils */
+function checkFils(value, what) {
+  const m = /^(-?)(\d+)\.(\d{3})$/.exec(String(value));
+  if (!m) throw new Error(`fixture: ${what} = "${value}" is not a three-decimal amount`);
+  const n = Number(m[2]) * 1000 + Number(m[3]);
+  return m[1] === '-' ? -n : n;
+}
+
+/* fils -> "1,234.567", grouped by walking the digits (not by the regex the
+   build uses, on purpose) */
+function checkMoney(f) {
+  const neg = f < 0;
+  const abs = Math.abs(f);
+  const whole = String(Math.floor(abs / 1000));
+  let grouped = '';
+  for (let i = 0; i < whole.length; i++) {
+    const fromEnd = whole.length - i;
+    grouped += whole[i];
+    if (fromEnd > 1 && (fromEnd - 1) % 3 === 0) grouped += ',';
+  }
+  return (neg ? '−' : '') + grouped + '.' + String(abs % 1000).padStart(3, '0');
+}
+
+function checkPct(cur, prev) {
+  if (prev === 0) throw new Error('fixture: percentage change against a zero base');
+  const diff = cur - prev;
+  if (diff === 0) return 'unchanged';
+  const tenths = Math.round((Math.abs(diff) * 1000) / prev);
+  const whole = Math.floor(tenths / 10);
+  return `${diff > 0 ? 'up' : 'down'} ${whole}.${tenths % 10}%`;
+}
+
+const CHK_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'];
+const CHK_MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const CHK_MONTHS_AR = ['يناير', 'فبراير', 'مارس', 'أبريل',
+  'مايو', 'يونيو', 'يوليو', 'أغسطس',
+  'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+
+function checkFixtureValues(fx, isArabic) {
+  const inv = fx.invoices.map((i) => ({ ...i, f: checkFils(i.amount, `invoice ${i.number}`) }));
+  const largest = inv.reduce((a, b) => (b.f > a.f ? b : a));
+  const cur = fx.periods.current;
+  const prev = fx.periods.previous;
+  const curNet = checkFils(cur.netIncome, 'current.netIncome');
+  const prevNet = checkFils(prev.netIncome, 'previous.netIncome');
+  const netDiff = curNet - prevNet;
+  const [, y, m, d] = /^(\d{4})-(\d{2})-(\d{2})$/.exec(fx.asOf) || [];
+
+  const v = new Map([
+    ['customerCount', String(new Set(inv.map((i) => i.customer)).size)],
+    ['openTotal', checkMoney(checkFils(fx.openTotal, 'openTotal'))],
+    ['largestInvoiceNo', String(largest.number)],
+    ['largestCustomer', String(largest.customer)],
+    ['largestAmount', checkMoney(largest.f)],
+    ['cash', checkMoney(checkFils(fx.cash, 'cash'))],
+    ['accountCount', String(fx.accounts.length)],
+    ['asOfDate', `${Number(d)} ${CHK_MONTHS[Number(m) - 1]} ${Number(y)}`],
+    ['month', `${CHK_MONTHS[cur.month - 1]} ${cur.year}`],
+    ['prevMonth', `${CHK_MONTHS[prev.month - 1]} ${prev.year}`],
+    ['revenue', checkMoney(checkFils(cur.revenue, 'current.revenue'))],
+    ['opex', checkMoney(checkFils(cur.operatingExpenses, 'current.operatingExpenses'))],
+    ['net', checkMoney(curNet)],
+    ['revenueChangePct', checkPct(checkFils(cur.revenue, 'cur.rev'), checkFils(prev.revenue, 'prev.rev'))],
+    ['opexChangePct', checkPct(checkFils(cur.operatingExpenses, 'cur.opex'), checkFils(prev.operatingExpenses, 'prev.opex'))],
+    ['netChangeAbs', checkMoney(Math.abs(netDiff))],
+    ['netChangeDir', netDiff > 0 ? 'higher' : netDiff < 0 ? 'lower' : 'unchanged']
+  ]);
+  for (const row of fx.exampleRows) {
+    const rd = /^(\d{4})-(\d{2})-(\d{2})$/.exec(row.date);
+    v.set(`${row.id}Amount`, checkMoney(checkFils(row.amount, row.id)));
+    v.set(`${row.id}Date`,
+      `${Number(rd[3])} ${(isArabic ? CHK_MONTHS_AR : CHK_MONTHS_SHORT)[Number(rd[2]) - 1]}`);
+  }
+  return v;
+}
+
+function fillPlaceholders(s, values, where) {
+  return String(s).replace(/\{([A-Za-z][A-Za-z0-9]*)\}/g, (m, key) => {
+    if (values.has(key)) return values.get(key);
+    if (key === 'name') return m;    /* substituted by site.js at submit time */
+    throw new Error(`${where}: unknown fixture placeholder {${key}}`);
+  });
+}
+
 /* The copy of record behind each built page. Tripwire 16 asserts the film's
-   money tokens against THESE files rather than against the classes build.mjs
-   assigned, and the two patterns below are written out literally here rather
-   than imported from build.mjs, so this tripwire still fails when the BUILD's
-   own classifier is what breaks. */
+   money tokens against THESE files (with the fixture substituted by this
+   file's OWN formatter) rather than against the classes build.mjs assigned,
+   so this tripwire still fails when the BUILD's own classifier is what
+   breaks. */
 const COPY_OF = { 'haseeb.html': 'src/copy/en.json', 'ar.html': 'src/copy/ar.json' };
 /* carries money: a currency mark in either language, or a dot beside a digit.
-   The Arabic mark \u062F.\u0643 owns a dot, so it is matched as a mark, never as a decimal. */
-const SOURCE_MONEY = /KWD|\u062F\.\u0643|\d\.|\.\d/;
+   The Arabic mark د.ك owns a dot, so it is matched as a mark, never as a decimal. */
+const SOURCE_MONEY = /KWD|د\.ك|\d\.|\.\d/;
 /* and Kuwaiti money is exactly one figure carrying exactly three decimals */
-const SOURCE_AMOUNT = /^(?:(?:KWD|\u062F\.\u0643)\s*)?\d{1,3}(?:,\d{3})*\.\d{3}(?:\s*(?:KWD|\u062F\.\u0643))?$/;
+const SOURCE_AMOUNT = /^(?:(?:KWD|د\.ك)\s*)?\d{1,3}(?:,\d{3})*\.\d{3}(?:\s*(?:KWD|د\.ك))?$/;
 
-check(16, 'the film markup is a brand hook: no product UI, no place messaging, no imagery', () => {
+check(16, 'the film field is a brand hook: one aria-hidden canvas, no product UI, no place messaging, no imagery', () => {
   /* Patterns are assembled from fragments where a literal would make this
      file match itself under a future whole-repo scan. */
   const FORBIDDEN = [
@@ -538,28 +717,42 @@ check(16, 'the film markup is a brand hook: no product UI, no place messaging, n
     ['Dr (ledger abbreviation)', /\bdr\b/i],
     ['Cr (ledger abbreviation)', /\bcr\b/i],
     ['Kuwait', new RegExp('Kuw' + 'ait', 'i')],
-    ['\u0627\u0644\u0643\u0648\u064A\u062A', new RegExp('\u0627\u0644\u0643\u0648\u064A\u062A')]
+    ['الكويت', new RegExp('الكويت')]
   ];
   const problems = [];
   const seen = [];
 
   for (const page of BUILT) {
-    const markup = filmMarkup(read(page), page);
+    const html = read(page);
+    const markup = filmMarkup(html, page);
     for (const [label, re] of FORBIDDEN) {
       if (re.test(markup)) problems.push(`${page}: the film markup contains ${label}`);
     }
-    const imagery = (markup.match(/<(img|svg|picture|canvas|video|audio|iframe|object|embed)\b/gi) || []);
+
+    /* the ONE piece of imagery the film is allowed is its own canvas, and
+       it has to be inside the aria-hidden field */
+    const imagery = (markup.match(/<(img|svg|picture|video|audio|iframe|object|embed)\b/gi) || []);
     if (imagery.length) problems.push(`${page}: the film markup contains ${imagery.join(' ')}`);
+    const canvases = (markup.match(/<canvas\b[^>]*>/gi) || []);
+    if (canvases.length !== 1) problems.push(`${page}: ${canvases.length} <canvas> in the film, expected exactly 1`);
+    else {
+      const [fs0, fs1] = fieldSpan(markup, page);
+      const at = markup.indexOf(canvases[0]);
+      if (!(at >= fs0 && at < fs1)) problems.push(`${page}: the film canvas is OUTSIDE the aria-hidden field`);
+    }
 
     /* THE DENOMINATOR IS THE SOURCE, NOT THE BUILD'S CLASSES. The build
        classifies a token as an amount by finding a three-decimal figure in
        it, so a two-decimal figure is not a failed amount — it is silently
-       re-classified as a WORD, and counting decimals over the amount spans
-       the build emitted then measures a set the bad token has already left.
-       Every money token is therefore read from src/copy/*.json, the copy of
-       record, and the markup is checked for AGREEING with it. */
-    const srcTokens = JSON.parse(read(COPY_OF[page])).film.tokens;
-    if (!Array.isArray(srcTokens) || !srcTokens.length) {
+       re-classified as a WORD, and counting over the lists the build emitted
+       then measures a set the bad token has already left. Every token is
+       therefore read from src/copy/*.json and expanded with THIS file's own
+       fixture formatter, and the page is checked for AGREEING with it. */
+    const isArabic = page === 'ar.html';
+    const values = checkFixtureValues(FIXTURE, isArabic);
+    const srcTokens = (JSON.parse(read(COPY_OF[page])).film.tokens || [])
+      .map((t) => fillPlaceholders(t, values, `${COPY_OF[page]} film.tokens`));
+    if (!srcTokens.length) {
       problems.push(`${COPY_OF[page]}: film.tokens is not a non-empty array`);
       continue;
     }
@@ -573,25 +766,140 @@ check(16, 'the film markup is a brand hook: no product UI, no place messaging, n
     if (srcWords.length < 10) problems.push(`${COPY_OF[page]}: ${srcWords.length} word tokens`);
     if (srcMoney.length < 4) problems.push(`${COPY_OF[page]}: ${srcMoney.length} money tokens`);
 
-    /* and the markup must render exactly the source's split, token for token */
-    const tokens = markup.match(/class="film-tok /g) || [];
-    const words = markup.match(/class="film-tok film-word"/g) || [];
-    const amounts = markup.match(/class="film-tok film-amt"/g) || [];
-    if (tokens.length !== srcTokens.length) problems.push(`${page}: ${tokens.length} rendered film tokens, ${srcTokens.length} in ${COPY_OF[page]}`);
-    if (amounts.length !== srcMoney.length) problems.push(`${page}: ${amounts.length} rendered amount tokens against ${srcMoney.length} money tokens in ${COPY_OF[page]} — a money token rendered as a WORD`);
-    if (words.length !== srcWords.length) problems.push(`${page}: ${words.length} rendered word tokens, ${srcWords.length} in ${COPY_OF[page]}`);
-    const rendered3dp = (markup.match(/class="film-amt-f"><span class="num">\.\d{3}</g) || []).length;
-    if (rendered3dp !== srcMoney.length) problems.push(`${page}: ${srcMoney.length - rendered3dp} money token(s) do not render a three-decimal fraction`);
+    /* and the field must carry exactly that split, token for token */
+    const [fs0] = fieldSpan(markup, page);
+    const fieldTag = markup.slice(fs0, markup.indexOf('>', fs0) + 1);
+    const split = (name) => {
+      const v = decodeEntities(attr(fieldTag, name) || '');
+      return v ? v.split('|') : [];
+    };
+    const gotWords = split('data-film-words');
+    const gotAmounts = split('data-film-amounts');
+    if (gotWords.join('|') !== srcWords.join('|')) {
+      problems.push(`${page}: data-film-words is [${gotWords.join(' | ')}], the source expands to [${srcWords.join(' | ')}]`);
+    }
+    if (gotAmounts.join('|') !== srcMoney.join('|')) {
+      problems.push(`${page}: data-film-amounts is [${gotAmounts.join(' | ')}], the source expands to [${srcMoney.join(' | ')}] — a money token carried as a WORD`);
+    }
 
-    seen.push(`${page}: ${srcTokens.length} source tokens in ${COPY_OF[page]} (${srcWords.length} words, ${srcMoney.length} money, every money token 3dp AT SOURCE) rendered as ${words.length} words + ${amounts.length} amounts · 0 img/svg/canvas/video/audio/iframe · ${FORBIDDEN.length} forbidden patterns absent`);
+    seen.push(`${page}: ${srcTokens.length} source tokens in ${COPY_OF[page]} (${srcWords.length} words, ${srcMoney.length} money, every money token 3dp AFTER the fixture is applied) carried as ${gotWords.length} words + ${gotAmounts.length} amounts · 1 aria-hidden canvas, 0 img/svg/video/audio/iframe · ${FORBIDDEN.length} forbidden patterns absent`);
   }
 
   return {
     ok: problems.length === 0,
     detail: problems.join(' · ') || seen.join(' · '),
-    exempt: ['Scoped to the FILM:START…FILM:END region ONLY. The page around it says "approve", ' +
-             '"Kuwait" and "\u0627\u0644\u0643\u0648\u064A\u062A" legitimately — the founder\'s limit is that the ' +
-             'opening film may not. Nothing else on the page is skipped by this check.']
+    exempt: ['Scoped to the .film element ONLY. The page around it says "approve", ' +
+             '"Kuwait" and "الكويت" legitimately — the founder\'s limit is that the ' +
+             'opening film may not. Nothing else on the page is skipped by this check.',
+             'ONE <canvas> is allowed inside the aria-hidden field and is required to be there: ' +
+             'round 7 replaced the DOM token grid with a Canvas 2D field. Every other kind of ' +
+             'imagery is still forbidden outright.']
+  };
+});
+
+/* The stored answer block for one key, found by its data-store attribute and
+   not by a fixed attribute ORDER — the first form of this helper spelled the
+   tag out as `<div class="bot-answer" data-store="a1">` and went blind the
+   moment a dir="auto" was added between them, reporting "no rendered answer"
+   rather than a wrong one. */
+function storedAnswer(html, key) {
+  const at = html.indexOf(`data-store="${key}"`);
+  if (at < 0) return null;
+  const open = html.lastIndexOf('<div', at);
+  const gt = html.indexOf('>', at);
+  if (open < 0 || gt < 0) return null;
+  const tag = html.slice(open, gt + 1);
+  if (!/\sclass="[^"]*\bbot-answer\b[^"]*"/.test(tag)) return null;
+  const close = html.indexOf('</div>', gt);
+  if (close < 0) return null;
+  return plainText(html.slice(gt + 1, close));
+}
+
+check(17, 'the fixture reconciles, and the rendered answers carry exactly its figures', () => {
+  const problems = [];
+  const seen = [];
+  const fx = FIXTURE;
+
+  /* ---- 1. reconciliation, in integer fils ---- */
+  const accountsSum = fx.accounts.reduce((n, a) => n + checkFils(a.balance, `account ${a.name}`), 0);
+  const cash = checkFils(fx.cash, 'cash');
+  if (accountsSum !== cash) {
+    problems.push(`accounts sum ${checkMoney(accountsSum)} != cash ${checkMoney(cash)}`);
+  }
+  const invoiceSum = fx.invoices.reduce((n, i) => n + checkFils(i.amount, `invoice ${i.number}`), 0);
+  const open = checkFils(fx.openTotal, 'openTotal');
+  if (invoiceSum !== open) {
+    problems.push(`invoice sum ${checkMoney(invoiceSum)} != outstanding total ${checkMoney(open)}`);
+  }
+  for (const key of ['current', 'previous']) {
+    const p = fx.periods[key];
+    const rev = checkFils(p.revenue, `${key}.revenue`);
+    const opex = checkFils(p.operatingExpenses, `${key}.operatingExpenses`);
+    const net = checkFils(p.netIncome, `${key}.netIncome`);
+    if (rev - opex !== net) {
+      problems.push(`${key}: revenue ${checkMoney(rev)} - operating expenses ${checkMoney(opex)} = ${checkMoney(rev - opex)}, but netIncome says ${checkMoney(net)}`);
+    }
+  }
+  seen.push(`reconciled: ${fx.accounts.length} accounts sum to ${checkMoney(cash)} · ${fx.invoices.length} invoices sum to ${checkMoney(open)} · both periods balance`);
+
+  /* ---- 2. the three answers, recomputed and compared to the page ---- */
+  for (const page of BUILT) {
+    const isArabic = page === 'ar.html';
+    const values = checkFixtureValues(fx, isArabic);
+    const copy = JSON.parse(read(COPY_OF[page]));
+    const html = read(page);
+
+    for (const key of ['a1', 'a2', 'a3']) {
+      const want = fillPlaceholders(copy.bot[key], values, `${COPY_OF[page]} bot.${key}`);
+      const got = storedAnswer(html, key);
+      if (got === null) { problems.push(`${page}: no rendered .bot-answer for ${key}`); continue; }
+      if (got !== want) {
+        problems.push(`${page} ${key}: renders "${got}", the fixture computes "${want}"`);
+      }
+    }
+
+    /* and no figure may appear in an answer that the fixture did not produce */
+    const produced = new Set([...values.values()].filter((v) => /\d\.\d{3}/.test(v)));
+    for (const key of ['a1', 'a2', 'a3']) {
+      const got = storedAnswer(html, key);
+      if (got === null) continue;
+      for (const fig of got.match(/\d{1,3}(?:,\d{3})*\.\d{3}/g) || []) {
+        if (!produced.has(fig)) problems.push(`${page} ${key}: the figure ${fig} is not one the fixture produces`);
+      }
+    }
+
+    const values2 = values;
+    seen.push(`${page}: a1/a2/a3 equal the fixture-computed text · change figures ${values2.get('revenueChangePct')} / ${values2.get('opexChangePct')} / net ${values2.get('netChangeAbs')} ${values2.get('netChangeDir')}`);
+  }
+
+  return { ok: problems.length === 0, detail: problems.join(' · ') || seen.join(' · ') };
+});
+
+check(18, 'no literal money figure anywhere in the copy of record', () => {
+  const FIGURE = /\d{1,3}(?:,\d{3})*\.\d{3}/g;
+  const problems = [];
+  for (const file of ['src/copy/en.json', 'src/copy/ar.json']) {
+    const hits = read(file).match(FIGURE) || [];
+    if (hits.length) problems.push(`${file}: ${hits.length} literal figure(s): ${[...new Set(hits)].join(' ')}`);
+  }
+  return {
+    ok: problems.length === 0,
+    detail: problems.join(' · ') ||
+      'src/copy/en.json and src/copy/ar.json carry {placeholders} only; every figure comes from src/fixture/sample-company.json'
+  };
+});
+
+check(19, 'no HTML comment survives into any deployed page', () => {
+  const problems = [];
+  const seen = [];
+  for (const page of ALL_PAGES) {
+    const n = (read(page).match(/<!--/g) || []).length;
+    if (n) problems.push(`${page}: ${n} HTML comment(s)`);
+    else seen.push(`${page}: 0`);
+  }
+  return {
+    ok: problems.length === 0,
+    detail: problems.join(' · ') || `${seen.join(' · ')} — internal notes live in docs/, which .vercelignore keeps out of the deployment`
   };
 });
 

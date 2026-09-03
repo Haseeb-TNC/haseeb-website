@@ -104,7 +104,7 @@ const MATRIX = [
 ];
 
 const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
-const FILM_KEY = 'haseeb.film.v1';
+const FILM_KEY = 'haseeb.film.v2';   /* bumped with the round-7 film rewrite */
 
 /* ── the two-sided contrast guard ─────────────────────────────────────────
 
@@ -120,13 +120,14 @@ const INCOMPLETE_EXEMPTIONS = [
     why: 'aria-hidden decorative arrow glyph, not informative text — WCAG 1.4.3 exempts pure decoration; axe returns nonBmp because it will not judge the glyph'
   },
   {
-    id: 'film-token',
-    test: (target) => /\.film-tok/.test(target),
-    /* inert in practice: the reading state marks the film seen, so a
-       .film-tok node has never appeared in a run here. Carried because the
-       exemption set is the spec's, and an exemption that stops firing should
-       be visible as an absence rather than deleted quietly. */
-    why: 'transient decorative token in the aria-hidden film field; the film is over before the reading state and its recession is an opacity keyframe, not ink'
+    id: 'film-statement',
+    test: (target) => /\.film-line|\.film-mark/.test(target),
+    /* Inert in practice, twice over: the reading state marks the film seen,
+       and since round 7 the token field is a <canvas> with no text nodes at
+       all, so the only film text axe could ever see is a statement or the
+       wordmark. Carried because an exemption that stops firing should be
+       visible as an absence rather than deleted quietly. */
+    why: 'transient text inside the aria-hidden opening film, which is over before the reading state begins'
   },
   {
     id: 'launcher-text',
@@ -138,13 +139,14 @@ const INCOMPLETE_EXEMPTIONS = [
 /* A fourth exemption that the target string cannot express, so it is applied
    only AFTER the ratio has been measured and only if the measurement fails:
    an aria-hidden run of at most two characters is a decorative glyph, the
-   same WCAG 1.4.3 carve-out the arrows already ride. It is what covers
-   .bot-empty-mark — the 28px teal square holding an "H" at opacity .6,
-   which measures 2.26:1 here and which axe itself declines to judge
-   (shortTextContent). The measured ratio is printed with the exemption, so
-   the number is on the log either way. The two .arrow entries above are
-   deliberately kept separate even though this rule would also catch them:
-   the log should name them. */
+   same WCAG 1.4.3 carve-out the arrows already ride. It used to cover the
+   28px teal square holding an "H" in the drawer's empty state; that mark was
+   RETIRED in round 7 and no element on the site matches this rule today, so
+   the rule is expected to fire zero times. It is kept because a decorative
+   glyph is the kind of thing that comes back, and because the measured ratio
+   is printed with the exemption, so the number is on the log either way. The
+   two .arrow entries above are deliberately kept separate even though this
+   rule would also catch them: the log should name them. */
 const DECORATIVE_GLYPH_WHY =
   'aria-hidden decoration of at most two characters (a glyph, not informative text) — WCAG 1.4.3 exempts pure decoration';
 
@@ -296,10 +298,11 @@ async function runAxe(page) {
    Opacity is rendered, not refused. An element with opacity < 1 paints its
    own background AND its ink as one group at that alpha, so the group is
    composited first and the result is laid over what is beneath — which is
-   how .bot-empty-mark (teal square, opacity .6) actually reaches the screen.
-   Ancestor opacities multiply into the same factor; that is exact for one
-   opacity level and an approximation for nested ones, and nothing on this
-   site nests them.
+   how the drawer's old teal empty-state square (opacity .6) reached the
+   screen before round 7 retired it, and how a disabled suggestion chip
+   reaches it now. Ancestor opacities multiply into the same factor; that is
+   exact for one opacity level and an approximation for nested ones, and
+   nothing on this site nests them.
 
    It refuses to guess about the rest. A background-image anywhere in the
    chain, or a colour it cannot parse, is returned as a `problem` and

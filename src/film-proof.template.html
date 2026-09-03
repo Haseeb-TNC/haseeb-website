@@ -137,9 +137,11 @@ body {
 <div class="proof-wrap">
   <h1 class="proof-title">Haseeb — the opening film</h1>
   <p class="proof-sub">
-    Ten seconds. Everyday business information arrives and competes for attention; one
-    Haseeb-teal movement puts it in order; three statements; the mark; then it hands off to
-    the page. This is the shipping code — the stylesheet block, the script module and the
+    Seven and a half seconds of continuous motion. Business activity moves without stopping;
+    one teal current puts it in order without stopping it; the three statements form into a
+    single block; the HASEEB. wordmark condenses out of that current and travels into the
+    nav. Nothing is switched — one animation-frame loop computes every value on screen from
+    the clock. This is the shipping code: the stylesheet block, the script module and the
     markup are copied into this file from the site itself. Skip is live from the first
     frame, and Esc skips too.
   </p>
@@ -178,9 +180,9 @@ body {
 
   <p class="proof-foot">
     The frame is 16:10. The film treats the frame exactly as it treats a browser window, so a
-    narrow window here shows the same static poster a phone gets. If your system is set to
-    reduced motion, the film does not play at all — that is the shipping behaviour, and the
-    caption says so.
+    narrow window here plays the same lighter field a phone gets — there is no static poster
+    any more. If your system is set to reduced motion, or asks for reduced data, the film
+    does not play at all: that is the shipping behaviour, and the caption says so.
   </p>
 </div>
 
@@ -196,14 +198,12 @@ body {
   var caption = document.getElementById('proofCaption');
 
   var LABEL = {
-    open: 'Warm white — Skip is already there',
-    arrive: 'The information arrives, and competes',
-    order: 'One teal movement puts it in order',
-    mark: 'The mark',
-    handoff: 'Hand-off — the mark becomes the wordmark',
-    end: 'End',
-    poster: 'Static poster — narrow frame or Save-Data. No motion.',
-    skip: 'Skipped — the same hand-off, in 200ms'
+    activity: 'Activity — the field is already moving, and Skip is already there',
+    order: 'One teal current puts it in order, without stopping it',
+    wordmark: 'The block condenses; the wordmark forms out of the current',
+    handoff: 'Hand-off — the wordmark travels into the nav',
+    done: 'End',
+    skipped: 'Skipped — the same dissolve, in 300ms'
   };
 
   var films = {};
@@ -214,10 +214,10 @@ body {
   var running = false;
 
   function labelFor(lang, name) {
-    var m = /^line([123])$/.exec(name);
+    var m = /^statement-([123])$/.exec(name);
     if (m) {
       var el = panes[lang].querySelectorAll('.film-line')[Number(m[1]) - 1];
-      return 'Statement ' + m[1] + ' — ' + (el ? el.textContent.trim() : '');
+      return 'Statement ' + m[1] + ' forms — ' + (el ? el.textContent.trim() : '');
     }
     return LABEL[name] || name;
   }
@@ -268,7 +268,12 @@ body {
            'that case. Turn the setting off to watch it.');
       return;
     }
-    if (status === 'unsupported') { stop('No film: this browser has no Web Animations API.'); return; }
+    if (status === 'save-data') {
+      stop('No film: this browser asks for reduced data, and the site shows no film at all ' +
+           'in that case.');
+      return;
+    }
+    if (status === 'unsupported') { stop('No film: this browser has no Canvas 2D context.'); return; }
     tick();
   }
 

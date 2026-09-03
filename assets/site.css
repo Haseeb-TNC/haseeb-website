@@ -221,12 +221,17 @@ section { padding-block: var(--sec-pad); }
 [dir="rtl"] .link-arrow .arrow { transform: scaleX(-1); }
 [dir="rtl"] .link-arrow:hover .arrow { transform: scaleX(-1) translateX(3px); }
 
-.reveal {
+/* Scoped to html.js on purpose (round 7 §8): with scripting off nothing
+   adds that class, so every .reveal section renders at full opacity and the
+   page is readable. The .visible rule is scoped too — an unscoped
+   .reveal.visible (0,2,0) loses to html.js .reveal (0,2,1) and would leave
+   every section invisible with JavaScript ON. */
+html.js .reveal {
   opacity: 0;
   transform: translateY(14px);
   transition: opacity .55s ease, transform .55s cubic-bezier(.2,.8,.2,1);
 }
-.reveal.visible { opacity: 1; transform: none; }
+html.js .reveal.visible { opacity: 1; transform: none; }
 
 /* ---------------- nav ---------------- */
 
@@ -305,19 +310,14 @@ section { padding-block: var(--sec-pad); }
 
 .hero-h1 { margin-block-end: 20px; }
 
+/* The explanatory sub-paragraph below this line was removed in round 7, so
+   the supporting line now carries the space that separated it from the
+   actions. Its own rule is deleted rather than left dead. */
 .hero-support {
-  margin: 0 0 16px;
+  margin: 0 0 34px;
   font-size: 19px;
   font-weight: 500;
   color: var(--teal-ink);
-}
-
-.hero-sub {
-  color: var(--text-2);
-  font-size: 18px;
-  max-inline-size: 52ch;
-  margin-inline: auto;
-  margin-block-end: 34px;
 }
 
 .hero-actions {
@@ -655,29 +655,24 @@ section { padding-block: var(--sec-pad); }
   border-block-end: 1px solid var(--border);
   flex: none;
 }
-.bot-mark {
-  flex: none;
-  inline-size: 26px; block-size: 26px;
-  display: inline-grid; place-items: center;
-  border-radius: 8px;
-  background: var(--teal);
-  color: var(--teal-on);
-  font-family: var(--font-display);
-  font-size: 15px;
-  line-height: 1;
-}
 .bot-head-text { flex: 1; min-inline-size: 0; display: grid; gap: 3px; }
 .bot-head-line { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+/* The drawer's identity is the wordmark and nothing else (round 7 §3): the
+   same Bebas Neue text as the nav, Latin and LTR-isolated on both pages,
+   exactly as the wordmark behaves everywhere else on the site. There is no
+   [dir=rtl] override any more — an Arabic-face override would make it a
+   different mark on the Arabic page. */
 .bot-title {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1.1;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   color: var(--text-1);
+  direction: ltr;
+  unicode-bidi: isolate;
 }
-[dir="rtl"] .bot-title { font-family: var(--font-ar); font-weight: 700; font-size: 15px; letter-spacing: 0; }
 .bot-status { font-size: 9px; font-weight: 600; color: var(--teal-ink); }
 .bot-badge {
   justify-self: start;
@@ -725,20 +720,8 @@ section { padding-block: var(--sec-pad); }
 
 .bot-body { flex: 1; overflow-y: auto; padding: 16px 18px; }
 
-.bot-empty { text-align: center; padding-block: 40px 20px; }
+.bot-empty { text-align: center; padding-block: 34px 16px; }
 .bot-empty[hidden] { display: none; }
-.bot-empty-mark {
-  display: inline-grid; place-items: center;
-  inline-size: 28px; block-size: 28px;
-  margin-block-end: 12px;
-  border-radius: 8px;
-  background: var(--teal);
-  color: var(--teal-on);
-  opacity: .6;
-  font-family: var(--font-display);
-  font-size: 16px;
-  line-height: 1;
-}
 .bot-empty-title { margin: 0 0 4px; font-size: 16px; font-weight: 600; color: var(--text-1); }
 .bot-empty-sub { margin: 0 0 20px; font-size: 12px; line-height: 1.5; color: var(--text-3); }
 .bot-sugg-label {
@@ -750,10 +733,16 @@ section { padding-block: var(--sec-pad); }
 }
 [dir="rtl"] .bot-sugg-label { letter-spacing: 0; }
 
-.bot-chips { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+/* Suggestions live in one place for the whole conversation: each is removed
+   as it is used, the block disappears when all three are gone, and
+   "New conversation" puts all three back. They are never cloned into the
+   transcript. */
+.bot-suggest { margin-block-start: 6px; }
+.bot-suggest[hidden] { display: none; }
+
+.bot-chips { display: flex; flex-direction: column; align-items: stretch; gap: 6px; }
 .bot-chip {
   inline-size: 100%;
-  max-inline-size: 320px;
   padding: 10px 14px;
   background: var(--surface-2);
   border: 1px solid var(--border);
@@ -767,8 +756,10 @@ section { padding-block: var(--sec-pad); }
   transition: border-color .16s ease, background-color .16s ease;
 }
 .bot-chip:hover { border-color: var(--teal); background: var(--teal-soft); color: var(--text-1); }
-
-.bot-thread .bot-chips { align-items: flex-start; margin-block: 2px 12px; }
+/* disabled while an answer is being prepared — a disabled control is exempt
+   from WCAG 1.4.3, and the state is transient by construction */
+.bot-chip[disabled] { opacity: .55; cursor: not-allowed; }
+.bot-chip[disabled]:hover { border-color: var(--border); background: var(--surface-2); color: var(--text-2); }
 
 .bot-msg { display: flex; margin-block-end: 10px; }
 .bot-msg-user { justify-content: flex-end; }
@@ -823,7 +814,10 @@ section { padding-block: var(--sec-pad); }
 .bot-text {
   flex: 1;
   min-inline-size: 0;
-  min-block-size: 40px;
+  /* two lines: the round-7 placeholder ("This website demo answers the
+     suggested questions only.") wraps at this width, and a one-line box
+     clipped its second line */
+  min-block-size: 56px;
   max-block-size: 100px;
   padding: 10px 14px;
   background: var(--surface-2);
@@ -900,6 +894,24 @@ body.bot-open .bot-launcher { display: none; }
   .nav-cta { display: none; }
   .nav { position: sticky; }
   .nav-inner { position: relative; }
+
+  /* With scripting off the burger cannot open anything, so below 900px the
+     menu is simply a stacked list under the wordmark and the toggle is not
+     offered at all. Without this the three section links and the language
+     switch are unreachable on a phone with JavaScript disabled — they are
+     plain <a> elements, but behind a disclosure only script can open.
+     Nothing here touches the scripted layout. */
+  html:not(.js) .nav-toggle { display: none; }
+  html:not(.js) .nav-inner { flex-wrap: wrap; }
+  html:not(.js) .nav-menu {
+    display: flex;
+    position: static;
+    inline-size: 100%;
+    padding-inline: 0;
+    padding-block: 2px 10px;
+    border-block-end: 0;
+    box-shadow: none;
+  }
 }
 
 @media (max-width: 719px) {
@@ -955,12 +967,21 @@ body.bot-open .bot-launcher { display: none; }
     transition-duration: .001ms !important;
     scroll-behavior: auto !important;
   }
-  .reveal { opacity: 1; transform: none; }
+  html.js .reveal { opacity: 1; transform: none; }
   .bot-drawer.entering { animation: none; }
 }
 
 /* FILM-CSS:START ─────────────────  OPENING FILM  ─────────────────────────
-   A fixed overlay above the fully rendered page. Transform and opacity only.
+   A fixed overlay above the fully rendered page, about 7.6 s long, with
+   genuine continuous motion from the first frame to the hand-off.
+
+   There is almost nothing to declare here. Layer A is a <canvas> the module
+   repaints on every animation frame; the statements, the wordmark and the
+   overlay's own dissolve are written as inline styles by the SAME rAF loop,
+   so no element carries a CSS transition or a CSS animation of its own and
+   nothing can be "switched" behind the loop's back. That is also why
+   document.getAnimations() is empty the moment the film is gone.
+
    Every measurement is against the FIELD (container query units) and never
    the viewport, so this same block drives the 16:10 frame on
    docs/film-proof.html, which copies it verbatim. Logical properties
@@ -970,14 +991,7 @@ body.bot-open .bot-launcher { display: none; }
 :root {
   --film-bg:       #F8F6F2;  /* warm white, the site --bg */
   --film-ink:      #2A2E35;  /* charcoal, 11.9:1 on warm white */
-  /* Receding tokens carry NO colour token of their own: the film module
-     applies the recession as an OPACITY keyframe on --film-ink. Over
-     --film-bg the two are the same pixels, opacity is what the animation can
-     carry, and a transient decorative token in an aria-hidden field is not
-     informative text that must clear 4.5:1 (WCAG 1.4.3 exempts pure
-     decoration). A declared-and-unused soft ink was the leftover of the flat
-     colour approach and is removed rather than left to look load-bearing. */
-  --film-teal:     #00A684;  /* the ONE teal movement, and the mark */
+  --film-teal:     #00A684;  /* the teal current, and the wordmark's glow */
   --film-teal-ink: #00795F;  /* teal used AS TEXT (4.7:1 on warm white) */
 }
 
@@ -1000,129 +1014,74 @@ body.bot-open .bot-launcher { display: none; }
   place-items: center;
   overflow: hidden;
   color: var(--film-ink);
-  opacity: 0;
 }
 .film-field > * { grid-area: 1 / 1; }
 
-/* ---- the information ----------------------------------------------
-   Laid out in its FINAL ordered position and transformed out to the edges
-   from there, so the ordered state is exact by construction and not by
-   arithmetic. No rule, no header, no card. */
-
-.film-order {
-  display: grid;
-  grid-template-columns: max-content max-content;
-  justify-content: center;
-  align-content: center;
-  row-gap: 5px;
-  column-gap: clamp(28px, 6cqi, 72px);
-  font-size: 15px;
-  line-height: 1.5;
-  max-inline-size: 100%;
-}
-.film-tok {
-  white-space: nowrap;
-  will-change: transform, opacity;
-}
-.film-word {
-  grid-column: 1;
-  justify-self: start;
-  font-weight: 500;
-}
-[dir="rtl"] .film-word { font-family: var(--font-ar); }
-/* An amount is laid out left-to-right in both languages — that is how a
-   figure is written in Arabic too — and isolated, so a currency mark cannot
-   be reordered into the middle of its own number. */
-.film-amt {
-  grid-column: 2;
-  justify-self: start;
-  direction: ltr;
-  unicode-bidi: isolate;
-  font-family: var(--font-mono), var(--font-ar);
-  font-variant-numeric: tabular-nums;
-  font-weight: 500;
-}
-.film-amt-i { display: inline-block; min-inline-size: 7ch; text-align: end; }
-.film-amt-f { display: inline-block; text-align: start; }
-
-/* ---- the one teal movement ---- */
-
-.film-band {
+/* ---- layer A: the token field ----------------------------------------
+   Business words and KWD / د.ك amounts from the fixture vocabulary, drifting
+   in lanes at different speeds and sizes, crossing and overlapping. The teal
+   current, the ordering of the field into rows, its slow fade and the glow
+   the wordmark condenses out of are all painted here. Nothing about it is
+   declarative — see assets/site.js, FILM-MODULE. */
+.film-canvas {
   position: absolute;
-  inset-block: 0;
-  inset-inline-start: 0;
-  inline-size: 12px;
-  border-radius: 999px;
-  background: var(--film-teal);
-  box-shadow: 0 0 30px 6px rgba(0,166,132,.34), 0 0 90px 26px rgba(0,166,132,.16);
-  opacity: 0;
-  will-change: transform;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  display: block;
 }
 
-/* ---- the three statements ---- */
-
+/* ---- the three statements: ONE block, formed line by line ----
+   They are grid ROWS, not overlapping slides: line 1 forms, line 2 forms
+   beneath it, line 3 beneath that, and the three stand together as a block
+   before it condenses and dissolves. */
 .film-lines {
+  position: relative;
   display: grid;
   justify-items: center;
-  align-items: center;
-  inline-size: min(94cqi, 1180px);
+  align-content: center;
+  row-gap: clamp(4px, 1.2cqh, 16px);
+  inline-size: min(94cqi, 1260px);
+  will-change: transform, opacity;
 }
 .film-line {
-  grid-area: 1 / 1;
   margin: 0;
   text-align: center;
   text-wrap: balance;
   font-weight: 700;
-  font-size: clamp(40px, 7.2cqi, 104px);
+  font-size: clamp(24px, 4.1cqi, 58px);
   letter-spacing: .01em;
-  line-height: 1.06;
+  line-height: 1.1;
   opacity: 0;
-  will-change: transform, opacity;
+  will-change: transform, opacity, filter;
 }
 [dir="rtl"] .film-line {
   font-family: var(--font-ar);
   letter-spacing: 0;
-  line-height: 1.35;
+  line-height: 1.4;
 }
 .film-teal { color: var(--film-teal-ink); }
 
-/* ---- the mark ---- */
-
+/* ---- the wordmark: the film's only mark ----
+   Bebas Neue, exactly as the nav writes it. There is no square "H", no
+   icon and no rule: the founder's direction of 2026-09-03 is that the
+   wordmark IS the identity. It forms at the centre out of the teal current
+   and then FLIPs into the nav's own wordmark position. */
 .film-mark {
+  position: relative;
   display: grid;
   justify-items: center;
-  gap: clamp(12px, 2.2cqh, 22px);
   opacity: 0;
   will-change: transform, opacity;
 }
-.film-mark-h {
-  display: grid;
-  place-items: center;
-  inline-size: clamp(56px, 8.4cqi, 104px);
-  block-size: clamp(56px, 8.4cqi, 104px);
-  border-radius: 22%;
-  background: var(--film-teal);
-  color: var(--teal-on);
-  font-family: var(--font-display);
-  font-size: clamp(34px, 5.2cqi, 64px);
-  line-height: 1;
-}
 .film-mark-word {
   font-family: var(--font-display);
-  font-size: clamp(30px, 4.6cqi, 58px);
+  font-size: clamp(34px, 5.2cqi, 66px);
   letter-spacing: .04em;
   line-height: 1;
   color: var(--film-ink);
   direction: ltr;
   unicode-bidi: isolate;
-}
-.film-mark-rule {
-  inline-size: clamp(52px, 7cqi, 92px);
-  block-size: 3px;
-  border-radius: 999px;
-  background: var(--film-teal);
-  transform: scaleX(0);
-  transform-origin: var(--origin-x) center;
 }
 
 /* ---- Skip: outside the aria-hidden field, visible from frame one ---- */
@@ -1147,41 +1106,6 @@ body.bot-open .bot-launcher { display: none; }
 }
 .film-skip:hover { background: #fff; }
 
-/* ---- static poster: < 720px of field, or Save-Data. No motion at all. ----
-   The final ordered state with the three statements stacked beneath it,
-   sized against the field height so it can never exceed the viewport. */
-
-.film.is-poster .film-field {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4cqh;
-  padding: 5cqh 18px;
-  opacity: 1;
-}
-.film.is-poster .film-order {
-  font-size: 11px;
-  font-size: clamp(9px, 2.15cqh, 13px);
-  row-gap: 2px;
-}
-.film.is-poster .film-order { column-gap: clamp(18px, 7cqi, 44px); }
-.film.is-poster .film-lines {
-  display: grid;
-  gap: 1.4cqh;
-  inline-size: auto;
-  max-inline-size: 100%;
-}
-.film.is-poster .film-line {
-  grid-area: auto;
-  opacity: 1;
-  font-size: 15px;
-  font-size: clamp(13px, 3.05cqh, 22px);
-  line-height: 1.16;
-}
-.film.is-poster .film-band,
-.film.is-poster .film-mark { display: none; }
-
 /* ---- reduced motion: there is no film at all ---- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -1193,6 +1117,24 @@ body.bot-open .bot-launcher { display: none; }
         controls do not exist until it has handed off ---- */
 
 body.film-playing { overflow: hidden; }
+
+/* ---- CSS-ONLY FAILSAFE (round 7 §8) -----------------------------------
+   If the script dies mid-film the overlay must not sit on top of a working
+   page for ever. This runs on the element itself, needs no JavaScript at
+   all, and takes the overlay out of sight and out of the hit-test at ten
+   seconds — nearly three seconds after the longest legitimate run.
+
+   It is deliberately NOT inside FILM-CSS:START/END: docs/film-proof.html
+   copies that region verbatim and replays the film on a button press
+   minutes after load, where a ten-second self-destruct would be a bug.
+
+   An element that is display:none generates no box, so this does not start
+   ticking while .film is still [hidden] before the module shows it. */
+.film { animation: filmFailsafe 10s step-end forwards; }
+@keyframes filmFailsafe {
+  from { visibility: visible; pointer-events: auto; }
+  to   { visibility: hidden; pointer-events: none; }
+}
 
 .bot-launcher {
   opacity: 0;

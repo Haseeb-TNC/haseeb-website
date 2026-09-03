@@ -1,5 +1,15 @@
 # HASEEB-4113 — Opening film spec (founder direction, 2026-09-02, supersedes the three-concept round)
 
+> **⚠️ SUPERSEDED IN PART BY `docs/HASEEB-4113-round7-spec.md` (founder,
+> 2026-09-03). Read that first.** The direction below still binds — the three
+> statements, the hard limits, the palette, Skip / play-once / reduced motion.
+> These clauses do NOT: the ten-second length (round 7 is ≈7.6 s), the DOM
+> token grid animated with the Web Animations API (round 7 is a Canvas 2D
+> field driven by one rAF loop), the static mobile poster and the Save-Data
+> poster (round 7 has no poster at all — mobile plays a lighter field and
+> Save-Data means no film), and the square "H" mark, which round 7 retires
+> outright: the film now ends on the `HASEEB.` wordmark and nothing else.
+
 ## The direction (verbatim from the founder)
 
 EN statements (uppercase as written):

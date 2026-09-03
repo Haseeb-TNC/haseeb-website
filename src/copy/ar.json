@@ -28,7 +28,6 @@
   "hero": {
     "h1": "كن في المقدّمة مع برنامج محاسبة يفهم عملك.",
     "support": "حسيب مصمّم للأعمال الكويتية.",
-    "sub": "يجهّز لك المحاسبة، ويسألك عندما تنقص معلومة، ويجيب عن أسئلتك بلغة بسيطة.",
     "cta": "انضم إلى الدفعة التأسيسية",
     "secondary": "شاهد كيف يعمل",
     "fact": "الدفعة التأسيسية · 8–12 شركة كويتية · بإشراف منذ اليوم الأول"
@@ -42,7 +41,7 @@
       "body": "عندما تكون المعلومات واضحة، يجهّز حسيب القيد. وأنت تعتمده — كل قيد بمفرده، أو الكل معًا.",
       "rowLabel": "ZAIN TELECOM",
       "rowCategory": "الاتصالات",
-      "rowAmount": "−28.500 د.ك · 14 أبريل"
+      "rowAmount": "−{row1Amount} د.ك · {row1Date}"
     },
     "asks": {
       "label": "يسأل",
@@ -50,7 +49,7 @@
       "body": "عندما تنقص معلومة، يسألك حسيب سؤالًا واحدًا. أجب عنه، ويصبح القيد جاهزًا.",
       "rowLabel": "تحويل",
       "rowQuestion": "ما الغرض من هذا التحويل؟",
-      "rowAmount": "−450.000 د.ك · 15 أبريل"
+      "rowAmount": "−{row2Amount} د.ك · {row2Date}"
     },
     "holds": {
       "label": "يتوقّف",
@@ -58,7 +57,7 @@
       "body": "عندما لا تكفي المعلومات، يتوقّف حسيب. لا يُرحَّل شيء حتى تقرّر أنت أو محاسبك.",
       "rowLabel": "فاتورة مورّد",
       "rowNote": "المستند ناقص",
-      "rowAmount": "−1,840.000 د.ك · 15 أبريل"
+      "rowAmount": "−{row3Amount} د.ك · {row3Date}"
     },
     "close": "أنت من يتحكّم فيما يُعتمد."
   },
@@ -71,9 +70,8 @@
   "kuwait": {
     "eyebrow": "مصمّم لهنا",
     "h2": "لا يعمل في الكويت فقط، بل يفهم الكويت.",
-    "body": "تجّار الكويت. الدينار الكويتي بثلاث منازل عشرية. تنسيقات مدعومة لكشوف الحسابات البنكية المحلية. متطلبات الأعمال والتقارير الكويتية.",
+    "body": "تجّار الكويت. تنسيقات مدعومة لكشوف الحسابات البنكية المحلية. متطلبات الأعمال والتقارير الكويتية.",
     "chips": [
-      "د.ك · 3 منازل عشرية",
       "تسويات كي-نت",
       "تنسيقات الكشوف المحلية",
       "التجّار الكويتيون"
@@ -124,10 +122,10 @@
     "cta": "انضم إلى الدفعة ←"
   },
   "bot": {
-    "launcher": "تكلّم مع محاسبك كما تتكلّم مع أي شخص",
+    "launcher": "Talk to Haseeb like you talk to your accountant.",
     "launcherTag": "عرض توضيحي موجّه",
     "launcherAria": "افتح العرض التوضيحي الموجّه",
-    "title": "حسيب",
+    "title": "HASEEB.",
     "status": "جاهزة للمساعدة",
     "badge": "عرض توضيحي موجّه · بيانات تجريبية",
     "newConversation": "محادثة جديدة",
@@ -135,16 +133,16 @@
     "emptyTitle": "اسأل عن دفاترك",
     "emptySub": "يمكنني مساعدتك في فهم حساباتك المالية، واكتشاف المشكلات، والإجابة على أسئلتك حول دفاترك.",
     "suggestedLabel": "أسئلة مقترحة",
-    "q1": "أيّ العملاء لم يسدّدوا بعد؟",
-    "a1": "ثلاثة عملاء عليهم 12,450.000 د.ك إجمالًا. أكبرهم شركة مثال للتجارة ذ.م.م، الفاتورة 7012 بقيمة 8,000.000 د.ك، وقد استحقّت الأسبوع الماضي.",
-    "q2": "كم عندنا نقد الآن؟",
-    "a2": "142,850.000 د.ك في حسابيك البنكيين اليوم. وأكبر التزام قادم هو الرواتب في نهاية الشهر.",
-    "q3": "كيف أرقام هذا الشهر؟",
-    "a3": "صافي الدخل هذا الشهر 9,230.160 د.ك. الإيرادات أعلى بنسبة 14٪، معظمها من عقد الاستشارات الجديد، بينما ارتفعت المصروفات مع إيجار أبريل.",
+    "q1": "Which unpaid invoices need my attention?",
+    "a1": "{customerCount} customers have unpaid invoices totalling {openTotal} KWD. The largest open invoice is {largestInvoiceNo} from {largestCustomer}, {largestAmount} KWD.",
+    "q2": "How much cash do we have right now?",
+    "a2": "{cash} KWD available across {accountCount} bank accounts, as of {asOfDate}.",
+    "q3": "What were our revenue, expenses and net income this month?",
+    "a3": "{month}: revenue {revenue} KWD, operating expenses {opex} KWD, net income {net} KWD. Compared with {prevMonth}: revenue {revenueChangePct}, operating expenses {opexChangePct}, net income {netChangeAbs} KWD {netChangeDir}.",
     "thinking": "جارٍ التفكير...",
     "demoBoundary": "هذا عرض توضيحي موجّه على أرقام تجريبية، لذلك أجيب هنا عن الأسئلة المقترحة فقط. داخل المنتج تأتي الإجابات من دفاترك أنت.",
     "inputLabel": "اطرح سؤالًا",
-    "placeholder": "اسأل عن أي شيء يتعلق بحساباتك...",
+    "placeholder": "This website demo answers the suggested questions only.",
     "send": "إرسال",
     "disclaimer": "عرض توضيحي على بيانات تجريبية. داخل المنتج تأتي الإجابات من دفاترك أنت."
   },
@@ -167,11 +165,11 @@
       "توصيل",
       "إيصال",
       "تحويل بنكي",
-      "28.500 د.ك",
-      "1,250.000 د.ك",
-      "450.000 د.ك",
-      "3,980.250 د.ك",
-      "12,450.000 د.ك",
+      "{row1Amount} د.ك",
+      "{row2Amount} د.ك",
+      "{row3Amount} د.ك",
+      "{largestAmount} د.ك",
+      "{openTotal} د.ك",
       "KNET",
       "Invoice"
     ]

@@ -1,0 +1,37 @@
+{
+  "_note": "THE ONE FIXTURE. Every sample figure on the site — the popup answers, the three example rows in the 'how' cards and the film's money tokens — is rendered from this file at build time. The copy files carry {placeholders} and never a literal figure (tripwire 18). Money is held as a STRING with exactly three decimals so it can be read as an exact integer number of fils; nothing here is ever parsed as a float. Every name is fictional. scripts/check.mjs tripwire 17 reconciles it: invoice sum == outstanding, account sum == cash, revenue - operatingExpenses == netIncome for both periods, and the percentage changes and the net difference quoted in the answers are recomputed from these numbers and compared, to the digit, with the text the build rendered.",
+  "company": "The Company W.L.L.",
+  "asOf": "2026-04-30",
+  "cash": "142850.000",
+  "accounts": [
+    { "name": "Operating account", "balance": "118600.000" },
+    { "name": "Savings account", "balance": "24250.000" }
+  ],
+  "openTotal": "12450.000",
+  "invoices": [
+    { "number": "7012", "customer": "Example Trading Co. W.L.L.", "amount": "8000.000" },
+    { "number": "7018", "customer": "Al Bustan Services Co.", "amount": "2950.000" },
+    { "number": "7021", "customer": "Dar Al Noor Trading", "amount": "1500.000" }
+  ],
+  "periods": {
+    "current": {
+      "year": 2026,
+      "month": 4,
+      "revenue": "48420.750",
+      "operatingExpenses": "39190.590",
+      "netIncome": "9230.160"
+    },
+    "previous": {
+      "year": 2026,
+      "month": 3,
+      "revenue": "42475.000",
+      "operatingExpenses": "37900.000",
+      "netIncome": "4575.000"
+    }
+  },
+  "exampleRows": [
+    { "id": "row1", "amount": "28.500", "date": "2026-04-14" },
+    { "id": "row2", "amount": "450.000", "date": "2026-04-15" },
+    { "id": "row3", "amount": "1840.000", "date": "2026-04-15" }
+  ]
+}

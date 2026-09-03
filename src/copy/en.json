@@ -28,7 +28,6 @@
   "hero": {
     "h1": "Get ahead with accounting software that understands your business.",
     "support": "Haseeb is built for Kuwaiti businesses.",
-    "sub": "It prepares the accounting, asks when something is missing, and answers your questions in plain language.",
     "cta": "Join the founding cohort",
     "secondary": "See how it works",
     "fact": "Founding cohort · 8–12 Kuwaiti businesses · Supervised from day one"
@@ -42,7 +41,7 @@
       "body": "When the information is clear, Haseeb prepares the entry. You approve it, one by one or as a batch.",
       "rowLabel": "ZAIN TELECOM",
       "rowCategory": "Telecommunications",
-      "rowAmount": "−28.500 KWD · 14 Apr"
+      "rowAmount": "−{row1Amount} KWD · {row1Date}"
     },
     "asks": {
       "label": "Asks",
@@ -50,7 +49,7 @@
       "body": "When something is missing, Haseeb asks you one question. Answer it and the entry is ready.",
       "rowLabel": "Transfer",
       "rowQuestion": "What was this payment for?",
-      "rowAmount": "−450.000 KWD · 15 Apr"
+      "rowAmount": "−{row2Amount} KWD · {row2Date}"
     },
     "holds": {
       "label": "Holds",
@@ -58,7 +57,7 @@
       "body": "When there is not enough information, Haseeb stops. Nothing is posted until you or your accountant decide.",
       "rowLabel": "Supplier invoice",
       "rowNote": "Document missing",
-      "rowAmount": "−1,840.000 KWD · 15 Apr"
+      "rowAmount": "−{row3Amount} KWD · {row3Date}"
     },
     "close": "You stay in control of what gets approved."
   },
@@ -71,9 +70,8 @@
   "kuwait": {
     "eyebrow": "Built for here",
     "h2": "It doesn't just work in Kuwait. It understands Kuwait.",
-    "body": "Kuwaiti merchants. KWD to three decimals. Supported local bank-statement formats. Kuwaiti business and reporting requirements.",
+    "body": "Kuwaiti merchants. Supported local bank-statement formats. Kuwaiti business and reporting requirements.",
     "chips": [
-      "KWD · 3 decimals",
       "KNET settlements",
       "Local statement formats",
       "Kuwaiti merchants"
@@ -124,10 +122,10 @@
     "cta": "Join the cohort →"
   },
   "bot": {
-    "launcher": "Talk to your accountant the way you talk to anyone",
+    "launcher": "Talk to Haseeb like you talk to your accountant.",
     "launcherTag": "Guided demo",
     "launcherAria": "Open the guided demo",
-    "title": "HASEEB",
+    "title": "HASEEB.",
     "status": "Ready to help",
     "badge": "Guided demo · sample data",
     "newConversation": "New conversation",
@@ -135,16 +133,16 @@
     "emptyTitle": "Ask about your books",
     "emptySub": "I can help you understand your financials, spot issues, and answer questions about your books.",
     "suggestedLabel": "SUGGESTED QUESTIONS",
-    "q1": "Which customers still owe us?",
-    "a1": "Three customers owe you 12,450.000 KWD in total. The largest is Example Trading Co. W.L.L., invoice 7012, 8,000.000 KWD, due last week.",
+    "q1": "Which unpaid invoices need my attention?",
+    "a1": "{customerCount} customers have unpaid invoices totalling {openTotal} KWD. The largest open invoice is {largestInvoiceNo} from {largestCustomer}, {largestAmount} KWD.",
     "q2": "How much cash do we have right now?",
-    "a2": "142,850.000 KWD across your two bank accounts today. Your biggest upcoming payment is payroll at the end of the month.",
-    "q3": "How are this month's numbers?",
-    "a3": "Net income is 9,230.160 KWD this month. Revenue is up 14%, mostly the new consulting contract, while expenses rose with April's rent.",
+    "a2": "{cash} KWD available across {accountCount} bank accounts, as of {asOfDate}.",
+    "q3": "What were our revenue, expenses and net income this month?",
+    "a3": "{month}: revenue {revenue} KWD, operating expenses {opex} KWD, net income {net} KWD. Compared with {prevMonth}: revenue {revenueChangePct}, operating expenses {opexChangePct}, net income {netChangeAbs} KWD {netChangeDir}.",
     "thinking": "Thinking...",
     "demoBoundary": "This is a guided demonstration on sample figures, so I can only answer the suggested questions here. In the product, answers come from your own books.",
     "inputLabel": "Ask a question",
-    "placeholder": "Ask anything about your books...",
+    "placeholder": "This website demo answers the suggested questions only.",
     "send": "Send",
     "disclaimer": "Guided demo on sample data. Answers in the product come from your own books."
   },
@@ -167,14 +165,14 @@
       "Delivery",
       "Receipt",
       "Bank transfer",
-      "28.500 KWD",
-      "1,250.000 KWD",
-      "450.000 KWD",
-      "3,980.250 KWD",
-      "12,450.000 KWD",
+      "{row1Amount} KWD",
+      "{row2Amount} KWD",
+      "{row3Amount} KWD",
+      "{largestAmount} KWD",
+      "{openTotal} KWD",
       "فاتورة",
       "مورّد",
-      "د.ك 28.500"
+      "د.ك {row1Amount}"
     ]
   }
 }

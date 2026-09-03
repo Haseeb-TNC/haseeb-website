@@ -1,9 +1,6 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<!-- GENERATED FILE — do not edit by hand.
-     Source: src/site.template.html + src/copy/*.json
-     Rebuild: npm run site:build   ·   Verify: npm run site:check -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>حسيب — برنامج محاسبة يفهم عملك.</title>
@@ -28,7 +25,6 @@
 </head>
 <body>
 
-<!-- ─────────────────────────  NAV  ───────────────────────── -->
 <nav class="nav" id="nav" aria-label="التنقل الرئيسي">
   <div class="wrap nav-inner">
     <a class="wordmark" href="#top">HASEEB.</a>
@@ -50,16 +46,10 @@
 
 <main>
 
-  <!-- ─────────────────────────  1 · HERO  ─────────────────────────
-       Text-first. The animated product-UI stage that lived here was SHELVED
-       on 2026-09-02 (founder instruction); it survives in git history at
-       cc186c2 and is not part of the deployed site. The opening film is a
-       separate, undecided concept — docs/HASEEB-4113-opening-concepts.md. -->
   <section class="hero" id="top">
     <div class="wrap hero-inner">
       <h1 class="hero-h1 reveal">كن في المقدّمة مع برنامج محاسبة يفهم عملك.</h1>
       <p class="hero-support reveal">حسيب مصمّم للأعمال الكويتية.</p>
-      <p class="hero-sub reveal">يجهّز لك المحاسبة، ويسألك عندما تنقص معلومة، ويجيب عن أسئلتك بلغة بسيطة.</p>
       <div class="hero-actions reveal">
         <a class="btn btn-primary btn-lg" href="#apply">انضم إلى الدفعة التأسيسية</a>
         <a class="link-arrow" href="#how">شاهد كيف يعمل<span class="arrow" aria-hidden="true">→</span></a>
@@ -68,7 +58,6 @@
     </div>
   </section>
 
-  <!-- ─────────────────────────  2 · HOW IT WORKS  ───────────────────────── -->
   <section id="how">
     <div class="wrap">
       <div class="sec-head reveal">
@@ -112,7 +101,6 @@
     </div>
   </section>
 
-  <!-- ─────────────────────────  3 · ASK  ───────────────────────── -->
   <section id="ask">
     <div class="wrap">
       <div class="band reveal">
@@ -124,22 +112,19 @@
     </div>
   </section>
 
-  <!-- ─────────────────────────  4 · KUWAIT  ───────────────────────── -->
   <section id="kuwait">
     <div class="wrap">
       <div class="sec-head reveal">
         <p class="eyebrow">مصمّم لهنا</p>
         <h2>لا يعمل في الكويت فقط، بل يفهم الكويت.</h2>
-        <p class="lede">تجّار الكويت. الدينار الكويتي بثلاث منازل عشرية. تنسيقات مدعومة لكشوف الحسابات البنكية المحلية. متطلبات الأعمال والتقارير الكويتية.</p>
+        <p class="lede">تجّار الكويت. تنسيقات مدعومة لكشوف الحسابات البنكية المحلية. متطلبات الأعمال والتقارير الكويتية.</p>
       </div>
-      <ul class="chips reveal"><li>د.ك · <span class="num">3</span> منازل عشرية</li>
-        <li>تسويات كي-نت</li>
+      <ul class="chips reveal"><li>تسويات كي-نت</li>
         <li>تنسيقات الكشوف المحلية</li>
         <li>التجّار الكويتيون</li></ul>
     </div>
   </section>
 
-  <!-- ─────────────────────────  5 · FOUNDING COHORT  ───────────────────────── -->
   <section id="cohort">
     <div class="wrap cohort-grid">
       <div class="cohort-text reveal">
@@ -156,6 +141,7 @@
         <p class="apply-intro">نراجع كل طلب شخصيًا. لا نطلب أي معلومات مالية للتقديم.</p>
 
         <form id="cohortForm" novalidate
+              action="mailto:founder@haseeb.app" method="post" enctype="text/plain"
               data-to="founder@haseeb.app"
               data-subject="طلب الانضمام إلى الدفعة التأسيسية من حسيب — {name}"
               data-heading="طلب الانضمام إلى الدفعة التأسيسية من حسيب"
@@ -192,7 +178,6 @@
 
 </main>
 
-<!-- ─────────────────────────  6 · FOOTER  ───────────────────────── -->
 <footer class="foot">
   <div class="wrap foot-inner">
     <a class="wordmark foot-mark" href="#top">HASEEB.</a>
@@ -210,20 +195,13 @@
   </div>
 </footer>
 
-<!-- ─────────────────────────  MOBILE STICKY CTA  ───────────────────────── -->
 <div class="sticky-cta" id="stickyCta" hidden><a href="#apply">انضم إلى الدفعة ←</a></div>
 
-<!-- ─────────────────────────  CONVERSATION DRAWER · GUIDED DEMO  ─────────────────────────
-     A faithful recreation of the product's in-app accounting-conversation
-     drawer: same chrome, same spacing, same message shapes. There is no live
-     endpoint, so it answers only the three suggested questions from sample
-     figures and says so plainly for anything else. Nothing here is a network
-     call and no answer is generated. -->
 <button class="bot-launcher" id="botLauncher" type="button" aria-expanded="false" aria-controls="botDialog" aria-label="افتح العرض التوضيحي الموجّه">
   <span class="bot-ico" aria-hidden="true">
     <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12a8 8 0 0 1-8 8H7l-4 3v-6.5A8 8 0 0 1 11 4h2a8 8 0 0 1 8 8z"></path></svg>
   </span>
-  <span class="bot-launcher-text">تكلّم مع محاسبك كما تتكلّم مع أي شخص</span>
+  <span class="bot-launcher-text">Talk to Haseeb like you talk to your accountant.</span>
   <span class="bot-launcher-tag">عرض توضيحي موجّه</span>
 </button>
 
@@ -232,10 +210,9 @@
 <div class="bot-drawer" id="botDialog" role="dialog" aria-modal="true" aria-labelledby="botTitle" hidden>
 
   <div class="bot-head">
-    <span class="bot-mark" aria-hidden="true">H</span>
     <div class="bot-head-text">
       <span class="bot-head-line">
-        <h2 class="bot-title" id="botTitle">حسيب</h2>
+        <h2 class="bot-title" id="botTitle">HASEEB.</h2>
         <span class="bot-status">جاهزة للمساعدة</span>
       </span>
       <span class="bot-badge">عرض توضيحي موجّه · بيانات تجريبية</span>
@@ -248,23 +225,25 @@
 
   <div class="bot-body" id="botBody">
     <div class="bot-empty" id="botEmpty">
-      <span class="bot-empty-mark" aria-hidden="true">H</span>
       <p class="bot-empty-title">اسأل عن دفاترك</p>
       <p class="bot-empty-sub">يمكنني مساعدتك في فهم حساباتك المالية، واكتشاف المشكلات، والإجابة على أسئلتك حول دفاترك.</p>
-      <p class="bot-sugg-label">أسئلة مقترحة</p>
-      <div class="bot-chips" id="botChips">
-        <button class="bot-chip" type="button" data-answer="a1">أيّ العملاء لم يسدّدوا بعد؟</button>
-        <button class="bot-chip" type="button" data-answer="a2">كم عندنا نقد الآن؟</button>
-        <button class="bot-chip" type="button" data-answer="a3">كيف أرقام هذا الشهر؟</button>
-      </div>
     </div>
     <div class="bot-thread" id="botThread" aria-live="polite"></div>
+    <div class="bot-suggest" id="botSuggest">
+      <p class="bot-sugg-label">أسئلة مقترحة</p>
+
+      <div class="bot-chips" id="botChips">
+        <button class="bot-chip" type="button" dir="auto" data-answer="a1">Which unpaid invoices need my attention?</button>
+        <button class="bot-chip" type="button" dir="auto" data-answer="a2">How much cash do we have right now?</button>
+        <button class="bot-chip" type="button" dir="auto" data-answer="a3">What were our revenue, expenses and net income this month?</button>
+      </div>
+    </div>
   </div>
 
   <div class="bot-input">
     <form class="bot-input-row" id="botForm" novalidate>
       <label class="sr-only" for="botText">اطرح سؤالًا</label>
-      <textarea class="bot-text" id="botText" rows="1" autocomplete="off" placeholder="اسأل عن أي شيء يتعلق بحساباتك..."></textarea>
+      <textarea class="bot-text" id="botText" rows="1" autocomplete="off" placeholder="This website demo answers the suggested questions only."></textarea>
       <button class="bot-send" id="botSend" type="submit" disabled aria-label="إرسال">
         <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 2 11 13"></path><path d="M22 2 15 22l-4-9-9-4 20-7z"></path></svg>
       </button>
@@ -272,65 +251,31 @@
     <p class="bot-disclaimer">عرض توضيحي على بيانات تجريبية. داخل المنتج تأتي الإجابات من دفاترك أنت.</p>
   </div>
 
-  <!-- copy store: the rendered answer blocks the script clones into the
-       transcript. Hidden, never announced, never edited by script. -->
   <div class="bot-store" id="botStore" hidden aria-hidden="true">
-    <div class="bot-answer" data-store="a1">ثلاثة عملاء عليهم <span class="num">12,450.000</span> د.ك إجمالًا. أكبرهم شركة مثال للتجارة ذ.م.م، الفاتورة <span class="num">7012</span> بقيمة <span class="num">8,000.000</span> د.ك، وقد استحقّت الأسبوع الماضي.</div>
-    <div class="bot-answer" data-store="a2"><span class="num">142,850.000</span> د.ك في حسابيك البنكيين اليوم. وأكبر التزام قادم هو الرواتب في نهاية الشهر.</div>
-    <div class="bot-answer" data-store="a3">صافي الدخل هذا الشهر <span class="num">9,230.160</span> د.ك. الإيرادات أعلى بنسبة <span class="num">14٪</span>، معظمها من عقد الاستشارات الجديد، بينما ارتفعت المصروفات مع إيجار أبريل.</div>
-    <div class="bot-answer" data-store="boundary">هذا عرض توضيحي موجّه على أرقام تجريبية، لذلك أجيب هنا عن الأسئلة المقترحة فقط. داخل المنتج تأتي الإجابات من دفاترك أنت.</div>
+    <div class="bot-answer" dir="auto" data-store="a1"><span class="num">3</span> customers have unpaid invoices totalling <span class="num">12,450.000</span> KWD. The largest open invoice is <span class="num">7012</span> from Example Trading Co. W.L.L., <span class="num">8,000.000</span> KWD.</div>
+    <div class="bot-answer" dir="auto" data-store="a2"><span class="num">142,850.000</span> KWD available across <span class="num">2</span> bank accounts, as of <span class="num">30</span> April <span class="num">2026.</span></div>
+    <div class="bot-answer" dir="auto" data-store="a3">April <span class="num">2026</span>: revenue <span class="num">48,420.750</span> KWD, operating expenses <span class="num">39,190.590</span> KWD, net income <span class="num">9,230.160</span> KWD. Compared with March <span class="num">2026</span>: revenue up <span class="num">14.0%,</span> operating expenses up <span class="num">3.4%,</span> net income <span class="num">4,655.160</span> KWD higher.</div>
+    <div class="bot-answer" dir="auto" data-store="boundary">هذا عرض توضيحي موجّه على أرقام تجريبية، لذلك أجيب هنا عن الأسئلة المقترحة فقط. داخل المنتج تأتي الإجابات من دفاترك أنت.</div>
     <div class="bot-thinking" data-store="thinking"><span class="bot-spin" aria-hidden="true"></span><span>جارٍ التفكير...</span></div>
   </div>
 </div>
 
-<!-- FILM:START ─────────────────────  OPENING FILM  ─────────────────────
-     A brand hook, not a product demonstration: everyday business
-     information arrives and competes for attention, ONE teal movement puts
-     it in order, three statements, the mark, then the hand-off to the hero.
-
-     It is an overlay, never a page: everything above is already in the DOM
-     and readable underneath from the first frame. The field is decorative
-     motion and carries aria-hidden; the Skip button sits OUTSIDE the hidden
-     field and is the only focusable thing while the film runs. No image, no
-     canvas, no video, no audio, no library, no network call. Every inner
-     element is addressed by class and never by id, so the same markup can be
-     rendered twice on the proof page. -->
-<div class="film" hidden data-beat="idle">
-  <div class="film-field" aria-hidden="true">
-    <div class="film-order"><span class="film-tok film-word" style="grid-row:1">بيع</span>
-        <span class="film-tok film-word" style="grid-row:2">فاتورة رقم <span class="num">1042</span></span>
-        <span class="film-tok film-word" style="grid-row:3">سداد</span>
-        <span class="film-tok film-word" style="grid-row:4">مصروف</span>
-        <span class="film-tok film-word" style="grid-row:5">مورّد</span>
-        <span class="film-tok film-word" style="grid-row:6">عميل</span>
-        <span class="film-tok film-word" style="grid-row:7">إيجار</span>
-        <span class="film-tok film-word" style="grid-row:8">رواتب</span>
-        <span class="film-tok film-word" style="grid-row:9">كي نت</span>
-        <span class="film-tok film-word" style="grid-row:10">توصيل</span>
-        <span class="film-tok film-word" style="grid-row:11">إيصال</span>
-        <span class="film-tok film-word" style="grid-row:12">تحويل بنكي</span>
-        <span class="film-tok film-word" style="grid-row:13">KNET</span>
-        <span class="film-tok film-word" style="grid-row:14">Invoice</span>
-        <span class="film-tok film-amt" style="grid-row:1"><span class="film-amt-i"><span class="num">28</span></span><span class="film-amt-f"><span class="num">.500</span> د.ك</span></span>
-        <span class="film-tok film-amt" style="grid-row:4"><span class="film-amt-i"><span class="num">1,250</span></span><span class="film-amt-f"><span class="num">.000</span> د.ك</span></span>
-        <span class="film-tok film-amt" style="grid-row:7"><span class="film-amt-i"><span class="num">450</span></span><span class="film-amt-f"><span class="num">.000</span> د.ك</span></span>
-        <span class="film-tok film-amt" style="grid-row:10"><span class="film-amt-i"><span class="num">3,980</span></span><span class="film-amt-f"><span class="num">.250</span> د.ك</span></span>
-        <span class="film-tok film-amt" style="grid-row:13"><span class="film-amt-i"><span class="num">12,450</span></span><span class="film-amt-f"><span class="num">.000</span> د.ك</span></span></div>
-    <div class="film-band"></div>
+<div class="film" hidden data-phase="idle">
+  <div class="film-field" aria-hidden="true"
+       data-film-words="بيع|فاتورة رقم 1042|سداد|مصروف|مورّد|عميل|إيجار|رواتب|كي نت|توصيل|إيصال|تحويل بنكي|KNET|Invoice"
+       data-film-amounts="28.500 د.ك|450.000 د.ك|1,840.000 د.ك|8,000.000 د.ك|12,450.000 د.ك">
+    <canvas class="film-canvas"></canvas>
     <div class="film-lines">
       <p class="film-line" data-film-line="1">أنت تدير أعمالك.</p>
       <p class="film-line" data-film-line="2"><span class="film-teal">حسيب</span> يجهّز حساباتك.</p>
       <p class="film-line" data-film-line="3">وأنت صاحب القرار.</p>
     </div>
     <div class="film-mark">
-      <span class="film-mark-h">H</span>
       <span class="film-mark-word">HASEEB.</span>
-      <span class="film-mark-rule"></span>
     </div>
   </div>
   <button class="film-skip" type="button" aria-label="تخطّي الافتتاح">تخطّي</button>
 </div>
-<!-- FILM:END -->
 
 <script src="assets/site.js" defer></script>
 </body>
