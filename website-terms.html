@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -15,15 +15,20 @@
   Scope: website terms only — NOT the Haseeb product Terms of Service.
   Deliberately names NO operating entity — none is incorporated yet.
 -->
+<script>try{var t=localStorage.getItem("haseeb-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --bg: #0B0F14; --text-1: #E8E4DF;
-    --text-2: rgba(232,228,223,0.72); --text-3: rgba(232,228,223,0.45);
-    --border: rgba(255,255,255,0.08); --teal: #00C48C;
-    --amber: #D4A84B; --amber-soft: rgba(212,168,75,0.10);
+    --bg: #FFFFFF; --text-1: #0B0F14;
+    --text-2: rgba(11,15,20,0.68); --text-3: rgba(11,15,20,0.5);
+    --border: rgba(11,15,20,0.08); --teal: #007A62;
+  }
+  :root[data-theme="dark"] {
+    --bg: #0B0F14; --text-1: #E9EDF0;
+    --text-2: rgba(233,237,240,0.72); --text-3: rgba(233,237,240,0.5);
+    --border: rgba(255,255,255,0.08); --teal: #3DD3B0;
   }
   * { box-sizing: border-box; }
   body {
@@ -34,7 +39,7 @@
   }
   a { color: var(--teal); text-decoration: none; }
   a:hover { text-decoration: underline; }
-  a:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; border-radius: 4px; }
+  a:focus-visible { outline: 2px solid #00A684; outline-offset: 2px; border-radius: 4px; }
   .wrap { max-width: 720px; margin: 0 auto; padding: 40px 22px 80px; }
   .back { font-size: 13.5px; color: var(--text-3); display: inline-block; margin-bottom: 36px; }
   .back:hover { color: var(--text-1); text-decoration: none; }
