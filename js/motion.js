@@ -19,6 +19,8 @@
   gsap.registerPlugin(ScrollTrigger);
   if (window.SplitText) gsap.registerPlugin(SplitText);
 
+  ScrollTrigger.config({ ignoreMobileResize: true });
+
   var T = { ease: 'power3.out', rise: 14, fast: 0.5, base: 0.8, slow: 1.1, stagger: 0.06, start: 'top 88%' };
   var root = document.documentElement;
 
@@ -39,6 +41,17 @@
       gsap.to(o, { v: to, duration: 1.3, delay: delay || 0.2, ease: 'power2.out', onUpdate: function () { el.textContent = fmt(o.v, int); } });
     });
   }
+
+  // 01–03 sit in a sideways carousel: a scene in a hidden slide waits until its slide is shown.
+  function shown(el) { var s = el.closest('.slide'); return !s || s.classList.contains('on'); }
+  function whenShown(el, fn) {
+    var s = el.closest('.slide');
+    if (shown(el)) return fn();
+    s.addEventListener('tour:on', function on() { s.removeEventListener('tour:on', on); fn(); });
+  }
+
+  // Pinned, the next slide slides in from the side: its text should already be there, so plain reveals skip the wait.
+  function whenNear(el, fn) { return el.closest('.tour.pin') ? fn() : whenShown(el, fn); }
 
   function lines(el, opts) {
     gsap.set(el, { opacity: 1 });
@@ -70,12 +83,23 @@
     tl.from([$('.cta', col), $('.fine', col)], { opacity: 0, y: 12, duration: T.base, stagger: 0.08 }, 0.85);
   }
 
-  // Returns a paused timeline; deck() plays it when the chat screen comes to the front.
-  function chat() {
+  // Transactions screen under the hero: rises in, rows cascade, then Haseeb's note pops.
+  function txShot(handled) {
+    var shot = $('.hero-shot');
+    if (!shot) return;
+    handled.push(shot);
+    var tl = gsap.timeline({ paused: true, defaults: { ease: T.ease } });
+    tl.fromTo(shot, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: T.slow })
+      .call(function () { mark(shot); }, null, 0.15)
+      .fromTo($$('.pop', shot), { opacity: 0, y: 12, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(1.6)' }, 1.2);
+    ScrollTrigger.create({ trigger: shot, start: T.start, once: true, onEnter: function () { tl.play(); } });
+  }
+
+  function chat(handled) {
     var shot = $('.askshot');
-    if (!shot) return null;
+    if (!shot) return;
     var thread = $('.thread', shot), msgs = $$('.msg', thread);
-    if (msgs.length < 4) { gsap.set(msgs, { opacity: 1 }); return null; }
+    if (msgs.length < 4) { gsap.set(msgs, { opacity: 1 }); return; }
     // The dots sit over the answer's (still invisible) slot, so the window never changes height.
     thread.style.position = 'relative';
     function typing(before) {
@@ -99,93 +123,7 @@
       .call(place(t2, msgs[3])).set(t2, { display: 'flex' }).fromTo(t2, { opacity: 0 }, { opacity: 1, duration: 0.25 })
       .set(t2, { display: 'none' }, '+=0.8')
       .fromTo(msgs[3], from, inn);
-    return tl;
-  }
-
-  // Screens deck (hero screen + 01-03): pinned while you scroll through it. Each screen
-  // slides in from the right and settles on the stack; the ones behind step back a little.
-  // Snaps so one screen always ends up centred. Content on a screen wakes once, when it
-  // first reaches the front.
-  function deck(handled) {
-    var d = $('#deck');
-    if (!d) return;
-    var slides = $$('.slide', d), n = slides.length, hds = $$('.slide-hd', d);
-    if (n < 2) return;
-    handled.push.apply(handled, $$('.rv', d));
-    ScrollTrigger.config({ ignoreMobileResize: true });
-    d.classList.add('pin');
-
-    // Same screen size on every slide: headers take the tallest header's height.
-    function even() {
-      hds.forEach(function (h) { h.style.minHeight = ''; });
-      var m = Math.max.apply(null, hds.map(function (h) { return h.offsetHeight; }));
-      hds.forEach(function (h) { h.style.minHeight = m + 'px'; });
-    }
-    even();
-    ScrollTrigger.addEventListener('refreshInit', even);
-
-    var show = $('#show', d), talk = chat();
-    if (show) $$('[data-count]', show).forEach(function (el) { el.textContent = fmt(0, el.hasAttribute('data-int')); });
-    // Keyed by slide id.
-    var wake = { how: function () {
-      count(show, 0.3);
-      gsap.fromTo($$('.pop', show), { opacity: 0, y: 12, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, delay: 0.9, ease: 'back.out(1.6)' });
-      var btn = $('.btn.sm', show);
-      if (btn) gsap.fromTo(btn, { boxShadow: '0 0 0 0 rgba(0,166,132,.45)' }, { boxShadow: '0 0 0 10px rgba(0,166,132,0)', duration: 1.2, delay: 1.8, ease: 'power2.out', clearProps: 'boxShadow' });
-    }, ask: function () { if (talk) talk.play(); } };
-    var woke = [];
-    function front(i) {
-      if (woke[i]) return;
-      woke[i] = true;
-      mark(slides[i]);
-      var w = wake[slides[i].id];
-      if (w) w();
-    }
-
-    // First screen: one soft rise as the deck scrolls into view.
-    gsap.fromTo(slides[0].children, { opacity: 0, y: 28 }, {
-      opacity: 1, y: 0, duration: T.slow, stagger: 0.1, ease: T.ease,
-      scrollTrigger: { trigger: d, start: 'top 85%', once: true, onEnter: function () { front(0); } }
-    });
-
-    // Where a screen sits by how many are in front of it: it steps back, its top edge
-    // peeks out above the front one, and it fades into the page (--dim drives an overlay).
-    // Only two stay visible behind the front screen, so the stack never piles up.
-    var DEPTH = [
-      { scale: 1, y: 0, '--dim': 0, autoAlpha: 1 },
-      { scale: 0.95, y: -20, '--dim': 0.4, autoAlpha: 1 },
-      { scale: 0.9, y: -38, '--dim': 0.7, autoAlpha: 1 },
-      { scale: 0.86, y: -50, '--dim': 0.9, autoAlpha: 0 }
-    ];
-    function depth(k) { return DEPTH[Math.min(k, DEPTH.length - 1)]; }
-    function off() { return window.innerWidth; }
-    var tl = gsap.timeline({
-      defaults: { duration: 1, ease: 'power2.out' },
-      scrollTrigger: {
-        trigger: d, pin: $('.deck-pin', d), start: 'top top',
-        end: function () { return '+=' + (n - 1) * window.innerHeight; },
-        scrub: 0.6, invalidateOnRefresh: true,
-        snap: { snapTo: 'labels', duration: { min: 0.2, max: 0.5 }, delay: 0.05, ease: 'power1.inOut' },
-        onUpdate: function (st) { front(Math.round(st.progress * (n - 1))); }
-      }
-    });
-    gsap.set(slides, { '--dim': 0 });
-    tl.addLabel('s0');
-    for (var i = 1; i < n; i++) {
-      tl.fromTo(slides[i], { x: off }, { x: 0 }, 's' + (i - 1));
-      for (var j = 0; j < i; j++) tl.to(slides[j], depth(i - j), 's' + (i - 1));
-      tl.addLabel('s' + i);
-    }
-
-    // Links to a screen (e.g. the hero's "See how Haseeb works" -> #how) scroll to its stop.
-    function go(k, smooth) { window.scrollTo({ top: tl.scrollTrigger.labelToScroll('s' + k), behavior: smooth ? 'smooth' : 'auto' }); }
-    var ids = slides.map(function (s) { return '#' + s.id; });
-    $$('a[href^="#"]').forEach(function (a) {
-      var k = ids.indexOf(a.getAttribute('href'));
-      if (k < 0) return;
-      a.addEventListener('click', function (e) { e.preventDefault(); go(k, true); history.replaceState(null, '', ids[k]); });
-    });
-    if (ids.indexOf(location.hash) > 0) setTimeout(function () { go(ids.indexOf(location.hash)); }, 50);
+    ScrollTrigger.create({ trigger: shot, start: 'top 70%', once: true, onEnter: function () { whenShown(shot, function () { tl.play(); }); } });
   }
 
   function bankFlow() {
@@ -199,7 +137,7 @@
       .from(mid.lastElementChild, { opacity: 0, x: -6, duration: 0.4 }, '<')
       .fromTo(cards[1], { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6 })
       .from($$('.je .row', cards[1]), { opacity: 0, y: 6, duration: 0.4, stagger: 0.12 }, '<0.2');
-    ScrollTrigger.create({ trigger: win || flow, start: 'top 70%', once: true, onEnter: function () { tl.play(); } });
+    ScrollTrigger.create({ trigger: win || flow, start: 'top 70%', once: true, onEnter: function () { whenShown(flow, function () { tl.play(); }); } });
   }
 
   // 03: three card taps -> one KNET settlement line -> Haseeb prepares the entry -> you approve it.
@@ -277,13 +215,186 @@
       return tl;
     }
     reset();
-    var loop = null, live = false;
-    ScrollTrigger.create({
+    var loop = null, live = false, inView = false, slide = box.closest('.slide');
+    function sync() {
+      live = inView && shown(box);
+      if (live) { if (!loop) loop = cycle(); loop.play(); } else if (loop) loop.pause();
+    }
+    var pinBox = box.closest('.tour.pin');
+    if (pinBox) {
+      pinBox.addEventListener('tour:in', function () { inView = true; sync(); });
+      pinBox.addEventListener('tour:out', function () { inView = false; sync(); });
+    } else ScrollTrigger.create({
       trigger: box, start: 'top 75%', end: 'bottom top',
-      onToggle: function (s) {
-        live = s.isActive;
-        if (live) { if (!loop) loop = cycle(); loop.play(); } else if (loop) loop.pause();
+      onToggle: function (s) { inView = s.isActive; sync(); }
+    });
+    if (slide) { slide.addEventListener('tour:on', sync); slide.addEventListener('tour:off', sync); }
+  }
+
+  // 01–03 tour (wide screens): pins under the nav and page scroll drives it, scrubbed with light smoothing.
+  // A tall slide first scrolls through its own overflow, then the track slides across to the next one.
+  // Each slide rests for REST of the screen height before the next one moves in, so a reader who keeps scrolling
+  // still sees it. Stop part-way across and it settles on the slide you were heading for, never back against you.
+  // A pill at the bottom names the slide and fills one bar per slide, so it reads as three parts from the start.
+  // Narrow screens skip the pin: the slides stack as normal sections. HTour (inline script) owns slide state.
+  var NAV = 68, MOVE = 0.75, REST = 0.3, WIDE = '(min-width: 861px)';
+  function tour() {
+    var box = $('#tour'), api = window.HTour;
+    if (!box || !api) return;
+    var track = $('.tour-track', box), slides = api.slides, n = slides.length;
+    var st = null, tl = null, at = [], moves = [], total = 1, lastW = innerWidth, pinned = false;
+    var prog = $('.tour-prog', box), num = $('.n', prog), name = $('.t', prog), lab = -1;
+    var fills = $$('b', prog).map(function (b) { return gsap.quickSetter(b, 'scaleX'); });
+
+    // Slide in place: the one whose move across is more than half done.
+    function current(t) {
+      var i = 0;
+      while (i < moves.length && t >= (moves[i][0] + moves[i][1]) / 2) i++;
+      return i;
+    }
+    function update(self) {
+      var i = current(self.progress * total);
+      api.mark(i);
+      if (i === lab) return;
+      lab = i;
+      var words = slides[i].getAttribute('aria-label').split(' ');
+      num.textContent = words.shift();
+      name.textContent = words.join(' ');
+    }
+    // Bar k fills from slide k arriving to slide k+1 arriving. Follows the smoothed timeline, not the raw scroll.
+    function fill() {
+      var t = tl.time();
+      fills.forEach(function (set, k) {
+        var a = at[k], b = k < n - 1 ? moves[k][1] : total;
+        set(b > a ? Math.max(0, Math.min(1, (t - a) / (b - a))) : t >= a ? 1 : 0);
+      });
+    }
+    // Snap only while between two slides, and only in the direction of travel. Inside a tall slide, rest anywhere.
+    function snap(p, self) {
+      var t = p * total, dir = (self || st).direction;
+      for (var k = 0; k < moves.length; k++) {
+        if (t > moves[k][0] + 1 && t < moves[k][1] - 1) return (dir < 0 ? moves[k][0] : moves[k][1]) / total;
       }
+      return p;
+    }
+    function build() {
+      if (st) st.kill(true);
+      if (tl) tl.kill();
+      box.scrollTop = box.scrollLeft = track.scrollLeft = 0;  // older browsers without overflow:clip
+      gsap.set(track, { x: 0 });
+      gsap.set(slides, { y: 0 });
+      lastW = innerWidth;
+      var W = track.clientWidth, H = track.clientHeight, move = Math.round(H * MOVE), rest = Math.round(H * REST), pos = 0;
+      at = []; moves = [];
+      tl = gsap.timeline({ paused: true, defaults: { ease: 'none' }, onUpdate: fill });
+      slides.forEach(function (sl, i) {
+        var ov = Math.max(0, sl.offsetHeight - H);
+        at.push(pos);
+        if (ov) { tl.to(sl, { y: -ov, duration: ov }, pos); pos += ov; }
+        if (i < n - 1) {
+          pos += rest;
+          tl.to(track, { x: -(i + 1) * W, duration: move }, pos);
+          moves.push([pos, pos + move]);
+          pos += move;
+        }
+      });
+      total = Math.max(pos, 1);
+      st = ScrollTrigger.create({
+        trigger: box, start: 'top ' + NAV + 'px', end: '+=' + total,
+        pin: true, anticipatePin: 1, refreshPriority: 1,
+        animation: tl, scrub: 0.5,
+        snap: { snapTo: snap, delay: 0.15, duration: { min: 0.25, max: 0.6 }, ease: 'power2.inOut', inertia: false },
+        onUpdate: update, onRefresh: update,
+        onToggle: function (s) { box.dispatchEvent(new CustomEvent(s.isActive ? 'tour:in' : 'tour:out')); }
+      });
+      update(st);
+      fill();
+    }
+    function pin() {
+      pinned = true;
+      box.classList.add('pin');
+      api.mark(0, true);
+      build();
+    }
+    function unpin() {
+      pinned = false;
+      if (st) st.kill(true);
+      if (tl) tl.kill();
+      st = tl = null;
+      gsap.set(track, { clearProps: 'x' });
+      gsap.set(slides, { clearProps: 'y' });
+      box.classList.remove('pin');
+      slides.forEach(function (sl) { sl.classList.add('on'); sl.inert = false; sl.dispatchEvent(new CustomEvent('tour:on')); });
+      box.dispatchEvent(new CustomEvent('tour:in'));
+    }
+    // Jumps (reload, #links, resize) land at once: finish the scrub instead of easing to the new place.
+    api.jump = function (y) {
+      window.scrollTo({ top: y, behavior: 'instant' });
+      ScrollTrigger.update();
+      var tw = st && st.getTween && st.getTween();
+      if (tw) tw.progress(1);
+    };
+    api.go = function (i, instant) {
+      var y = pinned ? st.start + at[i] : slides[i].getBoundingClientRect().top + scrollY - NAV;
+      if (instant) api.jump(y); else window.scrollTo({ top: y, behavior: 'smooth' });
+    };
+    // Width change: rebuild, then put the reader back on the same slide, the same share of the way through it.
+    function rebuild() {
+      var y = scrollY, s0 = st.start, e0 = st.end, old = at.concat(e0 - s0), t = y - s0, i = 0;
+      while (i < n - 1 && t >= old[i + 1]) i++;
+      var f = Math.max(0, Math.min(1, (t - old[i]) / (old[i + 1] - old[i])));
+      build();
+      ScrollTrigger.refresh();
+      var now = at.concat(st.end - st.start);
+      if (y > s0) api.jump(y >= e0 ? st.end + (y - e0) : st.start + now[i] + f * (now[i + 1] - now[i]));
+    }
+    if (matchMedia(WIDE).matches) pin(); else unpin();
+    var pending;
+    addEventListener('resize', function () {
+      if (innerWidth === lastW) return;
+      clearTimeout(pending);
+      pending = setTimeout(function () {
+        lastW = innerWidth;
+        var wide = matchMedia(WIDE).matches;
+        if (wide && pinned) return rebuild();
+        if (wide) pin(); else if (pinned) unpin(); else return;
+        ScrollTrigger.refresh();
+      }, 250);
+    });
+    // A slide's #id typed into the address bar.
+    addEventListener('hashchange', function () {
+      var i = slides.findIndex(function (sl) { return '#' + sl.id === location.hash; });
+      if (i > -1) api.go(i, true);
+    });
+  }
+
+  // Scroll position on load. The browser's own restore runs before the pin exists and lands in the wrong place,
+  // so it's off (inline head script) and we put the position back once every trigger is built.
+  var KEY = 'haseeb-y:' + location.pathname;
+  addEventListener('pagehide', function () { try { sessionStorage.setItem(KEY, String(Math.round(scrollY))); } catch (e) {} });
+  function land() {
+    ScrollTrigger.refresh();
+    var el = location.hash.length > 1 && document.getElementById(location.hash.slice(1));
+    var tourApi = window.HTour, i = el && tourApi && tourApi.go ? tourApi.slides.indexOf(el) : -1;
+    if (i > -1) return tourApi.go(i, true);
+    if (el) return window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - NAV, behavior: 'instant' });
+    var nav = window.performance && performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    var y = 0;
+    try { y = parseInt(sessionStorage.getItem(KEY), 10) || 0; } catch (e) {}
+    if (!y || !nav || nav.type === 'navigate') return;
+    if (tourApi && tourApi.jump) tourApi.jump(y); else window.scrollTo({ top: y, behavior: 'instant' });
+  }
+
+  // In-page links glide (CSS smooth scroll is off under GSAP) and stop below the sticky nav.
+  function anchors() {
+    document.addEventListener('click', function (e) {
+      if (e.defaultPrevented) return;
+      var a = e.target.closest && e.target.closest('a[href^="#"]');
+      var el = a && a.getAttribute('href').length > 1 && document.getElementById(a.getAttribute('href').slice(1));
+      if (!el) return;
+      e.preventDefault();
+      window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - NAV, behavior: 'smooth' });
+      history.replaceState(null, '', a.getAttribute('href'));
     });
   }
 
@@ -299,30 +410,33 @@
   function start() {
     var handled = [];
     try {
+      tour();
       hero(handled);
-      // The pin goes first so every later trigger is measured with its spacing in place.
-      deck(handled);
+      txShot(handled);
 
       // Big headings: masked line reveal.
       $$('.sec .h2.rv, .dark .h1.rv').forEach(function (h) {
         handled.push(h);
-        lines(h, { trigger: { trigger: h, start: T.start, once: true } });
+        if (shown(h)) return lines(h, { trigger: { trigger: h, start: T.start, once: true } });
+        gsap.set(h, { opacity: 0 });
+        ScrollTrigger.create({ trigger: h, start: T.start, once: true, onEnter: function () { whenNear(h, function () { lines(h, {}); }); } });
       });
 
+      chat(handled);
       bankFlow();
       counterFlow();
       seats();
 
-      // Month-end: counts tick up; one soft pulse on the approve button. (Batch review is in deck().)
-      ['s5'].forEach(function (id) {
+      // Batch review + month-end: counts tick up; one soft pulse on the approve button.
+      ['show', 's5'].forEach(function (id) {
         var s = document.getElementById(id);
         if (!s) return;
         $$('[data-count]', s).forEach(function (el) { el.textContent = fmt(0, el.hasAttribute('data-int')); });
-        ScrollTrigger.create({ trigger: s, start: T.start, once: true, onEnter: function () {
+        ScrollTrigger.create({ trigger: s, start: T.start, once: true, onEnter: function () { whenShown(s, function () {
           count(s);
           var btn = $('.btn.sm', s);
           if (btn) gsap.fromTo(btn, { boxShadow: '0 0 0 0 rgba(0,166,132,.45)' }, { boxShadow: '0 0 0 10px rgba(0,166,132,0)', duration: 1.2, delay: 1.8, ease: 'power2.out', clearProps: 'boxShadow' });
-        } });
+        }); } });
       });
 
       // Everything else: one batched reveal.
@@ -331,10 +445,24 @@
       ScrollTrigger.batch(rest, {
         start: T.start, once: true,
         onEnter: function (batch) {
-          batch.forEach(mark);
-          gsap.to(batch, { opacity: 1, y: 0, duration: T.base, stagger: T.stagger, ease: T.ease, overwrite: true });
+          // Group by slide so a hidden slide's items reveal together when it's shown.
+          var groups = [];
+          batch.forEach(function (el) {
+            var s = el.closest('.slide'), g = groups.filter(function (x) { return x.s === s; })[0];
+            if (!g) groups.push(g = { s: s, els: [] });
+            g.els.push(el);
+          });
+          groups.forEach(function (g) {
+            whenNear(g.els[0], function () {
+              g.els.forEach(mark);
+              gsap.to(g.els, { opacity: 1, y: 0, duration: T.base, stagger: T.stagger, ease: T.ease, overwrite: true });
+            });
+          });
         }
       });
+
+      anchors();
+      land();
 
       // Layout changes (fonts, "Show all" toggles, tabs) move trigger points.
       if (window.ResizeObserver) {
@@ -344,10 +472,10 @@
     } catch (e) {
       // Never leave content hidden.
       root.classList.remove('gs');
-      ScrollTrigger.getAll().forEach(function (t) { t.kill(); });
-      var d = $('#deck');
-      if (d) { d.classList.remove('pin'); gsap.set($$('.slide, .slide > *', d), { clearProps: 'all' }); }
-      $$('.rv, .seats, .slide').forEach(mark);
+      var tb = $('#tour');
+      if (tb) tb.classList.remove('pin');
+      if ('scrollRestoration' in history) history.scrollRestoration = 'auto';
+      $$('.rv, .seats').forEach(mark);
       gsap.set($$('.rv, .msg, .pop, .seats i'), { clearProps: 'all' });
       if (window.console) console.error(e);
     }
@@ -355,7 +483,7 @@
 
   window.HMotion = {
     start: function () {
-      if (!root.classList.contains('gs')) { $$('.rv, .seats, .slide').forEach(mark); return; }
+      if (!root.classList.contains('gs')) { $$('.rv, .seats').forEach(mark); return; }
       if (document.fonts && document.fonts.ready) {
         var go = false, run = function () { if (!go) { go = true; start(); } };
         document.fonts.ready.then(run);
