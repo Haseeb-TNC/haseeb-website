@@ -9,7 +9,7 @@
  *   reveal  fade + 14px rise, batched on scroll, once
  *   lines   masked line-by-line rise for big headings
  *   count   KWD figures count up to their exact 3-decimal value
- *   story   short sequences (hero ledger loop, chat, bank line → entry)
+ *   story   short sequences (chat, bank line → entry)
  * Product micro-animations (row cascade, lane bars, chart draw, tab progress)
  * stay in CSS, keyed to [data-in]; this file only decides when data-in is set.
  */
@@ -51,108 +51,31 @@
     });
   }
 
-  // Stroke length for draw-in effects; also sets the dash so offset can hide the line.
-  function len(el) {
-    var n = el.getTotalLength();
-    el.style.strokeDasharray = n;
-    return n;
-  }
-
-  // Hero ledger: a T-account that tips like a seesaw as entries land on each
-  // side, settles level when they balance, then totals and double-rules.
-  // Each set must balance (left sum = right sum). Markup holds set 1, drawn.
-  function ledger(fig) {
-    var SETS = [
-      [[1250, 340.5, 2075.25], [1500, 865.75, 1300]],
-      [[4800, 120.25, 615], [2400, 3000, 135.25]]
-    ];
-    var L = $$('.lg-l', fig), R = $$('.lg-r', fig), tot = $$('.lg-tot', fig),
-        one = $$('.lg-one', fig), two = $$('.lg-two', fig), rules = one.concat(two),
-        tilt = $('.lg-tilt', fig), ring = $('.lg-ring', fig);
-    function rot(diff) { return gsap.utils.clamp(-3.5, 3.5, -diff / 1300 * 3.5); }
-
-    gsap.set(L.concat(R, tot, rules), { opacity: 0 });
-    gsap.set(tilt, { svgOrigin: '240 470' });
-    fig.classList.remove('ok');
-
-    function cycle(set) {
-      var c = gsap.timeline(), l = set[0], r = set[1], run = 0, o = { v: 0 },
-          sum = l.reduce(function (a, b) { return a + b; }, 0);
-      c.call(function () {
-        fig.classList.remove('ok');
-        l.forEach(function (v, i) { L[i].textContent = fmt(v); });
-        r.forEach(function (v, i) { R[i].textContent = fmt(v); });
-        tot.forEach(function (t) { t.textContent = fmt(0); });
-      })
-        .set(L.concat(R), { opacity: 0, y: -40 })
-        .set(tot, { opacity: 0 })
-        .set(rules, { opacity: 1, strokeDashoffset: function (i, el) { return len(el); } })
-        .set(o, { v: 0 });
-      // Alternate sides: left 1, right 1, left 2, ...
-      [0, 1, 2].forEach(function (i) {
-        [[L[i], l[i], 1], [R[i], r[i], -1]].forEach(function (e, s) {
-          var at = 0.3 + (i * 2 + s) * 0.75;
-          run += e[1] * e[2];
-          c.to(e[0], { opacity: 1, y: 0, duration: 0.5, ease: 'back.out(1.7)' }, at)
-            .to(tilt, { rotation: rot(run), duration: 1.2, ease: 'elastic.out(1,0.45)' }, at + 0.25);
-        });
-      });
-      var end = 0.3 + 5 * 0.75 + 1.1;
-      c.to(one, { strokeDashoffset: 0, duration: 0.5, stagger: 0.1, ease: 'power2.inOut' }, end)
-        .to(tot, { opacity: 1, duration: 0.3 }, end + 0.3)
-        .to(o, { v: sum, duration: 1, ease: 'power2.out', onUpdate: function () { tot.forEach(function (t) { t.textContent = fmt(o.v); }); } }, end + 0.3)
-        .to(two, { strokeDashoffset: 0, duration: 0.6, stagger: 0.1, ease: 'power2.inOut' }, end + 1.2)
-        .call(function () { fig.classList.add('ok'); }, null, end + 1.7)
-        .fromTo(ring, { scale: 0.6, opacity: 0.9, transformOrigin: '50% 50%' }, { scale: 3.2, opacity: 0, duration: 1.2, ease: 'power2.out', immediateRender: false }, end + 1.7)
-        .to(L.concat(R, tot, rules), { opacity: 0, duration: 0.5, stagger: 0.03 }, end + 4.6);
-      return c;
-    }
-
-    var loop = gsap.timeline({ repeat: -1, paused: true });
-    SETS.forEach(function (s) { loop.add(cycle(s)); });
-    return loop;
-  }
-
   function hero(handled) {
-    var top = $('.hero-top'), shot = $('.hero-shot');
-    if (!top) return;
-    var col = top.firstElementChild, led = $('.hero-ledger'), h1 = $('.h1', col);
-    [col, led, shot].forEach(function (el) { if (el) handled.push(el); });
-    gsap.set([col, led], { opacity: 1 });
+    var col = $('.hero-copy');
+    if (!col) return;
+    var h1 = $('.h1', col);
+    handled.push(col);
+    gsap.set(col, { opacity: 1 });
 
     var tl = gsap.timeline({ defaults: { ease: T.ease } });
-    tl.from($('.hero-ar', col), { opacity: 0, y: 8, duration: T.fast });
+    tl.from($('.hero-ar', col), { opacity: 0, y: 8, duration: T.fast }, 0.3);
     if (window.SplitText) {
       // Split once and restore the plain h1 afterwards, so later resizes reflow it normally.
       var sp = SplitText.create(h1, { type: 'lines', mask: 'lines' });
-      tl.from(sp.lines, { yPercent: 105, duration: T.slow, stagger: 0.09, onComplete: function () { sp.revert(); } }, 0.1);
+      tl.from(sp.lines, { yPercent: 105, duration: T.slow, stagger: 0.09, onComplete: function () { sp.revert(); } }, 0.4);
     } else {
-      tl.from(h1, { opacity: 0, y: T.rise, duration: T.base }, 0.1);
+      tl.from(h1, { opacity: 0, y: T.rise, duration: T.base }, 0.4);
     }
-    tl.from([$('.cta', col), $('.fine', col)], { opacity: 0, y: 12, duration: T.base, stagger: 0.08 }, 0.55);
-    if (led) {
-      var frame = $$('.lg-bar, .lg-stem', led), loop = ledger(led);
-      tl.from(led, { opacity: 0, y: 20, duration: T.slow }, 0.2)
-        .from(frame, { strokeDashoffset: function (i, el) { return len(el); }, duration: 0.9, stagger: 0.2, ease: 'power2.inOut' }, 0.4)
-        .from($$('.lg-pivot, .lg-ground', led), { opacity: 0, duration: T.fast }, 0.9)
-        .call(function () {
-          // Loop only while the hero is on screen.
-          ScrollTrigger.create({ trigger: led, start: 'top bottom', end: 'bottom top', onToggle: function (s) { s.isActive ? loop.play() : loop.pause(); } });
-          if (ScrollTrigger.isInViewport(led)) loop.play();
-        }, null, 1.4);
-    }
-    if (shot) {
-      tl.fromTo(shot, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: T.slow }, 0.75)
-        .call(function () { mark(shot); }, null, 0.9)
-        .fromTo($$('.pop', shot), { opacity: 0, y: 12, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(1.6)' }, 1.9);
-    }
+    tl.from([$('.cta', col), $('.fine', col)], { opacity: 0, y: 12, duration: T.base, stagger: 0.08 }, 0.85);
   }
 
-  function chat(handled) {
+  // Returns a paused timeline; deck() plays it when the chat screen comes to the front.
+  function chat() {
     var shot = $('.askshot');
-    if (!shot) return;
+    if (!shot) return null;
     var thread = $('.thread', shot), msgs = $$('.msg', thread);
-    if (msgs.length < 4) { gsap.set(msgs, { opacity: 1 }); return; }
+    if (msgs.length < 4) { gsap.set(msgs, { opacity: 1 }); return null; }
     // The dots sit over the answer's (still invisible) slot, so the window never changes height.
     thread.style.position = 'relative';
     function typing(before) {
@@ -176,7 +99,93 @@
       .call(place(t2, msgs[3])).set(t2, { display: 'flex' }).fromTo(t2, { opacity: 0 }, { opacity: 1, duration: 0.25 })
       .set(t2, { display: 'none' }, '+=0.8')
       .fromTo(msgs[3], from, inn);
-    ScrollTrigger.create({ trigger: shot, start: 'top 70%', once: true, onEnter: function () { tl.play(); } });
+    return tl;
+  }
+
+  // Screens deck (hero screen + 01-03): pinned while you scroll through it. Each screen
+  // slides in from the right and settles on the stack; the ones behind step back a little.
+  // Snaps so one screen always ends up centred. Content on a screen wakes once, when it
+  // first reaches the front.
+  function deck(handled) {
+    var d = $('#deck');
+    if (!d) return;
+    var slides = $$('.slide', d), n = slides.length, hds = $$('.slide-hd', d);
+    if (n < 2) return;
+    handled.push.apply(handled, $$('.rv', d));
+    ScrollTrigger.config({ ignoreMobileResize: true });
+    d.classList.add('pin');
+
+    // Same screen size on every slide: headers take the tallest header's height.
+    function even() {
+      hds.forEach(function (h) { h.style.minHeight = ''; });
+      var m = Math.max.apply(null, hds.map(function (h) { return h.offsetHeight; }));
+      hds.forEach(function (h) { h.style.minHeight = m + 'px'; });
+    }
+    even();
+    ScrollTrigger.addEventListener('refreshInit', even);
+
+    var show = $('#show', d), talk = chat();
+    if (show) $$('[data-count]', show).forEach(function (el) { el.textContent = fmt(0, el.hasAttribute('data-int')); });
+    // Keyed by slide id.
+    var wake = { how: function () {
+      count(show, 0.3);
+      gsap.fromTo($$('.pop', show), { opacity: 0, y: 12, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, delay: 0.9, ease: 'back.out(1.6)' });
+      var btn = $('.btn.sm', show);
+      if (btn) gsap.fromTo(btn, { boxShadow: '0 0 0 0 rgba(0,166,132,.45)' }, { boxShadow: '0 0 0 10px rgba(0,166,132,0)', duration: 1.2, delay: 1.8, ease: 'power2.out', clearProps: 'boxShadow' });
+    }, ask: function () { if (talk) talk.play(); } };
+    var woke = [];
+    function front(i) {
+      if (woke[i]) return;
+      woke[i] = true;
+      mark(slides[i]);
+      var w = wake[slides[i].id];
+      if (w) w();
+    }
+
+    // First screen: one soft rise as the deck scrolls into view.
+    gsap.fromTo(slides[0].children, { opacity: 0, y: 28 }, {
+      opacity: 1, y: 0, duration: T.slow, stagger: 0.1, ease: T.ease,
+      scrollTrigger: { trigger: d, start: 'top 85%', once: true, onEnter: function () { front(0); } }
+    });
+
+    // Where a screen sits by how many are in front of it: it steps back, its top edge
+    // peeks out above the front one, and it fades into the page (--dim drives an overlay).
+    // Only two stay visible behind the front screen, so the stack never piles up.
+    var DEPTH = [
+      { scale: 1, y: 0, '--dim': 0, autoAlpha: 1 },
+      { scale: 0.95, y: -20, '--dim': 0.4, autoAlpha: 1 },
+      { scale: 0.9, y: -38, '--dim': 0.7, autoAlpha: 1 },
+      { scale: 0.86, y: -50, '--dim': 0.9, autoAlpha: 0 }
+    ];
+    function depth(k) { return DEPTH[Math.min(k, DEPTH.length - 1)]; }
+    function off() { return window.innerWidth; }
+    var tl = gsap.timeline({
+      defaults: { duration: 1, ease: 'power2.out' },
+      scrollTrigger: {
+        trigger: d, pin: $('.deck-pin', d), start: 'top top',
+        end: function () { return '+=' + (n - 1) * window.innerHeight; },
+        scrub: 0.6, invalidateOnRefresh: true,
+        snap: { snapTo: 'labels', duration: { min: 0.2, max: 0.5 }, delay: 0.05, ease: 'power1.inOut' },
+        onUpdate: function (st) { front(Math.round(st.progress * (n - 1))); }
+      }
+    });
+    gsap.set(slides, { '--dim': 0 });
+    tl.addLabel('s0');
+    for (var i = 1; i < n; i++) {
+      tl.fromTo(slides[i], { x: off }, { x: 0 }, 's' + (i - 1));
+      for (var j = 0; j < i; j++) tl.to(slides[j], depth(i - j), 's' + (i - 1));
+      tl.addLabel('s' + i);
+    }
+
+    // Links to a screen (e.g. the hero's "See how Haseeb works" -> #how) scroll to its stop.
+    function go(k, smooth) { window.scrollTo({ top: tl.scrollTrigger.labelToScroll('s' + k), behavior: smooth ? 'smooth' : 'auto' }); }
+    var ids = slides.map(function (s) { return '#' + s.id; });
+    $$('a[href^="#"]').forEach(function (a) {
+      var k = ids.indexOf(a.getAttribute('href'));
+      if (k < 0) return;
+      a.addEventListener('click', function (e) { e.preventDefault(); go(k, true); history.replaceState(null, '', ids[k]); });
+    });
+    if (ids.indexOf(location.hash) > 0) setTimeout(function () { go(ids.indexOf(location.hash)); }, 50);
   }
 
   function bankFlow() {
@@ -291,6 +300,8 @@
     var handled = [];
     try {
       hero(handled);
+      // The pin goes first so every later trigger is measured with its spacing in place.
+      deck(handled);
 
       // Big headings: masked line reveal.
       $$('.sec .h2.rv, .dark .h1.rv').forEach(function (h) {
@@ -298,13 +309,12 @@
         lines(h, { trigger: { trigger: h, start: T.start, once: true } });
       });
 
-      chat(handled);
       bankFlow();
       counterFlow();
       seats();
 
-      // Batch review + month-end: counts tick up; one soft pulse on the approve button.
-      ['show', 's5'].forEach(function (id) {
+      // Month-end: counts tick up; one soft pulse on the approve button. (Batch review is in deck().)
+      ['s5'].forEach(function (id) {
         var s = document.getElementById(id);
         if (!s) return;
         $$('[data-count]', s).forEach(function (el) { el.textContent = fmt(0, el.hasAttribute('data-int')); });
@@ -334,7 +344,10 @@
     } catch (e) {
       // Never leave content hidden.
       root.classList.remove('gs');
-      $$('.rv, .seats').forEach(mark);
+      ScrollTrigger.getAll().forEach(function (t) { t.kill(); });
+      var d = $('#deck');
+      if (d) { d.classList.remove('pin'); gsap.set($$('.slide, .slide > *', d), { clearProps: 'all' }); }
+      $$('.rv, .seats, .slide').forEach(mark);
       gsap.set($$('.rv, .msg, .pop, .seats i'), { clearProps: 'all' });
       if (window.console) console.error(e);
     }
@@ -342,7 +355,7 @@
 
   window.HMotion = {
     start: function () {
-      if (!root.classList.contains('gs')) { $$('.rv, .seats').forEach(mark); return; }
+      if (!root.classList.contains('gs')) { $$('.rv, .seats, .slide').forEach(mark); return; }
       if (document.fonts && document.fonts.ready) {
         var go = false, run = function () { if (!go) { go = true; start(); } };
         document.fonts.ready.then(run);
