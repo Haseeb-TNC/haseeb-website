@@ -6,7 +6,7 @@
  * .rv / .msg / .pop / seat dots until start() animates them in.
  *
  * Motion vocabulary — keep to these, don't invent one-off effects:
- *   reveal  fade + 14px rise, batched on scroll, once
+ *   reveal  fade + 12px rise as it enters the screen, batched, once
  *   lines   masked line-by-line rise for big headings
  *   count   KWD figures count up to their exact 3-decimal value
  *   story   short sequences (chat, bank line → entry)
@@ -21,8 +21,12 @@
 
   ScrollTrigger.config({ ignoreMobileResize: true });
 
-  var T = { ease: 'power3.out', rise: 14, fast: 0.5, base: 0.8, slow: 1.1, stagger: 0.06, start: 'top 88%' };
+  // start 'top bottom': a reveal begins as the element's top edge enters the screen, not after it is already
+  // well inside it, so content is never sitting on screen blank or half-faded while you scroll.
+  var T = { ease: 'power3.out', rise: 12, fast: 0.4, base: 0.55, slow: 0.75, stagger: 0.04, start: 'top bottom' };
   var root = document.documentElement;
+
+  function scrollToY(y, instant) { window.scrollTo({ top: y, behavior: instant ? 'instant' : 'smooth' }); }
 
   function $(sel, scope) { return (scope || document).querySelector(sel); }
   function $$(sel, scope) { return [].slice.call((scope || document).querySelectorAll(sel)); }
@@ -42,24 +46,13 @@
     });
   }
 
-  // 01–03 sit in a sideways carousel: a scene in a hidden slide waits until its slide is shown.
-  function shown(el) { var s = el.closest('.slide'); return !s || s.classList.contains('on'); }
-  function whenShown(el, fn) {
-    var s = el.closest('.slide');
-    if (shown(el)) return fn();
-    s.addEventListener('tour:on', function on() { s.removeEventListener('tour:on', on); fn(); });
-  }
-
-  // Pinned, the next slide slides in from the side: its text should already be there, so plain reveals skip the wait.
-  function whenNear(el, fn) { return el.closest('.tour.pin') ? fn() : whenShown(el, fn); }
-
   function lines(el, opts) {
     gsap.set(el, { opacity: 1 });
     if (!window.SplitText) return gsap.from(el, { opacity: 0, y: T.rise, duration: T.base, ease: T.ease, scrollTrigger: opts.trigger });
     SplitText.create(el, {
       type: 'lines', mask: 'lines', autoSplit: true,
       onSplit: function (self) {
-        return gsap.from(self.lines, { yPercent: 105, duration: opts.duration || T.slow, stagger: 0.08, ease: T.ease, delay: opts.delay || 0, scrollTrigger: opts.trigger });
+        return gsap.from(self.lines, { yPercent: 105, duration: opts.duration || T.slow, stagger: 0.06, ease: T.ease, delay: opts.delay || 0, scrollTrigger: opts.trigger });
       }
     });
   }
@@ -89,9 +82,9 @@
     if (!shot) return;
     handled.push(shot);
     var tl = gsap.timeline({ paused: true, defaults: { ease: T.ease } });
-    tl.fromTo(shot, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: T.slow })
+    tl.fromTo(shot, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: T.base })
       .call(function () { mark(shot); }, null, 0.15)
-      .fromTo($$('.pop', shot), { opacity: 0, y: 12, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(1.6)' }, 1.2);
+      .fromTo($$('.pop', shot), { opacity: 0, y: 12, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: 'back.out(1.6)' }, 0.5);
     ScrollTrigger.create({ trigger: shot, start: T.start, once: true, onEnter: function () { tl.play(); } });
   }
 
@@ -112,18 +105,16 @@
       return t;
     }
     function place(t, before) { return function () { gsap.set(t, { top: before.offsetTop, left: before.offsetLeft }); }; }
-    var t1 = typing(msgs[1]), t2 = typing(msgs[3]);
+    // The window is never empty: the first question and answer are already there, the second exchange plays.
+    gsap.set([msgs[0], msgs[1]], { opacity: 1 });
+    var t2 = typing(msgs[3]);
     var inn = { opacity: 1, y: 0, duration: T.fast, ease: T.ease }, from = { opacity: 0, y: 10 };
     var tl = gsap.timeline({ paused: true });
-    tl.fromTo(msgs[0], from, inn, 0.3)
-      .call(place(t1, msgs[1])).set(t1, { display: 'flex' }).fromTo(t1, { opacity: 0 }, { opacity: 1, duration: 0.25 })
-      .set(t1, { display: 'none' }, '+=0.8')
-      .fromTo(msgs[1], from, inn)
-      .fromTo(msgs[2], from, inn, '+=0.7')
-      .call(place(t2, msgs[3])).set(t2, { display: 'flex' }).fromTo(t2, { opacity: 0 }, { opacity: 1, duration: 0.25 })
-      .set(t2, { display: 'none' }, '+=0.8')
+    tl.fromTo(msgs[2], from, inn, 0.2)
+      .call(place(t2, msgs[3])).set(t2, { display: 'flex' }).fromTo(t2, { opacity: 0 }, { opacity: 1, duration: 0.2 })
+      .set(t2, { display: 'none' }, '+=0.6')
       .fromTo(msgs[3], from, inn);
-    ScrollTrigger.create({ trigger: shot, start: 'top 70%', once: true, onEnter: function () { whenShown(shot, function () { tl.play(); }); } });
+    ScrollTrigger.create({ trigger: shot, start: 'top 90%', once: true, onEnter: function () { whenShown(shot, function () { tl.play(); }); } });
   }
 
   function bankFlow() {
@@ -131,13 +122,13 @@
     if (!flow) return;
     var win = flow.closest('.win'), cards = $$('.fcard', flow), mid = $('.fmid', flow);
     var tl = gsap.timeline({ paused: true, defaults: { ease: T.ease } });
-    tl.from(cards[0], { opacity: 0, y: 10, duration: T.fast }, 0.9)
+    tl.from(cards[0], { opacity: 0, y: 10, duration: T.fast }, 0.15)
       .from($('.dot', mid), { scale: 0.4, opacity: 0, duration: 0.45, ease: 'back.out(2)' })
       .from($('.dot svg', mid), { y: -6, opacity: 0, duration: 0.35 }, '<0.15')
       .from(mid.lastElementChild, { opacity: 0, x: -6, duration: 0.4 }, '<')
       .fromTo(cards[1], { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6 })
       .from($$('.je .row', cards[1]), { opacity: 0, y: 6, duration: 0.4, stagger: 0.12 }, '<0.2');
-    ScrollTrigger.create({ trigger: win || flow, start: 'top 70%', once: true, onEnter: function () { whenShown(flow, function () { tl.play(); }); } });
+    ScrollTrigger.create({ trigger: win || flow, start: 'top 90%', once: true, onEnter: function () { whenShown(flow, function () { tl.play(); }); } });
   }
 
   // 03: three card taps -> one KNET settlement line -> Haseeb prepares the entry -> you approve it.
@@ -215,174 +206,166 @@
       return tl;
     }
     reset();
-    var loop = null, live = false, inView = false, slide = box.closest('.slide');
-    function sync() {
-      live = inView && shown(box);
-      if (live) { if (!loop) loop = cycle(); loop.play(); } else if (loop) loop.pause();
-    }
-    var pinBox = box.closest('.tour.pin');
-    if (pinBox) {
-      pinBox.addEventListener('tour:in', function () { inView = true; sync(); });
-      pinBox.addEventListener('tour:out', function () { inView = false; sync(); });
-    } else ScrollTrigger.create({
+    // Plays while on screen, pauses once it scrolls away (the loop never runs unseen).
+    var loop = null;
+    ScrollTrigger.create({
       trigger: box, start: 'top 75%', end: 'bottom top',
-      onToggle: function (s) { inView = s.isActive; sync(); }
+      onToggle: function (s) { if (s.isActive) { if (!loop) loop = cycle(); loop.play(); } else if (loop) loop.pause(); }
     });
-    if (slide) { slide.addEventListener('tour:on', sync); slide.addEventListener('tour:off', sync); }
   }
 
-  // 01–03 tour (wide screens): pins under the nav and page scroll drives it, scrubbed with light smoothing.
-  // A tall slide first scrolls through its own overflow, then the track slides across to the next one.
-  // Each slide rests for REST of the screen height before the next one moves in, so a reader who keeps scrolling
-  // still sees it. Stop part-way across and it settles on the slide you were heading for, never back against you.
-  // A pill at the bottom names the slide and fills one bar per slide, so it reads as three parts from the start.
-  // Narrow screens skip the pin: the slides stack as normal sections. HTour (inline script) owns slide state.
-  var NAV = 68, MOVE = 0.75, REST = 0.3, WIDE = '(min-width: 861px)';
-  function tour() {
-    var box = $('#tour'), api = window.HTour;
-    if (!box || !api) return;
-    var track = $('.tour-track', box), slides = api.slides, n = slides.length;
-    var st = null, tl = null, at = [], moves = [], total = 1, lastW = innerWidth, pinned = false;
-    var prog = $('.tour-prog', box), num = $('.n', prog), name = $('.t', prog), lab = -1;
-    var fills = $$('b', prog).map(function (b) { return gsap.quickSetter(b, 'scaleX'); });
+  var NAV = 68;
 
-    // Slide in place: the one whose move across is more than half done.
-    function current(t) {
+  // 01–03 on wide screens with a mouse or trackpad: the box pins under the nav and the three slides sit on
+  // top of each other. Scrolling crossfades one into the next (fade + a few px of drift), scrubbed to the
+  // scrollbar, so it reads like a carousel without anything sliding sideways. Native scroll is never blocked.
+  // A bar across the top (.tour-bar) has one rail per slide that fills as you scroll; its labels jump to a slide.
+  // Touch, narrow screens, no GSAP and reduced motion get the slides stacked as normal sections.
+  var TOUR = {
+    media: '(min-width: 861px) and (pointer: fine)', // keep in step with the CSS media query on .gs .tour
+    scrub: 0.6,  // seconds the fade takes to catch up with the scrollbar: higher = softer, lower = tighter
+    hold: 0.3,   // scroll a slide stays fully shown, as a share of the box height
+    fade: 0.4,   // scroll for one crossfade, as a share of the box height
+    lift: 16     // px a slide drifts up as it fades
+  };
+  var tourAt = function () { return null; }, tourJump = null;
+
+  // A scene in a slide that is still hidden waits until that slide starts to fade in (tour:near).
+  function whenShown(el, fn) {
+    var s = el.closest('.slide');
+    if (!s || s.hasAttribute('data-near')) return fn();
+    s.addEventListener('tour:near', function on() { s.removeEventListener('tour:near', on); fn(); });
+  }
+
+  function tour() {
+    var box = $('#tour');
+    if (!box) return;
+    var slides = $$('.slide', box), n = slides.length, st = null, fades = [], total = 1, cur = -1, saved = null;
+    var track = $('.tour-track', box), steps = $$('.tour-bar a', box), fills = steps.map(function (a) { return $('.rail i', a); });
+    var tl = gsap.timeline({ paused: true, onUpdate: function () { update(tl.time()); } });
+
+    function near(i) {
+      var sl = slides[i];
+      if (sl.hasAttribute('data-near')) return;
+      sl.setAttribute('data-near', '');
+      sl.dispatchEvent(new CustomEvent('tour:near'));
+    }
+    // Scenes start as their slide begins to fade in; the slide counts as current (clickable) once past halfway.
+    function update(t) {
+      near(0);
+      for (var k = 0; k < fades.length; k++) if (t >= fades[k][0]) near(k + 1);
       var i = 0;
-      while (i < moves.length && t >= (moves[i][0] + moves[i][1]) / 2) i++;
-      return i;
+      while (i < fades.length && t >= (fades[i][0] + fades[i][1]) / 2) i++;
+      if (i === cur) return;
+      cur = i;
+      slides.forEach(function (sl, j) { sl.inert = j !== i; });
+      steps.forEach(function (a, j) { a.classList.toggle('on', j === i); if (j === i) a.setAttribute('aria-current', 'step'); else a.removeAttribute('aria-current'); });
     }
-    function update(self) {
-      var i = current(self.progress * total);
-      api.mark(i);
-      if (i === lab) return;
-      lab = i;
-      var words = slides[i].getAttribute('aria-label').split(' ');
-      num.textContent = words.shift();
-      name.textContent = words.join(' ');
-    }
-    // Bar k fills from slide k arriving to slide k+1 arriving. Follows the smoothed timeline, not the raw scroll.
-    function fill() {
-      var t = tl.time();
-      fills.forEach(function (set, k) {
-        var a = at[k], b = k < n - 1 ? moves[k][1] : total;
-        set(b > a ? Math.max(0, Math.min(1, (t - a) / (b - a))) : t >= a ? 1 : 0);
-      });
-    }
-    // Snap only while between two slides, and only in the direction of travel. Inside a tall slide, rest anywhere.
-    function snap(p, self) {
-      var t = p * total, dir = (self || st).direction;
-      for (var k = 0; k < moves.length; k++) {
-        if (t > moves[k][0] + 1 && t < moves[k][1] - 1) return (dir < 0 ? moves[k][0] : moves[k][1]) / total;
-      }
-      return p;
-    }
+    function stacked() { cur = -1; slides.forEach(function (sl, i) { sl.inert = false; near(i); }); }
+
+    // Measure once per refresh (never during scroll). Called from the pin's `end`, where ScrollTrigger has
+    // already undone the pin, so the sizes read are the real ones. Timeline time = px of scroll.
     function build() {
-      if (st) st.kill(true);
-      if (tl) tl.kill();
-      box.scrollTop = box.scrollLeft = track.scrollLeft = 0;  // older browsers without overflow:clip
-      gsap.set(track, { x: 0 });
-      gsap.set(slides, { y: 0 });
-      lastW = innerWidth;
-      var W = track.clientWidth, H = track.clientHeight, move = Math.round(H * MOVE), rest = Math.round(H * REST), pos = 0;
-      at = []; moves = [];
-      tl = gsap.timeline({ paused: true, defaults: { ease: 'none' }, onUpdate: fill });
-      slides.forEach(function (sl, i) {
-        var ov = Math.max(0, sl.offsetHeight - H);
-        at.push(pos);
-        if (ov) { tl.to(sl, { y: -ov, duration: ov }, pos); pos += ov; }
-        if (i < n - 1) {
-          pos += rest;
-          tl.to(track, { x: -(i + 1) * W, duration: move }, pos);
-          moves.push([pos, pos + move]);
-          pos += move;
-        }
-      });
-      total = Math.max(pos, 1);
-      st = ScrollTrigger.create({
-        trigger: box, start: 'top ' + NAV + 'px', end: '+=' + total,
-        pin: true, anticipatePin: 1, refreshPriority: 1,
-        animation: tl, scrub: 0.5,
-        snap: { snapTo: snap, delay: 0.15, duration: { min: 0.25, max: 0.6 }, ease: 'power2.inOut', inertia: false },
-        onUpdate: update, onRefresh: update,
-        onToggle: function (s) { box.dispatchEvent(new CustomEvent(s.isActive ? 'tour:in' : 'tour:out')); }
-      });
-      update(st);
-      fill();
+      var H = box.clientHeight, hold = Math.round(H * TOUR.hold), fade = Math.round(H * TOUR.fade), pos = 0;
+      tl.clear();
+      fit(track.clientHeight);
+      fades = [];
+      gsap.set(slides, { autoAlpha: 0, y: 0 });
+      gsap.set(slides[0], { autoAlpha: 1 });
+      for (var k = 0; k < n - 1; k++) {
+        pos += hold;
+        // Out, then in: the outgoing slide is gone before the next one appears, so the two never overlap.
+        tl.fromTo(slides[k], { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -TOUR.lift, duration: fade * 0.5, ease: 'power1.in', immediateRender: false }, pos)
+          .fromTo(slides[k + 1], { autoAlpha: 0, y: TOUR.lift }, { autoAlpha: 1, y: 0, duration: fade * 0.5, ease: 'power1.out', immediateRender: false }, pos + fade * 0.5);
+        fades.push([pos, pos + fade]);
+        pos += fade;
+      }
+      total = pos + hold;
+      // Each rail fills, linear with the scroll, over the stretch where its slide is the current one.
+      var cuts = [0].concat(fades.map(function (f) { return (f[0] + f[1]) / 2; }), total);
+      gsap.set(fills, { scaleX: 0 });
+      fills.forEach(function (f, i) { tl.fromTo(f, { scaleX: 0 }, { scaleX: 1, duration: cuts[i + 1] - cuts[i], ease: 'none', immediateRender: false }, cuts[i]); });
+      if (tl.duration() < total) tl.set({}, {}, total);
     }
-    function pin() {
-      pinned = true;
+    // If any slide is taller than the box, every slide is scaled down by the same amount (zoom, so the layout
+    // shrinks too): one scale for all three keeps headings and text the same size from slide to slide.
+    // Max width and side padding are scaled up to match, so the edges still line up with the bar.
+    function fit(H) {
+      var wraps = slides.map(function (sl) { return $('.wrap', sl); }).filter(Boolean), k = 1;
+      wraps.forEach(function (w) { w.style.zoom = w.style.maxWidth = w.style.paddingInline = ''; });
+      wraps.forEach(function (w) {
+        var cs = getComputedStyle(w.parentNode), room = H - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+        k = Math.min(k, room / w.getBoundingClientRect().height);
+      });
+      k = Math.floor(k * 1000) / 1000;
+      if (k >= 1) return;
+      wraps.forEach(function (w) {
+        var ws = getComputedStyle(w);
+        w.style.maxWidth = parseFloat(ws.maxWidth) / k + 'px';
+        w.style.paddingInline = parseFloat(ws.paddingLeft) / k + 'px';
+        w.style.zoom = k;
+      });
+    }
+    // A resize changes the pin's length: keep the reader at the same share of the way through it.
+    ScrollTrigger.addEventListener('refreshInit', function () { saved = st && st.isActive ? st.progress : null; });
+    ScrollTrigger.addEventListener('refresh', function () {
+      if (saved === null || !st) return;
+      var y = Math.round(st.start + saved * (st.end - st.start));
+      saved = null;
+      if (Math.abs(y - scrollY) > 1) tourJump(y);
+    });
+
+    var mm = gsap.matchMedia();
+    mm.add({ pin: TOUR.media }, function (ctx) {
+      if (!ctx.conditions.pin) { stacked(); return; }
       box.classList.add('pin');
-      api.mark(0, true);
-      build();
-    }
-    function unpin() {
-      pinned = false;
-      if (st) st.kill(true);
-      if (tl) tl.kill();
-      st = tl = null;
-      gsap.set(track, { clearProps: 'x' });
-      gsap.set(slides, { clearProps: 'y' });
-      box.classList.remove('pin');
-      slides.forEach(function (sl) { sl.classList.add('on'); sl.inert = false; sl.dispatchEvent(new CustomEvent('tour:on')); });
-      box.dispatchEvent(new CustomEvent('tour:in'));
-    }
-    // Jumps (reload, #links, resize) land at once: finish the scrub instead of easing to the new place.
-    api.jump = function (y) {
-      window.scrollTo({ top: y, behavior: 'instant' });
+      st = ScrollTrigger.create({
+        trigger: box, start: 'top ' + NAV + 'px', end: function () { build(); return '+=' + total; },
+        pin: true, anticipatePin: 1, invalidateOnRefresh: true, refreshPriority: 1,
+        animation: tl, scrub: TOUR.scrub,
+        // A refresh renders the timeline silently (no onUpdate), so re-mark the current slide here.
+        onRefresh: function () { update(tl.time()); }
+      });
+      return function () {
+        st = null;
+        tl.clear();
+        gsap.set(slides.concat(fills), { clearProps: 'opacity,visibility,transform' });
+        slides.forEach(function (sl) { var w = $('.wrap', sl); if (w) w.style.zoom = w.style.maxWidth = w.style.paddingInline = ''; });
+        box.classList.remove('pin');
+        stacked();
+      };
+    });
+
+    // Where the page must be for a slide to be fully shown (null when not pinned or not a slide).
+    tourAt = function (el) {
+      var i = slides.indexOf(el);
+      if (i < 0 || !st) return null;
+      return st.start + (i ? fades[i - 1][1] : 0);
+    };
+    // Land somewhere at once (reload, #links, resize): skip the scrub's catch-up instead of fading there.
+    tourJump = function (y) {
+      scrollToY(y, true);
       ScrollTrigger.update();
-      var tw = st && st.getTween && st.getTween();
+      var tw = st && st.getTween();
       if (tw) tw.progress(1);
     };
-    api.go = function (i, instant) {
-      var y = pinned ? st.start + at[i] : slides[i].getBoundingClientRect().top + scrollY - NAV;
-      if (instant) api.jump(y); else window.scrollTo({ top: y, behavior: 'smooth' });
-    };
-    // Width change: rebuild, then put the reader back on the same slide, the same share of the way through it.
-    function rebuild() {
-      var y = scrollY, s0 = st.start, e0 = st.end, old = at.concat(e0 - s0), t = y - s0, i = 0;
-      while (i < n - 1 && t >= old[i + 1]) i++;
-      var f = Math.max(0, Math.min(1, (t - old[i]) / (old[i + 1] - old[i])));
-      build();
-      ScrollTrigger.refresh();
-      var now = at.concat(st.end - st.start);
-      if (y > s0) api.jump(y >= e0 ? st.end + (y - e0) : st.start + now[i] + f * (now[i + 1] - now[i]));
-    }
-    if (matchMedia(WIDE).matches) pin(); else unpin();
-    var pending;
-    addEventListener('resize', function () {
-      if (innerWidth === lastW) return;
-      clearTimeout(pending);
-      pending = setTimeout(function () {
-        lastW = innerWidth;
-        var wide = matchMedia(WIDE).matches;
-        if (wide && pinned) return rebuild();
-        if (wide) pin(); else if (pinned) unpin(); else return;
-        ScrollTrigger.refresh();
-      }, 250);
-    });
-    // A slide's #id typed into the address bar.
-    addEventListener('hashchange', function () {
-      var i = slides.findIndex(function (sl) { return '#' + sl.id === location.hash; });
-      if (i > -1) api.go(i, true);
-    });
   }
 
-  // Scroll position on load. The browser's own restore runs before the pin exists and lands in the wrong place,
+  // Scroll position on load. The browser's own restore runs before the triggers exist,
   // so it's off (inline head script) and we put the position back once every trigger is built.
   var KEY = 'haseeb-y:' + location.pathname;
   addEventListener('pagehide', function () { try { sessionStorage.setItem(KEY, String(Math.round(scrollY))); } catch (e) {} });
   function land() {
     ScrollTrigger.refresh();
     var el = location.hash.length > 1 && document.getElementById(location.hash.slice(1));
-    var tourApi = window.HTour, i = el && tourApi && tourApi.go ? tourApi.slides.indexOf(el) : -1;
-    if (i > -1) return tourApi.go(i, true);
-    if (el) return window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - NAV, behavior: 'instant' });
+    var at = el && tourAt(el);
+    if (at !== null && at !== false && at !== undefined) return tourJump(at);
+    if (el) return scrollToY(el.getBoundingClientRect().top + scrollY - NAV, true);
     var nav = window.performance && performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
     var y = 0;
     try { y = parseInt(sessionStorage.getItem(KEY), 10) || 0; } catch (e) {}
     if (!y || !nav || nav.type === 'navigate') return;
-    if (tourApi && tourApi.jump) tourApi.jump(y); else window.scrollTo({ top: y, behavior: 'instant' });
+    if (tourJump) tourJump(y); else scrollToY(y, true);
   }
 
   // In-page links glide (CSS smooth scroll is off under GSAP) and stop below the sticky nav.
@@ -393,7 +376,8 @@
       var el = a && a.getAttribute('href').length > 1 && document.getElementById(a.getAttribute('href').slice(1));
       if (!el) return;
       e.preventDefault();
-      window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - NAV, behavior: 'smooth' });
+      var at = tourAt(el);
+      scrollToY(at !== null ? at : el.getBoundingClientRect().top + scrollY - NAV);
       history.replaceState(null, '', a.getAttribute('href'));
     });
   }
@@ -417,9 +401,7 @@
       // Big headings: masked line reveal.
       $$('.sec .h2.rv, .dark .h1.rv').forEach(function (h) {
         handled.push(h);
-        if (shown(h)) return lines(h, { trigger: { trigger: h, start: T.start, once: true } });
-        gsap.set(h, { opacity: 0 });
-        ScrollTrigger.create({ trigger: h, start: T.start, once: true, onEnter: function () { whenNear(h, function () { lines(h, {}); }); } });
+        lines(h, { trigger: { trigger: h, start: T.start, once: true } });
       });
 
       chat(handled);
@@ -434,6 +416,8 @@
         $$('[data-count]', s).forEach(function (el) { el.textContent = fmt(0, el.hasAttribute('data-int')); });
         ScrollTrigger.create({ trigger: s, start: T.start, once: true, onEnter: function () { whenShown(s, function () {
           count(s);
+          var pops = $$('.pop', s);
+          if (pops.length) gsap.fromTo(pops, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: T.base, ease: T.ease, delay: 0.3 });
           var btn = $('.btn.sm', s);
           if (btn) gsap.fromTo(btn, { boxShadow: '0 0 0 0 rgba(0,166,132,.45)' }, { boxShadow: '0 0 0 10px rgba(0,166,132,0)', duration: 1.2, delay: 1.8, ease: 'power2.out', clearProps: 'boxShadow' });
         }); } });
@@ -445,35 +429,31 @@
       ScrollTrigger.batch(rest, {
         start: T.start, once: true,
         onEnter: function (batch) {
-          // Group by slide so a hidden slide's items reveal together when it's shown.
-          var groups = [];
-          batch.forEach(function (el) {
-            var s = el.closest('.slide'), g = groups.filter(function (x) { return x.s === s; })[0];
-            if (!g) groups.push(g = { s: s, els: [] });
-            g.els.push(el);
-          });
-          groups.forEach(function (g) {
-            whenNear(g.els[0], function () {
-              g.els.forEach(mark);
-              gsap.to(g.els, { opacity: 1, y: 0, duration: T.base, stagger: T.stagger, ease: T.ease, overwrite: true });
-            });
-          });
+          batch.forEach(mark);
+          gsap.to(batch, { opacity: 1, y: 0, duration: T.base, stagger: T.stagger, ease: T.ease, overwrite: true });
         }
       });
 
       anchors();
       land();
 
-      // Layout changes (fonts, "Show all" toggles, tabs) move trigger points.
+      // Trigger points move when the page changes height (late fonts, "Show all" toggles, tabs). Window resizes
+      // and the load event are already refreshed by ScrollTrigger itself (debounced), so only height counts here.
+      var pending, lastH = document.body.offsetHeight;
+      function refreshSoon() { clearTimeout(pending); pending = setTimeout(function () { ScrollTrigger.refresh(); }, 200); }
       if (window.ResizeObserver) {
-        var pending;
-        new ResizeObserver(function () { clearTimeout(pending); pending = setTimeout(function () { ScrollTrigger.refresh(); }, 200); }).observe(document.body);
+        new ResizeObserver(function () {
+          var h = document.body.offsetHeight;
+          if (Math.abs(h - lastH) > 1) { lastH = h; refreshSoon(); }
+        }).observe(document.body);
       }
+      if (document.fonts && document.fonts.status !== 'loaded') document.fonts.ready.then(refreshSoon);
     } catch (e) {
       // Never leave content hidden.
       root.classList.remove('gs');
       var tb = $('#tour');
       if (tb) tb.classList.remove('pin');
+      gsap.set($$('.slide'), { clearProps: 'opacity,visibility,transform' });
       if ('scrollRestoration' in history) history.scrollRestoration = 'auto';
       $$('.rv, .seats').forEach(mark);
       gsap.set($$('.rv, .msg, .pop, .seats i'), { clearProps: 'all' });
