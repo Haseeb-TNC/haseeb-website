@@ -226,6 +226,11 @@ h1,h2,h3,p{margin:0}
   .gs .slide>.wrap{width:100%}
   /* Hidden from first paint so 02 and 03 never flash over 01 before motion.js takes over. */
   .gs .slide+.slide{opacity:0;visibility:hidden}
+  /* 01 has to fit the flow scene under the tabs: only the active tab shows its sentence. */
+  .gs .tab:not(.on){padding-block:14px}
+  .gs .tab:not(.on) .s{display:none}
+  .gs .tab:not(.on) .go{top:14px}
+  .gs .tab.on .s{animation:tab-s .4s ease both}
   .gs .tour.pin .slide{will-change:opacity,transform}
 }
 /* Progress bar over the pinned 01–03: one rail per slide fills as you scroll through it (motion.js tour). */
@@ -259,6 +264,7 @@ html.gs{scroll-behavior:auto}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,166,132,.35)}50%{box-shadow:0 0 0 6px rgba(0,166,132,0)}}
 .live{width:7px;height:7px;border-radius:50%;background:var(--hl);animation:pulse 2.4s infinite;display:inline-block;flex-shrink:0}
 @keyframes prog{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes tab-s{from{opacity:0}}
 @keyframes fadeup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
 /* hero */
@@ -355,6 +361,51 @@ html.gs{scroll-behavior:auto}
 /* showcase */
 .show{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:64px;align-items:center}
 .lanecol .shead{margin-block-end:var(--sp-4)}
+.fscene{margin:var(--sp-3) 0 0}
+.fscene svg{display:block;width:100%;max-width:340px;height:auto;overflow:visible}
+.fscene text{font-family:var(--font-sans);fill:var(--ink)}
+.fscene .mono{font-family:var(--font-mono);font-feature-settings:"tnum"}
+.fscene .lb{font-size:var(--fs-sm);fill:var(--ink60);text-anchor:middle}
+.fs-cardbox{fill:var(--surface);stroke:var(--line2)}
+.fs-mach{fill:var(--alt);stroke:var(--ink);stroke-width:1.5}
+.fs-slot{stroke:var(--ink);stroke-width:4;stroke-linecap:round}
+.fs-mark{fill:var(--teal)}
+.fs-dot{fill:var(--ink40);opacity:0}
+.fs-lt{fill:var(--line2)}
+.fs-lt.g{fill:var(--hl)}.fs-lt.a{fill:var(--amber)}.fs-lt.r{fill:var(--red)}
+.fs-pg{fill:var(--surface);stroke:var(--ink);stroke-width:1.5;stroke-linejoin:round}
+.fs-rule{stroke:var(--line2);stroke-width:1.5;stroke-linecap:round}
+.fs-row{fill:var(--hl)}
+.fs-chip rect{fill:var(--tint);stroke:var(--hl)}
+.fs-chip text{fill:var(--teal);font-size:10px}
+.fs-badge.a circle{fill:var(--amber)}.fs-badge.r circle{fill:var(--red)}
+.fs-badge text{fill:#fff;font-size:var(--fs-xs);font-weight:var(--fw-bold);text-anchor:middle}
+.fs-badge rect{fill:#fff}
+.fs-card,.fs-chip,.fs-badge,.fs-dot{transform-box:fill-box}
+.fs-badge{transform-origin:center}
+.fs-chip{transform-origin:0 0}
+/* Rest state per tab (also the reduced-motion picture). */
+.fs-chip,.fs-badge,.fs-lt.g,.fs-lt.a,.fs-lt.r{opacity:0}
+.fscene[data-s="0"] .fs-lt.g,.fscene[data-s="1"] .fs-lt.a,.fscene[data-s="2"] .fs-lt.r,.fscene[data-s="1"] .fs-badge.a,.fscene[data-s="2"] .fs-badge.r{opacity:1}
+.fscene[data-s="1"] .fs-row,.fscene[data-s="2"] .fs-row{opacity:0}
+.fscene[data-s="0"] .fs-card{transform:translateX(150px)}
+.js-on .fscene[data-s="0"] .fs-card{animation:fs-in 4s cubic-bezier(.5,0,.3,1) both}
+.js-on .fscene[data-s="1"] .fs-card,.js-on .fscene[data-s="2"] .fs-card{animation:fs-back 4s cubic-bezier(.5,0,.3,1) both}
+.js-on .fscene[data-s] .fs-dot{animation:fs-blink 4s linear both}
+.js-on .fscene[data-s] .fs-dot:nth-of-type(2){animation-delay:.12s}
+.js-on .fscene[data-s] .fs-dot:nth-of-type(3){animation-delay:.24s}
+.js-on .fscene[data-s="0"] .fs-lt.g,.js-on .fscene[data-s="1"] .fs-lt.a,.js-on .fscene[data-s="2"] .fs-lt.r{animation:fs-on 4s step-end both}
+.js-on .fscene[data-s="0"] .fs-chip{animation:fs-land 4s cubic-bezier(.4,0,.2,1) both}
+.js-on .fscene[data-s="0"] .fs-row{animation:fs-post 4s ease both}
+.js-on .fscene[data-s="1"] .fs-badge.a,.js-on .fscene[data-s="2"] .fs-badge.r{animation:fs-pop 4s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes fs-in{0%,8%{transform:translateX(0)}30%,100%{transform:translateX(150px)}}
+@keyframes fs-back{0%,8%{transform:translateX(0)}30%,50%{transform:translateX(150px)}68%,100%{transform:translateX(0)}}
+@keyframes fs-blink{0%,30%{opacity:0}33%,39%{opacity:1}36%,42%{opacity:.25}45%{opacity:1}48%,100%{opacity:0}}
+@keyframes fs-on{0%{opacity:0}48%,100%{opacity:1}}
+@keyframes fs-land{0%,48%{opacity:1;transform:translate(0,0) scale(1)}62%{transform:translate(75px,0) scale(1)}80%{opacity:1;transform:translate(155px,32px) scale(.7)}88%,100%{opacity:0;transform:translate(155px,32px) scale(.7)}}
+@keyframes fs-post{0%,80%{opacity:0}90%,100%{opacity:1}}
+@keyframes fs-pop{0%,66%{opacity:0;transform:scale(0)}74%,100%{opacity:1;transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.fscene *{animation:none!important}}
 /* The window sits in the wider half of the 01 grid, so its tables use tighter fixed columns (phones keep their own). */
 @media (min-width:861px){
   .show .tr{grid-template-columns:56px minmax(0,2fr) minmax(0,1.3fr) 96px 110px}
@@ -381,7 +432,13 @@ html.gs{scroll-behavior:auto}
 [dir=rtl] .tab .go svg{transform:scaleX(-1)}
 .tabs .tab{padding-inline-end:48px}
 @media (max-width:1080px){.tab .go{top:14px;inset-inline-end:12px}.tabs .tab{padding-inline-end:42px}}
-.stage{animation:fadeup .6s cubic-bezier(.2,.7,.2,1)}
+.stage>*{animation:stg-in .5s cubic-bezier(.2,.7,.2,1) both}
+.stage>:nth-child(2){animation-delay:.08s}.stage>:nth-child(3){animation-delay:.16s}.stage>:nth-child(4){animation-delay:.24s}.stage>:nth-child(5){animation-delay:.32s}
+.stage .result .pill{animation:stg-pop .45s cubic-bezier(.3,1.5,.5,1) .2s both}
+.stage .result .arrow{animation:stg-arrow .4s ease .12s both}
+@keyframes stg-in{from{opacity:0;transform:translateY(10px)}}
+@keyframes stg-pop{from{opacity:0;transform:scale(.85)}}
+@keyframes stg-arrow{from{opacity:0;transform:translateX(-6px)}}
 .stage[hidden]{display:none}
 /* all stages share one grid cell so the window (and the photo beside it) keeps one height */
 .show .win{display:grid;grid-template-columns:minmax(0,1fr);align-content:start}
@@ -399,9 +456,14 @@ html.gs{scroll-behavior:auto}
 .qbody{padding:16px;display:flex;flex-direction:column;gap:14px}
 .qbody p{font-size:var(--fs-md);line-height:1.5}
 .opts{display:flex;flex-wrap:wrap;gap:8px}
+/* Answer choices are chips, not full buttons. */
+.opts .btn{min-height:32px;padding:0 12px;border-radius:8px;font-size:var(--fs-sm);font-weight:var(--fw-medium)}
 .drop{border-style:dashed;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:28px 16px;text-align:center;font-size:var(--fs-sm);color:var(--ink60)}
 .drop .ico{width:22px;height:22px}
 .drop .mono{font-size:var(--fs-sm)}
+.drop.row{flex-direction:row;justify-content:flex-start;gap:var(--sp-3);padding:var(--sp-4);text-align:start}
+.drop.row .mono{margin-inline-start:auto;font-size:var(--fs-xs);color:var(--ink40)}
+.kv div{padding-block-end:10px;border-bottom:1px solid var(--line)}.kv div:last-child{padding-block-end:0;border-bottom:0}
 .kv{padding:16px;display:flex;flex-direction:column;gap:10px;font-size:var(--fs-sm)}
 .kv div{display:flex;justify-content:space-between;gap:12px}
 .kv div>span:first-child{color:var(--ink60)}
@@ -725,6 +787,7 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
   .card .hd{flex-wrap:wrap}
 }
 @media (prefers-reduced-motion:reduce){
+  .stage>*,.stage .result .pill,.stage .result .arrow{animation:none!important}
   .js-on .rv,.js-on .rows .tr:not(.h),.js-on .pop{opacity:1!important;transform:none!important;animation:none!important;transition:none!important}
   .js-on .lane .bar b{transform:scaleX(1)!important}
   html{scroll-behavior:auto}
@@ -855,7 +918,7 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
       <div class="tabs" role="tablist" aria-label="How Haseeb handles a transaction">
         <button class="tab on" type="button" role="tab" id="tab-0" aria-selected="true" aria-controls="stage-0">
           <span class="pill g"><i></i>Ready to approve</span>
-          <span class="s">When the information is clear, Haseeb prepares the accounting.</span>
+          <span class="s">When it's clear, it prepares the entry.</span>
           <span class="go"><svg viewBox="0 0 12 12"><path d="M4.5 2.5 8 6l-3.5 3.5"></path></svg></span>
           <span class="pg"><b></b></span>
         </button>
@@ -872,6 +935,35 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
           <span class="pg"><b></b></span>
         </button>
       </div>
+      <figure class="fscene" id="fscene" aria-hidden="true">
+        <svg viewBox="0 37 380 125">
+          <defs>
+            <clipPath id="fs-cl"><rect x="-20" y="0" width="170" height="176"></rect></clipPath>
+            <clipPath id="fs-cr"><rect x="234" y="0" width="160" height="176"></rect></clipPath>
+          </defs>
+          <path class="fs-pg" d="M262 58Q290 52 318 58V140Q290 134 262 140Z"></path>
+          <path class="fs-pg" d="M318 58Q346 52 372 58V140Q346 134 318 140Z"></path>
+          <line class="fs-rule" x1="270" y1="76" x2="310" y2="76"></line><line class="fs-rule" x1="270" y1="88" x2="310" y2="88"></line><line class="fs-rule" x1="270" y1="100" x2="310" y2="100"></line><line class="fs-rule" x1="270" y1="112" x2="304" y2="112"></line><line class="fs-rule" x1="270" y1="124" x2="310" y2="124"></line>
+          <line class="fs-rule" x1="326" y1="76" x2="364" y2="76"></line><line class="fs-rule" x1="326" y1="88" x2="364" y2="88"></line><line class="fs-rule" x1="326" y1="100" x2="358" y2="100"></line>
+          <rect class="fs-row" x="323" y="112" width="42" height="10" rx="3"></rect>
+          <g clip-path="url(#fs-cr)"><g class="fs-chip"><rect x="168" y="78" width="60" height="22" rx="6"></rect><text class="mono" x="198" y="93" text-anchor="middle">28.500</text></g></g>
+          <rect class="fs-mach" x="150" y="40" width="84" height="98" rx="14"></rect>
+          <line class="fs-slot" x1="150" y1="68" x2="150" y2="110"></line>
+          <line class="fs-slot" x1="234" y1="78" x2="234" y2="100"></line>
+          <circle class="fs-mark" cx="192" cy="82" r="15"></circle>
+          <text x="192" y="87" text-anchor="middle" style="fill:#fff;font-size:var(--fs-md);font-weight:var(--fw-bold)">H</text>
+          <g><circle class="fs-dot" cx="182" cy="114" r="2.5"></circle><circle class="fs-dot" cx="192" cy="114" r="2.5"></circle><circle class="fs-dot" cx="202" cy="114" r="2.5"></circle></g>
+          <circle class="fs-lt" cx="222" cy="52" r="4"></circle><circle class="fs-lt g" cx="222" cy="52" r="4"></circle><circle class="fs-lt a" cx="222" cy="52" r="4"></circle><circle class="fs-lt r" cx="222" cy="52" r="4"></circle>
+          <g clip-path="url(#fs-cl)"><g class="fs-card">
+            <rect class="fs-cardbox" x="6" y="64" width="104" height="50" rx="8"></rect>
+            <text id="fs-nm" x="15" y="82" style="font-size:var(--fs-sm)">Zain Telecom</text>
+            <text id="fs-amt" class="mono" x="15" y="102" style="font-size:var(--fs-md)">−28.500</text>
+            <g class="fs-badge a"><circle cx="108" cy="64" r="10"></circle><text x="108" y="68.5">?</text></g>
+            <g class="fs-badge r"><circle cx="108" cy="64" r="10"></circle><rect x="103.8" y="59.5" width="2.8" height="9" rx="1"></rect><rect x="109.4" y="59.5" width="2.8" height="9" rx="1"></rect></g>
+          </g></g>
+          <text class="lb" x="58" y="156">Bank line</text><text class="lb" x="192" y="156">Haseeb</text><text class="lb" x="317" y="156">Your books</text>
+        </svg>
+      </figure>
       </div>
 
       <div class="win">
@@ -938,21 +1030,19 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
             <div class="rt"><div class="mono">−1,840.000 KWD</div><div class="d mono">15 Apr</div></div>
           </div>
           <div class="result"><svg class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg><span class="pill r"><i></i>Not posted, held for review</span></div>
-          <div class="two">
-            <div class="card drop">
-              <svg class="ico" viewBox="0 0 16 16"><path d="M8 11V3m0 0L5 6m3-3 3 3M2.5 10.5v3h11v-3"></path></svg>
-              <span>Attach the supplier invoice to continue</span>
-              <span class="mono">PDF · JPG · PNG</span>
+          <div class="card">
+            <div class="hd"><span>Ledger impact</span><span class="pill r"><i></i>Held</span></div>
+            <div class="kv">
+              <div><span>Entries posted to your books</span><span class="mono">0</span></div>
+              <div><span>Payee on statement</span><span>Al Rai Trading Est.</span></div>
+              <div><span>Matching bill</span><span>None found</span></div>
+              <div><span>Assigned to</span><span class="who"><span class="ava u s">MH</span>Accountant</span></div>
             </div>
-            <div class="card">
-              <div class="hd"><span>Ledger impact</span><span class="pill r"><i></i>Held</span></div>
-              <div class="kv">
-                <div><span>Entries posted to your books</span><span class="mono">0</span></div>
-                <div><span>Payee on statement</span><span>Al Rai Trading Est.</span></div>
-                <div><span>Matching bill</span><span>None found</span></div>
-                <div><span>Assigned to</span><span class="who"><span class="ava u s">MH</span>Accountant</span></div>
-              </div>
-            </div>
+          </div>
+          <div class="card drop row">
+            <svg class="ico" viewBox="0 0 16 16"><path d="M8 11V3m0 0L5 6m3-3 3 3M2.5 10.5v3h11v-3"></path></svg>
+            <span>Attach the supplier invoice to continue</span>
+            <span class="mono">PDF · JPG · PNG</span>
           </div>
         </div>
       </div>
@@ -1319,7 +1409,7 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
   var current = 0, timer = null;
   // Replay CSS animations (stage fade, row cascade, progress bar) on an element tree.
   function replay(el) {
-    var els = [el].concat([].slice.call(el.querySelectorAll('.tr, .pg b')));
+    var els = [el].concat([].slice.call(el.querySelectorAll(':scope > *, .tr, .pg b, .result .pill, .result .arrow')));
     els.forEach(function (x) { x.style.animation = 'none'; });
     void el.offsetWidth;
     els.forEach(function (x) { x.style.animation = ''; });
@@ -1334,6 +1424,18 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
       stages[j].hidden = !on;
     });
     replay(stages[i]); replay(tabs[i]);
+    // Flow scene: same bank line as the screen, goes in and lands in the books or comes back.
+    var fs = document.getElementById('fscene');
+    if (fs) {
+      var lines = [['Zain Telecom', '−28.500'], ['Boutiqaat', '−64.000'], ['Al Rai Trading', '−1,840.000']];
+      document.getElementById('fs-nm').textContent = lines[i][0];
+      document.getElementById('fs-amt').textContent = lines[i][1];
+      fs.setAttribute('data-s', i);
+      var fx = [].slice.call(fs.querySelectorAll('.fs-card, .fs-dot, .fs-lt, .fs-chip, .fs-row, .fs-badge'));
+      fx.forEach(function (x) { x.style.animation = 'none'; });
+      void fs.getBoundingClientRect();
+      fx.forEach(function (x) { x.style.animation = ''; });
+    }
     // On narrow screens the tab row scrolls sideways — keep the active tab visible.
     if (tabList.scrollWidth > tabList.clientWidth) {
       var dx = tabs[i].getBoundingClientRect().left - tabList.getBoundingClientRect().left;
