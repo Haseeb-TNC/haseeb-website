@@ -173,7 +173,7 @@
       btn.className = 'btn p sm kf-btn';
     }
     function cycle() {
-      var tl = gsap.timeline({ paused: true, defaults: { ease: T.ease }, onComplete: function () { loop = cycle(); if (live && !held) loop.play(); } });
+      var tl = gsap.timeline({ paused: true, defaults: { ease: T.ease }, onComplete: function () { loop = cycle(); if (live) loop.play(); } });
       tl.call(reset);
       var total = 0;
       TAPS.forEach(function (v, i) {
@@ -208,19 +208,11 @@
     }
     reset();
     // Plays while on screen, pauses once it scrolls away (the loop never runs unseen).
-    // The pause button stops it for good until pressed again (WCAG 2.2.2).
-    var loop = null, live = false, held = false;
-    function sync() { if (live && !held) { if (!loop) loop = cycle(); loop.play(); } else if (loop) loop.pause(); }
+    var loop = null, live = false;
+    function sync() { if (live) { if (!loop) loop = cycle(); loop.play(); } else if (loop) loop.pause(); }
     ScrollTrigger.create({
       trigger: box, start: 'top 75%', end: 'bottom top',
       onToggle: function (s) { live = s.isActive; sync(); }
-    });
-    var pauseBtn = $('#kfPause');
-    if (pauseBtn) pauseBtn.addEventListener('click', function () {
-      held = !held;
-      pauseBtn.setAttribute('aria-pressed', held ? 'true' : 'false');
-      pauseBtn.lastChild.textContent = held ? (AR ? 'تشغيل الحركة' : 'Play animation') : (AR ? 'إيقاف الحركة' : 'Pause animation');
-      sync();
     });
   }
 
@@ -282,6 +274,9 @@
       fades = [];
       gsap.set(slides, { autoAlpha: 0, y: 0 });
       gsap.set(slides[0], { autoAlpha: 1 });
+      // Empty space under the last slide's content, so the next section can keep the usual gap (see #kflow in site.css).
+      var lw = $('.wrap', slides[n - 1]);
+      document.documentElement.style.setProperty('--tour-tail', lw ? Math.max(0, Math.round(box.getBoundingClientRect().bottom - lw.getBoundingClientRect().bottom)) + 'px' : '0px');
       for (var k = 0; k < n - 1; k++) {
         pos += hold;
         // Out, then in: the outgoing slide is gone before the next one appears, so the two never overlap.
@@ -342,6 +337,7 @@
         gsap.set(slides.concat(fills), { clearProps: 'opacity,visibility,transform' });
         slides.forEach(function (sl) { var w = $('.wrap', sl); if (w) w.style.zoom = w.style.maxWidth = w.style.paddingInline = ''; });
         box.classList.remove('pin');
+        document.documentElement.style.removeProperty('--tour-tail');
         stacked();
       };
     });

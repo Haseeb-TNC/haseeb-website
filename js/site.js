@@ -207,7 +207,7 @@
   // (mailto: founder@haseeb.app). No invented endpoint.
   var form = document.getElementById('apply');
   var status = document.getElementById('formStatus');
-  var ids = ['f-name', 'f-company', 'f-role', 'f-type', 'f-setup', 'f-contact'];
+  var ids = ['f-name', 'f-company', 'f-contact'];
   function details() {
     var v = {};
     ids.forEach(function (id) { v[id] = document.getElementById(id).value.trim(); });
@@ -216,8 +216,6 @@
   function body(intro, v) {
     return [t('Hello,', 'مرحباً،'), '', intro, '',
       t('Name: ', 'الاسم: ') + v['f-name'], t('Company: ', 'الشركة: ') + v['f-company'],
-      t('Role: ', 'المنصب: ') + v['f-role'], t('Business type: ', 'نوع النشاط: ') + v['f-type'],
-      t('Current accounting setup: ', 'طريقة المحاسبة الحالية: ') + v['f-setup'],
       t('Work email or phone: ', 'البريد الإلكتروني أو الهاتف: ') + v['f-contact']].join('\n');
   }
   function mail(subject, text) {
