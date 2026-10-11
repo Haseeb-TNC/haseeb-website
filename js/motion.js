@@ -379,6 +379,9 @@
       var at = tourAt(el);
       scrollToY(at !== null ? at : el.getBoundingClientRect().top + scrollY - NAV);
       history.replaceState(null, '', a.getAttribute('href'));
+      // Move keyboard focus with the scroll so Tab continues from the target.
+      if (!el.hasAttribute('tabindex') && !el.matches('a[href],button,input,select,textarea')) el.setAttribute('tabindex', '-1');
+      el.focus({ preventScroll: true });
     });
   }
 

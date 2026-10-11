@@ -15,7 +15,7 @@
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content="Haseeb: Ready to approve, Needs an answer, Held for review" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="theme-color" content="#007A62" />
+<meta name="theme-color" content="#FFFFFF" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230B0F14'/%3E%3Ctext x='15' y='23' font-family='Arial,sans-serif' font-weight='700' font-size='20' fill='%23fff' text-anchor='middle'%3EH%3C/text%3E%3Ccircle cx='25' cy='22' r='2.6' fill='%2300A684'/%3E%3C/svg%3E" />
 <meta name="color-scheme" content="light dark" />
 
@@ -96,6 +96,11 @@ body{margin:0;font-family:var(--font-sans);color:var(--ink);background:var(--bg)
 a{color:var(--teal);text-decoration:none}a:hover{color:var(--teal-h)}
 button{font:inherit}
 :focus-visible{outline:2px solid var(--hl);outline-offset:2px}
+.skip{position:fixed;left:var(--sp-4);top:var(--sp-3);z-index:200;padding:var(--sp-2) var(--sp-4);border-radius:8px;background:var(--ink);color:var(--bg);font-size:var(--fs-md);font-weight:var(--fw-medium);transform:translateY(-200%)}
+.skip:focus-visible{transform:none;color:var(--bg)}
+[tabindex="-1"]:focus{outline:none}
+a,button,input,select,label{touch-action:manipulation}
+html{-webkit-tap-highlight-color:transparent;scroll-padding-top:76px}
 .wrap{width:100%;max-width:1240px;margin-inline:auto;padding-inline:32px}
 .mono{font-family:var(--font-mono);font-feature-settings:"tnum";letter-spacing:-.01em}
 .ar{font-family:var(--font-ar)}
@@ -796,11 +801,13 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
 </head>
 <body>
 
+<a class="skip" href="#main">Skip to content</a>
+
 <div class="ann">Founding cohort now forming: 8–12 Kuwaiti service businesses. <a href="#cohort">Join the founding cohort →</a></div>
 
 <header class="nav over">
   <div class="wrap">
-    <a class="logo" href="#top">HASEEB<b>.</b></a>
+    <a class="logo" href="#top" translate="no">HASEEB<b>.</b></a>
     <div class="nav-r">
       <nav class="links" aria-label="Primary">
         <a href="#how">How It Works</a>
@@ -810,10 +817,10 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
         <a class="btn p sm" href="#apply">Join the founding cohort</a>
       </nav>
       <button class="iconbtn theme" type="button" id="themeBtn" aria-label="Switch to dark theme">
-        <svg class="ico sun" viewBox="0 0 16 16"><circle cx="8" cy="8" r="3"></circle><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1"></path></svg>
-        <svg class="ico moon" viewBox="0 0 16 16"><path d="M13.5 9.5A5.5 5.5 0 0 1 6.5 2.5a5.5 5.5 0 1 0 7 7z"></path></svg>
+        <svg aria-hidden="true" focusable="false" class="ico sun" viewBox="0 0 16 16"><circle cx="8" cy="8" r="3"></circle><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1"></path></svg>
+        <svg aria-hidden="true" focusable="false" class="ico moon" viewBox="0 0 16 16"><path d="M13.5 9.5A5.5 5.5 0 0 1 6.5 2.5a5.5 5.5 0 1 0 7 7z"></path></svg>
       </button>
-      <button class="iconbtn burger" type="button" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="mmenu"><svg class="ico" viewBox="0 0 16 16"><path d="M2 5h12M2 11h12"></path></svg></button>
+      <button class="iconbtn burger" type="button" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="mmenu"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M2 5h12M2 11h12"></path></svg></button>
     </div>
   </div>
   <nav class="mmenu" id="mmenu" aria-label="Mobile">
@@ -825,7 +832,7 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
   </nav>
 </header>
 
-<main>
+<main id="main" tabindex="-1">
 <!-- HERO -->
 <section class="hero" id="top">
   <img class="hero-bg" src="images/hero-team.jpg" srcset="images/hero-team-1200.jpg 1200w, images/hero-team.jpg 2400w" sizes="(orientation: portrait) 220vw, 100vw" width="2400" height="1600" alt="" fetchpriority="high" decoding="async" />
@@ -861,7 +868,7 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
           <div class="main">
             <div class="tbar">
               <div><div class="t">Transactions<span class="ar" dir="rtl" lang="ar">المعاملات</span></div><div class="sub">NBK operating account · <span class="mono">15</span> prepared from statement</div></div>
-              <div class="search"><svg class="ico" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5 14 14"></path></svg><span>Search merchants, amounts…</span></div>
+              <div class="search"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5 14 14"></path></svg><span>Search merchants, amounts…</span></div>
             </div>
             <div class="lanestrip">
               <div class="lchip"><span class="pill g"><i></i>Ready to approve</span><span class="mono">12</span></div>
@@ -919,24 +926,24 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
         <button class="tab on" type="button" role="tab" id="tab-0" aria-selected="true" aria-controls="stage-0">
           <span class="pill g"><i></i>Ready to approve</span>
           <span class="s">When it's clear, it prepares the entry.</span>
-          <span class="go"><svg viewBox="0 0 12 12"><path d="M4.5 2.5 8 6l-3.5 3.5"></path></svg></span>
+          <span class="go"><svg aria-hidden="true" focusable="false" viewBox="0 0 12 12"><path d="M4.5 2.5 8 6l-3.5 3.5"></path></svg></span>
           <span class="pg"><b></b></span>
         </button>
         <button class="tab" type="button" role="tab" id="tab-1" aria-selected="false" aria-controls="stage-1" tabindex="-1">
           <span class="pill a"><i></i>Needs an answer</span>
           <span class="s">When it needs an answer, it asks.</span>
-          <span class="go"><svg viewBox="0 0 12 12"><path d="M4.5 2.5 8 6l-3.5 3.5"></path></svg></span>
+          <span class="go"><svg aria-hidden="true" focusable="false" viewBox="0 0 12 12"><path d="M4.5 2.5 8 6l-3.5 3.5"></path></svg></span>
           <span class="pg"><b></b></span>
         </button>
         <button class="tab" type="button" role="tab" id="tab-2" aria-selected="false" aria-controls="stage-2" tabindex="-1">
           <span class="pill r"><i></i>Held for review</span>
           <span class="s">When there isn't enough information, it stops.</span>
-          <span class="go"><svg viewBox="0 0 12 12"><path d="M4.5 2.5 8 6l-3.5 3.5"></path></svg></span>
+          <span class="go"><svg aria-hidden="true" focusable="false" viewBox="0 0 12 12"><path d="M4.5 2.5 8 6l-3.5 3.5"></path></svg></span>
           <span class="pg"><b></b></span>
         </button>
       </div>
       <figure class="fscene" id="fscene" aria-hidden="true">
-        <svg viewBox="0 37 380 125">
+        <svg aria-hidden="true" focusable="false" viewBox="0 37 380 125">
           <defs>
             <clipPath id="fs-cl"><rect x="-20" y="0" width="170" height="176"></rect></clipPath>
             <clipPath id="fs-cr"><rect x="234" y="0" width="160" height="176"></rect></clipPath>
@@ -999,11 +1006,11 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
 
         <div class="main stage" id="stage-1" role="tabpanel" aria-labelledby="tab-1" hidden>
           <div class="ex">
-            <span class="mk"><svg class="ico" viewBox="0 0 16 16"><path d="M8 2.5a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11zM6.3 6.3a1.8 1.8 0 1 1 2.4 1.7c-.5.2-.7.6-.7 1.1v.4M8 11.2v.1"></path></svg></span>
+            <span class="mk"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M8 2.5a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11zM6.3 6.3a1.8 1.8 0 1 1 2.4 1.7c-.5.2-.7.6-.7 1.1v.4M8 11.2v.1"></path></svg></span>
             <div><div class="nm">BOUTIQAAT ONLINE</div><div class="ct">Appears on <span class="mono">4</span> uncategorized lines</div></div>
             <div class="rt"><div class="mono">−64.000 KWD</div><div class="d mono">11 Apr</div></div>
           </div>
-          <div class="result"><svg class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg><span class="pill a"><i></i>Needs an answer</span></div>
+          <div class="result"><svg aria-hidden="true" focusable="false" class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg><span class="pill a"><i></i>Needs an answer</span></div>
           <div class="card">
             <div class="hd"><span style="display:flex;align-items:center;gap:10px"><span class="ava am">H</span>Haseeb asks</span><span class="mono">1 of 2</span></div>
             <div class="qbody">
@@ -1025,11 +1032,11 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
 
         <div class="main stage" id="stage-2" role="tabpanel" aria-labelledby="tab-2" hidden>
           <div class="ex">
-            <span class="mk"><svg class="ico" viewBox="0 0 16 16"><path d="M4 2h5.5L12 4.5V14H4zM9 2v3h3M6.5 9.5l3 3m0-3-3 3"></path></svg></span>
+            <span class="mk"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M4 2h5.5L12 4.5V14H4zM9 2v3h3M6.5 9.5l3 3m0-3-3 3"></path></svg></span>
             <div><div class="nm">DOCUMENT MISSING</div><div class="ct">Not enough information</div></div>
             <div class="rt"><div class="mono">−1,840.000 KWD</div><div class="d mono">15 Apr</div></div>
           </div>
-          <div class="result"><svg class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg><span class="pill r"><i></i>Not posted, held for review</span></div>
+          <div class="result"><svg aria-hidden="true" focusable="false" class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg><span class="pill r"><i></i>Not posted, held for review</span></div>
           <div class="card">
             <div class="hd"><span>Ledger impact</span><span class="pill r"><i></i>Held</span></div>
             <div class="kv">
@@ -1040,7 +1047,7 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
             </div>
           </div>
           <div class="card drop row">
-            <svg class="ico" viewBox="0 0 16 16"><path d="M8 11V3m0 0L5 6m3-3 3 3M2.5 10.5v3h11v-3"></path></svg>
+            <svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M8 11V3m0 0L5 6m3-3 3 3M2.5 10.5v3h11v-3"></path></svg>
             <span>Attach the supplier invoice to continue</span>
             <span class="mono">PDF · JPG · PNG</span>
           </div>
@@ -1092,7 +1099,7 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
                 </div></div>
               </div>
               <div class="composer">
-                <div class="inp"><span>Ask Haseeb anything about your books…</span><span class="send" aria-hidden="true"><svg class="ico" viewBox="0 0 16 16"><path d="M8 13V3m0 0L4 7m4-4 4 4"></path></svg></span></div>
+                <div class="inp"><span>Ask Haseeb anything about your books…</span><span class="send" aria-hidden="true"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M8 13V3m0 0L4 7m4-4 4 4"></path></svg></span></div>
                 <div class="foot">Haseeb can make mistakes. Always verify critical numbers.</div>
               </div>
             </div>
@@ -1124,17 +1131,17 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
 
       <div class="win rv d1" role="img" aria-label="Example: Kuwaiti bank statement lines and what Haseeb understands from each">
         <div class="chrome">
-          <div class="co"><svg class="ico" viewBox="0 0 16 16"><path d="M2 6.5 8 3l6 3.5M3.5 7v5m3-5v5m3-5v5m3-5v5M2 13.5h12"></path></svg><span>Statement import</span><span class="ar" dir="rtl" lang="ar">كشف حساب</span></div>
+          <div class="co"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M2 6.5 8 3l6 3.5M3.5 7v5m3-5v5m3-5v5m3-5v5M2 13.5h12"></path></svg><span>Statement import</span><span class="ar" dir="rtl" lang="ar">كشف حساب</span></div>
           <div class="meta"><span class="hide">NBK · operating account</span><span class="pill g"><i></i>KWD</span></div>
         </div>
         <div class="main">
           <div class="kh"><span>On your statement</span><span>What Haseeb understands</span></div>
           <div class="kl rows" data-in="1">
-            <div class="kr"><span class="raw mono" dir="rtl" lang="ar">كي نت تسوية 0412</span><svg class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg><span class="und"><b>KNET card sales</b><small>KNET fees split out</small></span></div>
-            <div class="kr"><span class="raw mono">TALABAT GENERAL TRADING PAYOUT</span><svg class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg><span class="und"><b>Talabat payout</b><small>Gross sales and commission separated</small></span></div>
-            <div class="kr"><span class="raw mono">PIFSS CONTRIBUTION 04/2026</span><svg class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg><span class="und"><b>PIFSS payment</b><small>Settles what payroll owes, not a new expense</small></span></div>
-            <div class="kr"><span class="raw mono">MEW E-PAYMENT 00318842</span><svg class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg><span class="und"><b>Ministry of Electricity &amp; Water</b><small>Utilities</small></span></div>
-            <div class="kr"><span class="raw mono" dir="rtl" lang="ar">زين الكويت</span><svg class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg><span class="und"><b>Zain Kuwait</b><small>Telecommunications</small></span></div>
+            <div class="kr"><span class="raw mono" dir="rtl" lang="ar">كي نت تسوية 0412</span><svg aria-hidden="true" focusable="false" class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg><span class="und"><b>KNET card sales</b><small>KNET fees split out</small></span></div>
+            <div class="kr"><span class="raw mono">TALABAT GENERAL TRADING PAYOUT</span><svg aria-hidden="true" focusable="false" class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg><span class="und"><b>Talabat payout</b><small>Gross sales and commission separated</small></span></div>
+            <div class="kr"><span class="raw mono">PIFSS CONTRIBUTION 04/2026</span><svg aria-hidden="true" focusable="false" class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg><span class="und"><b>PIFSS payment</b><small>Settles what payroll owes, not a new expense</small></span></div>
+            <div class="kr"><span class="raw mono">MEW E-PAYMENT 00318842</span><svg aria-hidden="true" focusable="false" class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg><span class="und"><b>Ministry of Electricity &amp; Water</b><small>Utilities</small></span></div>
+            <div class="kr"><span class="raw mono" dir="rtl" lang="ar">زين الكويت</span><svg aria-hidden="true" focusable="false" class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg><span class="und"><b>Zain Kuwait</b><small>Telecommunications</small></span></div>
           </div>
         </div>
       </div>
@@ -1149,7 +1156,7 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
   <div class="kf-row rv d1" role="img" aria-label="A customer taps their card, the payment reaches your bank as a KNET settlement line, Haseeb prepares the entry and you approve it into your books">
     <div class="kf-st">
       <div class="kf-box kf-counter">
-        <svg viewBox="0 -62 200 214">
+        <svg aria-hidden="true" focusable="false" viewBox="0 -62 200 214">
           <rect class="kf-term" x="62" y="22" width="76" height="120" rx="12"></rect>
           <rect class="kf-scr" x="71" y="33" width="58" height="44" rx="5"></rect>
           <text class="kf-knet" x="78" y="45">KNET</text>
@@ -1177,7 +1184,7 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
       <div class="kf-box kf-has">
         <div class="kf-hd"><span class="kf-who"><span class="ava am">H</span>Haseeb</span></div>
         <div class="kf-in"><i class="kf-beam"></i><small>On your statement</small><span class="mono" dir="rtl" lang="ar">كي نت تسوية 0412</span></div>
-        <svg class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg>
+        <svg aria-hidden="true" focusable="false" class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg>
         <div class="kf-out"><small>Recorded as</small><div><b>Card sales</b><span class="pill g"><i></i>Ready to approve</span></div></div>
       </div>
       <p class="kf-cap"><span class="n mono">03</span><span>Haseeb reads it and prepares the entry.</span></p>
@@ -1215,15 +1222,15 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
         <div class="main">
           <div class="rhd">
             <div><span class="big mono" data-count="41" data-int="1">41</span><span>bank lines in</span></div>
-            <svg class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg>
+            <svg aria-hidden="true" focusable="false" class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg>
             <div><span class="big mono">1</span><span>approval from you</span></div>
           </div>
           <div class="rl rows" data-in="1">
-            <div class="rr"><span class="ck2"><svg class="ico" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"></path></svg></span><s>Type in every bank line</s><span class="by">Read from your statement</span></div>
-            <div class="rr"><span class="ck2"><svg class="ico" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"></path></svg></span><s>Work out who each payment was to</s><span class="by">Matched to Kuwaiti merchants</span></div>
-            <div class="rr"><span class="ck2"><svg class="ico" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"></path></svg></span><s>Split Talabat payouts</s><span class="by">Sales and commission separated</span></div>
-            <div class="rr"><span class="ck2"><svg class="ico" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"></path></svg></span><s>Calculate PIFSS for each employee</s><span class="by">Posted to the right accounts</span></div>
-            <div class="rr"><span class="ck2"><svg class="ico" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"></path></svg></span><s>Check every entry balances</s><span class="by">Balanced before you see it</span></div>
+            <div class="rr"><span class="ck2"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"></path></svg></span><s>Type in every bank line</s><span class="by">Read from your statement</span></div>
+            <div class="rr"><span class="ck2"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"></path></svg></span><s>Work out who each payment was to</s><span class="by">Matched to Kuwaiti merchants</span></div>
+            <div class="rr"><span class="ck2"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"></path></svg></span><s>Split Talabat payouts</s><span class="by">Sales and commission separated</span></div>
+            <div class="rr"><span class="ck2"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"></path></svg></span><s>Calculate PIFSS for each employee</s><span class="by">Posted to the right accounts</span></div>
+            <div class="rr"><span class="ck2"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"></path></svg></span><s>Check every entry balances</s><span class="by">Balanced before you see it</span></div>
             <div class="rr you"><span class="ava u s">You</span><b>Approve the batch</b><span class="btn p sm">Approve</span></div>
           </div>
         </div>
@@ -1255,9 +1262,9 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
         <p class="strong rv d1">8–12 Kuwaiti service businesses, onboarded closely by the founding team.</p>
         <div class="seats rv d1" aria-hidden="true"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i><i></i><i></i></div>
         <div class="bens rv d2">
-          <div class="ben"><span class="ic"><svg class="ico" viewBox="0 0 16 16"><path d="M2.5 8.5 6 12l7.5-8"></path></svg></span><span>Close onboarding</span></div>
-          <div class="ben"><span class="ic"><svg class="ico" viewBox="0 0 16 16"><circle cx="8" cy="5.5" r="2.5"></circle><path d="M3 13.5c.6-2.5 2.6-3.5 5-3.5s4.4 1 5 3.5"></path></svg></span><span>Direct access to the founding team</span></div>
-          <div class="ben"><span class="ic"><svg class="ico" viewBox="0 0 16 16"><path d="M8 2 3 4v4c0 3 2.2 5 5 6 2.8-1 5-3 5-6V4z"></path></svg></span><span>A carefully supervised start</span></div>
+          <div class="ben"><span class="ic"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M2.5 8.5 6 12l7.5-8"></path></svg></span><span>Close onboarding</span></div>
+          <div class="ben"><span class="ic"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><circle cx="8" cy="5.5" r="2.5"></circle><path d="M3 13.5c.6-2.5 2.6-3.5 5-3.5s4.4 1 5 3.5"></path></svg></span><span>Direct access to the founding team</span></div>
+          <div class="ben"><span class="ic"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M8 2 3 4v4c0 3 2.2 5 5 6 2.8-1 5-3 5-6V4z"></path></svg></span><span>A carefully supervised start</span></div>
         </div>
       </div>
 
@@ -1267,7 +1274,7 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
         <div class="fgrid">
           <div class="fld"><label for="f-name">Name</label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
           <div class="fld"><label for="f-company">Company</label><input id="f-company" name="company" type="text" autocomplete="organization" required></div>
-          <div class="fld w"><label for="f-contact">Work email or phone</label><input id="f-contact" name="contact" type="text" inputmode="email" autocomplete="off" placeholder="name@company.com or +965 …" required></div>
+          <div class="fld w"><label for="f-contact">Work email or phone</label><input id="f-contact" name="contact" type="text" inputmode="email" autocomplete="off" spellcheck="false" placeholder="name@company.com or +965 …" required></div>
         </div>
         <div class="fbtn">
           <button class="btn p" type="submit">Apply for a founding place</button>
@@ -1283,7 +1290,7 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
 <footer class="ft">
   <div class="wrap">
     <div class="row">
-      <a class="logo" href="#top">HASEEB<b>.</b></a>
+      <a class="logo" href="#top" translate="no">HASEEB<b>.</b></a>
       <div class="lk"><a href="website-terms.html">Website Terms</a><a href="privacy.html">Privacy Policy</a><a href="mailto:founder@haseeb.app">founder@haseeb.app</a></div>
     </div>
     <div class="row btm">
@@ -1309,6 +1316,8 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
   function syncThemeLabel() {
     var dark = root.getAttribute('data-theme') === 'dark';
     themeBtn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+    var tc = document.querySelector('meta[name="theme-color"]');
+    if (tc) tc.setAttribute('content', dark ? '#0B0F14' : '#FFFFFF');
   }
   syncThemeLabel();
   themeBtn.addEventListener('click', function () {
@@ -1324,6 +1333,9 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
   function setMenu(open) { menu.classList.toggle('open', open); burger.setAttribute('aria-expanded', open ? 'true' : 'false'); }
   burger.addEventListener('click', function () { setMenu(!menu.classList.contains('open')); });
   menu.addEventListener('click', function (e) { if (e.target.tagName === 'A') setMenu(false); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && menu.classList.contains('open')) { setMenu(false); burger.focus(); }
+  });
 
   // Nav sits clear over the hero photo, solid everywhere else. An observer, so nothing runs on each scroll event.
   var siteNav = document.querySelector('.nav'), heroEl = document.querySelector('.hero');
@@ -1347,7 +1359,7 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
   document.querySelectorAll('.side[data-nav]').forEach(function (side) {
     var on = side.getAttribute('data-nav');
     var html = nav.map(function (n) {
-      return '<div class="it' + (n[0] === on ? ' on' : '') + '"><span class="l"><svg class="ico" viewBox="0 0 16 16"><path d="' + n[1] + '"></path></svg><span>' + n[0] + '</span></span>' + (n[2] ? '<span class="c">' + n[2] + '</span>' : '') + '</div>';
+      return '<div class="it' + (n[0] === on ? ' on' : '') + '"><span class="l"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="' + n[1] + '"></path></svg><span>' + n[0] + '</span></span>' + (n[2] ? '<span class="c">' + n[2] + '</span>' : '') + '</div>';
     }).join('');
     side.innerHTML = html + '<div class="grp">Assistant</div><div class="it' + (on === 'Haseeb' ? ' on' : '') + '"><span class="l"><span class="ava am xs">H</span><span>Haseeb</span></span></div>';
   });
