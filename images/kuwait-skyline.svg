@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 180" fill="currentColor" aria-hidden="true">
+  <!-- Kuwait City skyline, drawn for Haseeb (original artwork). Left to right: low city blocks, the Kuwait Towers,
+       city blocks, Liberation Tower, Al Hamra Tower, Arraya and the Sharq towers, then low blocks to the edge. -->
+  <!-- low blocks, west -->
+  <path d="M0 180V150h40v-8h34v14h26v-22h30v46z"/>
+  <!-- Kuwait Towers: the needle, the main tower with two spheres, the second tower with one sphere -->
+  <path d="M168 180V96l2-10 2 10v84z"/>
+  <path d="M196 180V104c0-2 1-4 2.5-5.5A22 22 0 1 1 213.5 98.5 6 6 0 0 1 216 104v76z
+           M206 63a8 8 0 1 1 0.01 0z"/>
+  <path d="M204.6 56.5h2.8V28l-1.4-12-1.4 12z"/>
+  <path d="M233 180v-62a14 14 0 1 1 6 0v62z"/>
+  <path d="M234.8 97h2.4V70l-1.2-10-1.2 10z"/>
+  <!-- city blocks -->
+  <path d="M262 180v-36h22v-10h18v46zM312 180v-58h26v58zM346 180v-44h30v-12h16v56zM400 180v-70h20v-8h14v78z"/>
+  <path d="M444 180v-52h34v52zM486 180v-86l14-8 14 8v86zM522 180v-48h28v48z"/>
+  <!-- Liberation Tower: shaft, the observation pod, the spire -->
+  <path d="M578 180V58h-6l-4-6v-14l10-6h28l10 6v14l-4 6h-6v122z"/>
+  <path d="M590 32h4V4h-4z"/>
+  <path d="M626 180v-64h26v64zM660 180v-90h22v90z"/>
+  <!-- Al Hamra Tower: tall slab with its twisted cut on one face -->
+  <path d="M700 180V22c0-6 4-10 10-12l28-8v178z"/>
+  <path d="M738 180V2c10 26 18 60 20 100 1 30 0 56-2 78z" opacity=".55"/>
+  <!-- Arraya and the Sharq towers -->
+  <path d="M776 180V60l12-12h18v132zM816 180v-96h24v96zM848 180v-74l16-10 16 10v74z"/>
+  <path d="M890 180v-112h10v-10h12v10h10v112zM932 180v-60h28v60zM968 180v-84h20v84z"/>
+  <!-- low blocks, east -->
+  <path d="M996 180v-46h30v46zM1034 180v-30h38v-12h22v42zM1102 180v-56h20v56zM1130 180v-34h70v34z"/>
+</svg>

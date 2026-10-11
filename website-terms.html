@@ -2,8 +2,10 @@
 <html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Haseeb — Website Terms</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Website Terms | Haseeb</title>
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
+<meta name="theme-color" content="#FFFFFF" />
 <meta name="description" content="Terms for using the public Haseeb website and the founding-cohort application process." />
 <!--
   ⚠️ INTERNAL DEVELOPMENT NOTE — NOT VISITOR-FACING (2026-08-19).
@@ -19,48 +21,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet" />
-<style>
-  :root {
-    --bg: #FFFFFF; --text-1: #0B0F14;
-    --text-2: rgba(11,15,20,0.68); --text-3: rgba(11,15,20,0.5);
-    --border: rgba(11,15,20,0.08); --teal: #007A62;
-    /* Same type system as haseeb.html (see the TYPE SYSTEM note there). */
-    --font-sans: 'DM Sans', system-ui, sans-serif; --font-mono: 'DM Mono', ui-monospace, monospace;
-    --fw-regular: 400; --fw-medium: 500; --fw-semibold: 600;
-    --fs-2xs: 11px; --fs-sm: 13px; --fs-base: 16px;
-    --fs-xl: clamp(18px, 1.6vw, 22px); --fs-h2: clamp(28px, 3vw, 40px);
-  }
-  :root[data-theme="dark"] {
-    --bg: #0B0F14; --text-1: #E9EDF0;
-    --text-2: rgba(233,237,240,0.72); --text-3: rgba(233,237,240,0.5);
-    --border: rgba(255,255,255,0.08); --teal: #3DD3B0;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; background: var(--bg); color: var(--text-1);
-    font-family: var(--font-sans);
-    font-size: var(--fs-base); line-height: 1.7;
-    -webkit-font-smoothing: antialiased;
-  }
-  a { color: var(--teal); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  a:focus-visible { outline: 2px solid #00A684; outline-offset: 2px; border-radius: 4px; }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 40px 22px 80px; }
-  .back { font-size: var(--fs-sm); color: var(--text-3); display: inline-block; margin-bottom: 36px; }
-  .back:hover { color: var(--text-1); text-decoration: none; }
-  h1 { font-size: var(--fs-h2); font-weight: var(--fw-semibold); line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 8px; }
-  .updated { font-family: var(--font-mono); font-size: var(--fs-2xs); letter-spacing: 0.10em; text-transform: uppercase; color: var(--text-3); margin-bottom: 28px; }
-  h2 { font-size: var(--fs-xl); font-weight: var(--fw-semibold); letter-spacing: -0.01em; margin: 34px 0 10px; }
-  p, li { color: var(--text-2); margin: 0 0 12px; }
-  ul { padding-left: 22px; margin: 0 0 12px; }
-  li { margin-bottom: 6px; }
-  strong { color: var(--text-1); font-weight: var(--fw-semibold); }
-  footer { border-top: 1px solid var(--border); margin-top: 56px; padding-top: 20px; font-size: var(--fs-sm); color: var(--text-3); }
-</style>
+<link rel="stylesheet" href="css/site.css" />
 </head>
 <body>
-<main class="wrap">
-  <a class="back" href="haseeb.html">← Back to Haseeb</a>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="haseeb.html" translate="no">HASEEB<b>.</b></a>
+    <a class="back" href="haseeb.html"><span aria-hidden="true">←</span> Back to Haseeb</a>
+  </div>
+</header>
+<main class="legal" id="main" tabindex="-1">
 
   <h1>Website Terms</h1>
   <p class="updated">Last updated · 19 August 2026</p>
@@ -113,12 +84,20 @@
 
   <h2>8. Contact</h2>
   <p>Questions about these terms: <a href="mailto:founder@haseeb.app">founder@haseeb.app</a></p>
-
-  <footer>
-    © 2026 Haseeb. All rights reserved. &nbsp;·&nbsp;
-    <a href="privacy.html">Privacy Policy</a> &nbsp;·&nbsp;
-    <a href="haseeb.html">haseeb</a>
-  </footer>
 </main>
+
+<footer class="ft">
+  <div class="ft-pattern" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="row">
+      <a class="logo" href="haseeb.html" translate="no">HASEEB<b>.</b></a>
+      <div class="lk"><a href="privacy.html">Privacy Policy</a><a href="mailto:founder@haseeb.app">founder@haseeb.app</a></div>
+    </div>
+    <div class="row btm">
+      <span>© 2026 Haseeb. All rights reserved.</span>
+      <span class="lang"><a href="haseeb.html">English site</a><a href="ar.html" hreflang="ar" lang="ar">الموقع العربي</a></span>
+    </div>
+  </div>
+</footer>
 </body>
 </html>

@@ -1,0 +1,6 @@
+tools
+*.md
+.claude
+.playwright
+.playwright-cli
+skills-lock.json

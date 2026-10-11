@@ -25,6 +25,7 @@
   // well inside it, so content is never sitting on screen blank or half-faded while you scroll.
   var T = { ease: 'power3.out', rise: 12, fast: 0.4, base: 0.55, slow: 0.75, stagger: 0.04, start: 'top bottom' };
   var root = document.documentElement;
+  var AR = root.lang === 'ar';
 
   function scrollToY(y, instant) { window.scrollTo({ top: y, behavior: instant ? 'instant' : 'smooth' }); }
 
@@ -168,11 +169,11 @@
       gsap.set(beam, { opacity: 0, xPercent: -100 });
       gsap.set(je, { opacity: 0 });
       gsap.set(posted, { opacity: 0, scale: 0.8 });
-      btn.textContent = 'Approve';
+      btn.textContent = AR ? 'اعتماد' : 'Approve';
       btn.className = 'btn p sm kf-btn';
     }
     function cycle() {
-      var tl = gsap.timeline({ paused: true, defaults: { ease: T.ease }, onComplete: function () { loop = cycle(); if (live) loop.play(); } });
+      var tl = gsap.timeline({ paused: true, defaults: { ease: T.ease }, onComplete: function () { loop = cycle(); if (live && !held) loop.play(); } });
       tl.call(reset);
       var total = 0;
       TAPS.forEach(function (v, i) {
@@ -198,7 +199,7 @@
       fly(tl, out, jeBox);
       tl.to(je, { opacity: 0.45, duration: 0.3, stagger: 0.12 }, '-=0.25')
         .to(btn, { scale: 0.92, duration: 0.12, ease: 'power1.in' }, '+=0.5')
-        .call(function () { btn.textContent = 'Approved'; btn.className = 'btn s sm kf-btn'; })
+        .call(function () { btn.textContent = AR ? 'تم الاعتماد' : 'Approved'; btn.className = 'btn s sm kf-btn'; })
         .to(btn, { scale: 1, duration: 0.2 })
         .to(je, { opacity: 1, duration: 0.3 }, '<')
         .to(posted, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(2)' }, '<')
@@ -207,10 +208,19 @@
     }
     reset();
     // Plays while on screen, pauses once it scrolls away (the loop never runs unseen).
-    var loop = null;
+    // The pause button stops it for good until pressed again (WCAG 2.2.2).
+    var loop = null, live = false, held = false;
+    function sync() { if (live && !held) { if (!loop) loop = cycle(); loop.play(); } else if (loop) loop.pause(); }
     ScrollTrigger.create({
       trigger: box, start: 'top 75%', end: 'bottom top',
-      onToggle: function (s) { if (s.isActive) { if (!loop) loop = cycle(); loop.play(); } else if (loop) loop.pause(); }
+      onToggle: function (s) { live = s.isActive; sync(); }
+    });
+    var pauseBtn = $('#kfPause');
+    if (pauseBtn) pauseBtn.addEventListener('click', function () {
+      held = !held;
+      pauseBtn.setAttribute('aria-pressed', held ? 'true' : 'false');
+      pauseBtn.lastChild.textContent = held ? (AR ? 'تشغيل الحركة' : 'Play animation') : (AR ? 'إيقاف الحركة' : 'Pause animation');
+      sync();
     });
   }
 

@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>حسيب | محاسبة تُحضَّر من كشوف حساباتك البنكية في الكويت</title>
+<meta name="description" content="يحضّر حسيب دفاترك من كشوف حسابات الوطني والتجاري وبوبيان وبيتك، بالدينار الكويتي، بالعربية أو الإنجليزية. أنت تحدد ما يُرحَّل تلقائياً وتعتمد الباقي. المجموعة التأسيسية قيد التشكيل الآن." />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="حسيب" />
+<meta property="og:url" content="https://haseeb.app/ar" />
+<meta property="og:locale" content="ar_KW" />
+<meta property="og:title" content="حسيب | حساباتك جاهزة ومرتّبة لك" />
+<meta property="og:description" content="Accounting built for Kuwaiti businesses. Haseeb prepares the work from your bank statements. You approve what's ready, answer what's unclear, and anything doubtful is held, not posted." />
+<meta property="og:image" content="https://haseeb.app/images/og-haseeb.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="شعار حسيب فوق رسم لأفق مدينة الكويت، مع النتائج الثلاث: جاهز للاعتماد، يحتاج إلى إجابة، معلّق للمراجعة" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="theme-color" content="#FFFFFF" />
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
+<meta name="color-scheme" content="light dark" />
+<link rel="canonical" href="https://haseeb.app/ar" />
+<link rel="alternate" hreflang="en" href="https://haseeb.app/" />
+<link rel="alternate" hreflang="ar" href="https://haseeb.app/ar" />
+<link rel="alternate" hreflang="x-default" href="https://haseeb.app/" />
+
+
+<script>
+  // Apply the saved theme before first paint (light by default).
+  try { var t = localStorage.getItem('haseeb-theme'); if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+  // Motion: hide reveal targets until js/motion.js animates them in. Skipped under reduced motion;
+  // removed again if GSAP hasn't arrived within 3s, so content is never stuck hidden.
+  (function (de) {
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    de.classList.add('gs');
+    // motion.js puts the scroll position back once the pinned layout exists (see land()).
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    setTimeout(function () { if (!window.HMotion) de.classList.remove('gs'); }, 3000);
+  })(document.documentElement);
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" />
+
+<link rel="stylesheet" href="css/site.css" />
+</head>
+<body>
+
+<a class="skip" href="#main">تخطَّ إلى المحتوى</a>
+
+<div class="ann">المجموعة التأسيسية قيد التشكيل: من 8 إلى 12 شركة خدمات كويتية. <a href="#cohort">انضم إلى المجموعة التأسيسية <span aria-hidden="true">→</span></a></div>
+
+<header class="nav over">
+  <div class="wrap">
+    <a class="logo" href="#top" translate="no">HASEEB<b>.</b></a>
+    <div class="nav-r">
+      <nav class="links" aria-label="القائمة الرئيسية">
+        <a href="#how">كيف يعمل</a>
+        <a href="#ask">اسأل أمينة</a>
+        <a href="#kuwait">الكويت</a>
+        <a href="#books">دفاتر كاملة</a>
+        <a href="#cohort">المجموعة التأسيسية</a>
+        <a class="btn p sm" href="#apply">انضم إلى المجموعة التأسيسية</a>
+      </nav>
+      <a class="langlink en" href="haseeb.html" hreflang="en" lang="en" title="English version">English</a>
+      <button class="iconbtn theme" type="button" id="themeBtn" aria-label="التبديل إلى الوضع الداكن">
+        <svg aria-hidden="true" focusable="false" class="ico sun" viewBox="0 0 16 16"><circle cx="8" cy="8" r="3"></circle><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1"></path></svg>
+        <svg aria-hidden="true" focusable="false" class="ico moon" viewBox="0 0 16 16"><path d="M13.5 9.5A5.5 5.5 0 0 1 6.5 2.5a5.5 5.5 0 1 0 7 7z"></path></svg>
+      </button>
+      <button class="iconbtn burger" type="button" id="burger" aria-label="القائمة" aria-expanded="false" aria-controls="mmenu"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M2 5h12M2 11h12"></path></svg></button>
+    </div>
+  </div>
+  <nav class="mmenu" id="mmenu" aria-label="قائمة الجوال">
+    <a href="#how">كيف يعمل</a>
+    <a href="#ask">اسأل أمينة</a>
+    <a href="#kuwait">الكويت</a>
+    <a href="#books">دفاتر كاملة</a>
+    <a href="#cohort">المجموعة التأسيسية</a>
+    <a href="haseeb.html" hreflang="en" lang="en">English</a>
+    <a href="#apply">انضم إلى المجموعة التأسيسية</a>
+  </nav>
+</header>
+
+<main id="main" tabindex="-1">
+<!-- HERO -->
+<section class="hero" id="top">
+  <img class="hero-bg" src="images/hero-team.jpg" srcset="images/hero-team-1200.jpg 1200w, images/hero-team.jpg 2400w" sizes="(orientation: portrait) 220vw, 100vw" width="2400" height="1600" alt="زميلان في مكتب خليجي يراجعان أرقاماً على جهاز لوحي وهاتف" fetchpriority="high" decoding="async" />
+  <div class="hero-shade" aria-hidden="true"></div>
+  <div class="wrap hero-body">
+    <div class="hero-copy rv">
+      <p class="hero-ar"><span class="alt" dir="ltr" lang="en">Haseeb · Smart accounting for Kuwait</span></p>
+      <h1 class="h1">حساباتك، جاهزة ومرتّبة لك.</h1>
+      <p class="hero-sub">ارفع كشف حسابك البنكي. يحضّر حسيب كل سطر بالدينار الكويتي، وتعتمد أنت ما هو جاهز.</p>
+      <div class="cta">
+        <a class="btn p" href="#apply">انضم إلى المجموعة التأسيسية</a>
+        <a class="btn s" href="#how">شاهد كيف يعمل حسيب</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRANSACTIONS: the screen that used to sit inside the hero -->
+<section class="sec txs" id="screens">
+  <div class="wrap">
+    <div class="stack shead txhead">
+      <h2 class="h2 rv">ارفع كشف الحساب. يعود إليك كل سطر محضّراً.</h2>
+      <p class="lead rv d1">كل سطر إما جاهز للاعتماد، أو يحتاج إلى إجابة، أو معلّق للمراجعة.</p>
+    </div>
+    <div class="hero-shot rv d2" aria-label="مثال: شاشة المعاملات في حسيب" role="img">
+      <div class="win">
+        <div class="chrome">
+          <div class="co"><span class="comark">TC</span><span>الشركة ذ.م.م</span><span class="alt" dir="ltr" lang="en">THE COMPANY W.L.L.</span></div>
+          <div class="meta"><span class="hide">أبريل 2026</span><span class="mono hide" dir="rtl">14:22 بتوقيت الكويت</span><span class="pill g"><i></i>د.ك</span><span class="ava u">FA</span></div>
+        </div>
+        <div class="app">
+          <aside class="side" data-nav="Transactions"></aside>
+          <div class="main">
+            <div class="tbar">
+              <div><div class="t">المعاملات<span class="ar" dir="rtl" lang="ar">المعاملات</span></div><div class="sub">حساب التشغيل NBK · <span class="mono">15</span> سطراً محضّراً من الكشف</div></div>
+              <div class="search"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5 14 14"></path></svg><span>ابحث بالتاجر أو المبلغ…</span></div>
+            </div>
+            <div class="lanestrip">
+              <div class="lchip"><span class="pill g"><i></i>جاهز للاعتماد</span><span class="mono">12</span></div>
+              <div class="lchip"><span class="pill a"><i></i>يحتاج إلى إجابة</span><span class="mono">2</span></div>
+              <div class="lchip"><span class="pill r"><i></i>معلّق للمراجعة</span><span class="mono">1</span></div>
+            </div>
+            <div class="tbl rows">
+              <div class="tr h"><span>التاريخ</span><span>الوصف</span><span>سُجّل كـ</span><span class="e">المبلغ د.ك</span><span class="e">الحالة</span></div>
+              <div class="tr"><span class="d mono" dir="rtl">15 أبريل</span><span class="m">دفعة لمورد، بلا مستند</span><span class="cat">معلومات غير كافية</span><span class="amt mono">−1,840.000</span><span class="st"><span class="pill r"><i></i>معلّق للمراجعة</span></span></div>
+              <div class="tr"><span class="d mono" dir="rtl">15 أبريل</span><span class="m">تحويل، الغرض غير واضح</span><span class="cat">ما الغرض من هذه الدفعة؟</span><span class="amt mono">−450.000</span><span class="st"><span class="pill a"><i></i>يحتاج إلى إجابة</span></span></div>
+              <div class="tr"><span class="d mono" dir="rtl">15 أبريل</span><span class="m">تسوية كي نت، الجهاز 0412</span><span class="cat">إيرادات المبيعات</span><span class="amt mono">+1,264.750</span><span class="st"><span class="pill g"><i></i>جاهز للاعتماد</span></span></div>
+              <div class="tr"><span class="d mono" dir="rtl">14 أبريل</span><span class="m">Zain Telecom Kuwait</span><span class="cat">الاتصالات</span><span class="amt mono">−28.500</span><span class="st"><span class="pill g"><i></i>جاهز للاعتماد</span></span></div>
+              <div class="tr"><span class="d mono" dir="rtl">14 أبريل</span><span class="m">Alghanim Industries, inv. 7009</span><span class="cat">تحصيل من عميل</span><span class="amt mono">+4,200.000</span><span class="st"><span class="pill g"><i></i>جاهز للاعتماد</span></span></div>
+              <div class="tr"><span class="d mono" dir="rtl">13 أبريل</span><span class="m">وزارة الكهرباء والماء</span><span class="cat">مرافق عامة</span><span class="amt mono">−96.250</span><span class="st"><span class="pill g"><i></i>جاهز للاعتماد</span></span></div>
+              <div class="tr"><span class="d mono" dir="rtl">13 أبريل</span><span class="m">Al Mulla Rental &amp; Leasing</span><span class="cat">تأجير مركبات</span><span class="amt mono">−185.000</span><span class="st"><span class="pill g"><i></i>جاهز للاعتماد</span></span></div>
+              <div class="tr"><span class="d mono" dir="rtl">12 أبريل</span><span class="m">The Sultan Center, Shuwaikh</span><span class="cat">لوازم مكتبية</span><span class="amt mono">−42.375</span><span class="st"><span class="pill g"><i></i>جاهز للاعتماد</span></span></div>
+              <div class="tr"><span class="d mono" dir="rtl">12 أبريل</span><span class="m">تحويل وارد، مرجع 88214</span><span class="cat">أي فاتورة يسددها هذا التحويل؟</span><span class="amt mono">+2,950.000</span><span class="st"><span class="pill a"><i></i>يحتاج إلى إجابة</span></span></div>
+              <div class="tr"><span class="d mono" dir="rtl">12 أبريل</span><span class="m">Agility Logistics</span><span class="cat">شحن وتوصيل</span><span class="amt mono">−312.000</span><span class="st"><span class="pill g"><i></i>جاهز للاعتماد</span></span></div>
+              <div class="tr"><span class="d mono" dir="rtl">09 أبريل</span><span class="m">برج الحمراء، إيجار المكتب</span><span class="cat">إيجار</span><span class="amt mono">−2,400.000</span><span class="st"><span class="pill g"><i></i>جاهز للاعتماد</span></span></div>
+            </div>
+            <div class="toast hero-toast pop">
+              <span class="ava am">ح</span>
+              <div><div class="who">حسيب</div><div class="tx">تم استيراد الكشف · <span class="mono">15</span> سطراً محضّراً، <span class="mono">12</span> جاهزة لاعتماد واحد.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 01–03: pinned on wide screens, scroll crossfades slide to slide (js/motion.js) -->
+<div class="tour" id="tour" aria-label="كيف يعمل حسيب">
+  <nav class="tour-bar" aria-label="كيف يعمل، خطوة بخطوة">
+    <div class="wrap">
+      <a href="#how" class="on" aria-current="step"><span class="lb"><span class="n">01</span><span>كيف يعمل</span><span class="alt" dir="ltr" lang="en">How it works</span></span><span class="rail"><i></i></span></a>
+      <a href="#ask"><span class="lb"><span class="n">02</span><span>اسأل أمينة</span><span class="alt" dir="ltr" lang="en">Ask Aminah</span></span><span class="rail"><i></i></span></a>
+      <a href="#kuwait"><span class="lb"><span class="n">03</span><span>الكويت</span><span class="alt" dir="ltr" lang="en">Built for here</span></span><span class="rail"><i></i></span></a>
+    </div>
+  </nav>
+  <div class="tour-track">
+
+<!-- 01 HOW -->
+<section class="sec slide" id="how" aria-label="01 كيف يعمل">
+  <div class="wrap">
+    <div class="label rv"><span class="n">01</span><span>كيف يعمل</span><span class="alt" dir="ltr" lang="en">How it works</span></div>
+
+    <div class="show rv d2" id="show">
+      <div class="lanecol">
+      <div class="stack shead">
+        <h2 class="h2 rv">يحضّر حسيب العمل. وتعتمده أنت على دفعات.</h2>
+        <p class="lead rv d1">يحضّر كل معاملة، ولا يعرض عليك إلا ما يحتاج إليك.</p>
+      </div>
+      <div class="tabs" role="tablist" aria-label="كيف يتعامل حسيب مع المعاملة">
+        <button class="tab on" type="button" role="tab" id="tab-0" aria-selected="true" aria-controls="stage-0">
+          <span class="pill g"><i></i>جاهز للاعتماد</span>
+          <span class="s">حين تكون واضحة، يحضّر القيد.</span>
+          <span class="go"><svg aria-hidden="true" focusable="false" viewBox="0 0 12 12"><path d="M4.5 2.5 8 6l-3.5 3.5"></path></svg></span>
+          <span class="pg"><b></b></span>
+        </button>
+        <button class="tab" type="button" role="tab" id="tab-1" aria-selected="false" aria-controls="stage-1" tabindex="-1">
+          <span class="pill a"><i></i>يحتاج إلى إجابة</span>
+          <span class="s">حين يحتاج إلى إجابة، يسأل.</span>
+          <span class="go"><svg aria-hidden="true" focusable="false" viewBox="0 0 12 12"><path d="M4.5 2.5 8 6l-3.5 3.5"></path></svg></span>
+          <span class="pg"><b></b></span>
+        </button>
+        <button class="tab" type="button" role="tab" id="tab-2" aria-selected="false" aria-controls="stage-2" tabindex="-1">
+          <span class="pill r"><i></i>معلّق للمراجعة</span>
+          <span class="s">حين لا تكفي المعلومات، يتوقف.</span>
+          <span class="go"><svg aria-hidden="true" focusable="false" viewBox="0 0 12 12"><path d="M4.5 2.5 8 6l-3.5 3.5"></path></svg></span>
+          <span class="pg"><b></b></span>
+        </button>
+      </div>
+      <figure class="fscene" id="fscene" aria-hidden="true">
+        <svg aria-hidden="true" focusable="false" viewBox="0 37 380 125">
+          <defs>
+            <clipPath id="fs-cl"><rect x="-20" y="0" width="170" height="176"></rect></clipPath>
+            <clipPath id="fs-cr"><rect x="234" y="0" width="160" height="176"></rect></clipPath>
+          </defs>
+          <path class="fs-pg" d="M262 58Q290 52 318 58V140Q290 134 262 140Z"></path>
+          <path class="fs-pg" d="M318 58Q346 52 372 58V140Q346 134 318 140Z"></path>
+          <line class="fs-rule" x1="270" y1="76" x2="310" y2="76"></line><line class="fs-rule" x1="270" y1="88" x2="310" y2="88"></line><line class="fs-rule" x1="270" y1="100" x2="310" y2="100"></line><line class="fs-rule" x1="270" y1="112" x2="304" y2="112"></line><line class="fs-rule" x1="270" y1="124" x2="310" y2="124"></line>
+          <line class="fs-rule" x1="326" y1="76" x2="364" y2="76"></line><line class="fs-rule" x1="326" y1="88" x2="364" y2="88"></line><line class="fs-rule" x1="326" y1="100" x2="358" y2="100"></line>
+          <rect class="fs-row" x="323" y="112" width="42" height="10" rx="3"></rect>
+          <g clip-path="url(#fs-cr)"><g class="fs-chip"><rect x="168" y="78" width="60" height="22" rx="6"></rect><text class="mono" x="198" y="93" text-anchor="middle">28.500</text></g></g>
+          <rect class="fs-mach" x="150" y="40" width="84" height="98" rx="14"></rect>
+          <line class="fs-slot" x1="150" y1="68" x2="150" y2="110"></line>
+          <line class="fs-slot" x1="234" y1="78" x2="234" y2="100"></line>
+          <circle class="fs-mark" cx="192" cy="82" r="15"></circle>
+          <text x="192" y="87" text-anchor="middle" style="fill:#fff;font-size:var(--fs-md);font-weight:var(--fw-bold)">ح</text>
+          <g><circle class="fs-dot" cx="182" cy="114" r="2.5"></circle><circle class="fs-dot" cx="192" cy="114" r="2.5"></circle><circle class="fs-dot" cx="202" cy="114" r="2.5"></circle></g>
+          <circle class="fs-lt" cx="222" cy="52" r="4"></circle><circle class="fs-lt g" cx="222" cy="52" r="4"></circle><circle class="fs-lt a" cx="222" cy="52" r="4"></circle><circle class="fs-lt r" cx="222" cy="52" r="4"></circle>
+          <g clip-path="url(#fs-cl)"><g class="fs-card">
+            <rect class="fs-cardbox" x="6" y="64" width="104" height="50" rx="8"></rect>
+            <text id="fs-nm" x="15" y="82" style="font-size:var(--fs-sm)">Zain Telecom</text>
+            <text id="fs-amt" class="mono" x="15" y="102" style="font-size:var(--fs-md)">−28.500</text>
+            <g class="fs-badge a"><circle cx="108" cy="64" r="10"></circle><text x="108" y="68.5">?</text></g>
+            <g class="fs-badge r"><circle cx="108" cy="64" r="10"></circle><rect x="103.8" y="59.5" width="2.8" height="9" rx="1"></rect><rect x="109.4" y="59.5" width="2.8" height="9" rx="1"></rect></g>
+          </g></g>
+          <text class="lb" x="58" y="156">سطر البنك</text><text class="lb" x="192" y="156">حسيب</text><text class="lb" x="317" y="156">دفاترك</text>
+        </svg>
+      </figure>
+      </div>
+
+      <div class="win">
+        <div class="chrome">
+          <div class="co"><span class="comark">TC</span><span>الشركة ذ.م.م</span><span class="alt" dir="ltr" lang="en">THE COMPANY W.L.L.</span></div>
+          <div class="meta"><span class="hide">الحسابات البنكية</span><span class="mono hide" dir="rtl">15 أبريل 2026</span></div>
+        </div>
+
+        <div class="main stage" id="stage-0" role="tabpanel" aria-labelledby="tab-0">
+          <div class="bhd">
+            <div><b>مراجعة الدفعة بالاستثناء</b><small>حساب التشغيل NBK · <span class="mono" dir="rtl">1-15 أبريل</span></small></div>
+            <span class="pill g"><i></i><span><span class="mono" data-count="38" data-int="1">38</span> حُسمت تلقائياً · <span class="mono" data-count="3" data-int="1">3</span> لك</span></span>
+          </div>
+          <div class="tbl rows" data-in="1">
+            <div class="tr h"><span>التاريخ</span><span>الطرف المقابل</span><span>سُجّل كـ</span><span class="e">المبلغ د.ك</span><span class="e">الحالة</span></div>
+            <div class="tr"><span class="d mono" dir="rtl">14 أبريل</span><span class="m">Zain Telecom</span><span class="cat">الاتصالات</span><span class="amt mono">−28.500</span><span class="st"><span class="pill g"><i></i>جاهز</span></span></div>
+            <div class="tr"><span class="d mono" dir="rtl">14 أبريل</span><span class="m">Alghanim Industries</span><span class="cat">تحصيل من عميل</span><span class="amt mono">+4,200.000</span><span class="st"><span class="pill g"><i></i>جاهز</span></span></div>
+            <div class="tr"><span class="d mono" dir="rtl">13 أبريل</span><span class="m">وزارة الكهرباء والماء</span><span class="cat">مرافق عامة</span><span class="amt mono">−96.250</span><span class="st"><span class="pill g"><i></i>جاهز</span></span></div>
+            <div class="tr"><span class="d mono" dir="rtl">13 أبريل</span><span class="m">Al Mulla Rental &amp; Leasing</span><span class="cat">تأجير مركبات</span><span class="amt mono">−185.000</span><span class="st"><span class="pill g"><i></i>جاهز</span></span></div>
+          </div>
+          <div class="card">
+            <div class="hd"><span>تحقق بالعينة قبل الاعتماد</span><span class="mono" dir="rtl">2 من 38</span></div>
+            <div class="tbl rows flat" data-in="1">
+              <div class="tr sc"><span class="m">The Sultan Center</span><span class="cat">لوازم مكتبية</span><span class="amt mono">−42.375</span><span class="st ck"><span class="on">صحيح</span><span>خطأ</span></span></div>
+              <div class="tr sc"><span class="m">Ooredoo Kuwait</span><span class="cat">إنترنت</span><span class="amt mono">−35.000</span><span class="st ck"><span>صحيح</span><span>خطأ</span></span></div>
+            </div>
+          </div>
+          <div class="approve pop">
+            <span class="l"><span class="ava am">ح</span><span>كل سطر حُسم تلقائياً مسجَّل ويمكن التراجع عنه.</span></span>
+            <span class="btn p sm">اعتماد الدفعة</span>
+          </div>
+        </div>
+
+        <div class="main stage" id="stage-1" role="tabpanel" aria-labelledby="tab-1" hidden>
+          <div class="ex">
+            <span class="mk"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M8 2.5a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11zM6.3 6.3a1.8 1.8 0 1 1 2.4 1.7c-.5.2-.7.6-.7 1.1v.4M8 11.2v.1"></path></svg></span>
+            <div><div class="nm">BOUTIQAAT ONLINE</div><div class="ct">يظهر في <span class="mono">4</span> أسطر غير مصنّفة</div></div>
+            <div class="rt"><div class="mono" dir="rtl">⁦−64.000⁩ د.ك</div><div class="d mono" dir="rtl">11 أبريل</div></div>
+          </div>
+          <div class="result"><svg aria-hidden="true" focusable="false" class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg><span class="pill a"><i></i>يحتاج إلى إجابة</span></div>
+          <div class="card">
+            <div class="hd"><span style="display:flex;align-items:center;gap:10px"><span class="ava am">ح</span>حسيب يسأل</span><span class="mono" dir="rtl">1 من 2</span></div>
+            <div class="qbody">
+              <p><b>ما نوع هذا النشاط؟</b><br><span class="hint">لن تُسأل إلا مرة واحدة عن كل تاجر.</span></p>
+              <div class="opts">
+                <span class="btn s sm">مورد بضائع</span>
+                <span class="btn s sm">مؤجّر</span>
+                <span class="btn s sm">اتصالات / إنترنت</span>
+                <span class="btn s sm">برمجيات / اشتراك</span>
+              </div>
+            </div>
+          </div>
+          <div class="tbl rows" data-in="1">
+            <div class="tr h"><span>التاريخ</span><span>الوصف</span><span>السؤال</span><span class="e">المبلغ د.ك</span><span class="e">الحالة</span></div>
+            <div class="tr hl"><span class="d mono" dir="rtl">11 أبريل</span><span class="m">BOUTIQAAT ONLINE</span><span class="cat">ما نوع هذا النشاط؟</span><span class="amt mono">−64.000</span><span class="st"><span class="pill a"><i></i>سُئل</span></span></div>
+            <div class="tr"><span class="d mono" dir="rtl">12 أبريل</span><span class="m">تحويل وارد، مرجع 88214</span><span class="cat">أي فاتورة يسددها هذا التحويل؟</span><span class="amt mono">+2,950.000</span><span class="st"><span class="pill a"><i></i>سُئل</span></span></div>
+          </div>
+        </div>
+
+        <div class="main stage" id="stage-2" role="tabpanel" aria-labelledby="tab-2" hidden>
+          <div class="ex">
+            <span class="mk"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M4 2h5.5L12 4.5V14H4zM9 2v3h3M6.5 9.5l3 3m0-3-3 3"></path></svg></span>
+            <div><div class="nm">مستند مفقود</div><div class="ct">معلومات غير كافية</div></div>
+            <div class="rt"><div class="mono" dir="rtl">⁦−1,840.000⁩ د.ك</div><div class="d mono" dir="rtl">15 أبريل</div></div>
+          </div>
+          <div class="result"><svg aria-hidden="true" focusable="false" class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg><span class="pill r"><i></i>لم يُرحَّل، معلّق للمراجعة</span></div>
+          <div class="card">
+            <div class="hd"><span>الأثر على الدفاتر</span><span class="pill r"><i></i>معلّق</span></div>
+            <div class="kv">
+              <div><span>قيود رُحّلت إلى دفاترك</span><span class="mono">0</span></div>
+              <div><span>المستفيد في الكشف</span><span>Al Rai Trading Est.</span></div>
+              <div><span>فاتورة مطابقة</span><span>لا توجد</span></div>
+              <div><span>مُسند إلى</span><span class="who"><span class="ava u s">MH</span>محاسب</span></div>
+            </div>
+          </div>
+          <div class="card drop row">
+            <svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M8 11V3m0 0L5 6m3-3 3 3M2.5 10.5v3h11v-3"></path></svg>
+            <span>أرفق فاتورة المورد للمتابعة</span>
+            <span class="mono">PDF · JPG · PNG</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- 02 ASK HASEEB -->
+<section class="sec ask slide" id="ask" aria-label="02 اسأل أمينة">
+  <div class="wrap">
+    <div class="agrid">
+      <div class="stack">
+        <div class="label rv" style="margin-block-end:8px"><span class="n">02</span><span>اسأل أمينة</span><span class="alt" dir="ltr" lang="en">Ask Aminah</span></div>
+        <h2 class="h2 rv">تحدّث مع حساباتك كما تتحدث مع شخص.</h2>
+        <p class="lead rv d1">أمينة هي المساعدة داخل حسيب. اسألها عن دفاترك بالعربية أو الإنجليزية، دون البحث في التقارير.</p>
+        <div class="tries rv d2" aria-hidden="true">
+          <span class="try on">أيّ العملاء ما زالوا مدينين لنا؟</span>
+          <span class="try">كم لدينا من النقد الآن؟</span>
+          <span class="try">هل هناك ما يجب أن يقلقني؟</span>
+        </div>
+      </div>
+
+      <div class="shot askshot rv d1" role="img" aria-label="مثال محادثة مع أمينة عن الذمم المدينة والنقد">
+        <div class="win">
+          <div class="chrome">
+            <div class="co"><span class="ava am">أ</span><span>أمينة</span><span class="alt" dir="ltr" lang="en">Aminah</span></div>
+            <div class="meta"><span class="hide">THE COMPANY W.L.L.</span></div>
+          </div>
+          <div class="chatwin">
+            <div class="chat">
+              <div class="thread">
+                <div class="q msg">أيّ العملاء ما زالوا مدينين لنا؟</div>
+                <div class="ans msg m2"><span class="ava am">أ</span><div class="b">عميلان مدينان لك بمبلغ <span class="mono">10,950.000</span>&nbsp;د.ك.
+                  <div class="mini">
+                    <div><span>Alghanim Industries</span><span class="mono">8,000.000</span><span class="pill r"><i></i>متأخر 6 أيام</span></div>
+                    <div><span>Al Shaya Trading</span><span class="mono">2,950.000</span><span class="pill a"><i></i>يستحق الخميس</span></div>
+                  </div>
+                </div></div>
+                <div class="q msg m3">كم لدينا من النقد الآن؟</div>
+                <div class="ans msg m4"><span class="ava am">أ</span><div class="b"><span class="mono">142,850.000</span>&nbsp;د.ك اليوم.
+                  <div class="mini bars">
+                    <div><span>NBK · التشغيل</span><span class="mono">118,600.000</span><i style="--w:83%"></i></div>
+                    <div><span>KFH · التوفير</span><span class="mono">24,250.000</span><i style="--w:17%"></i></div>
+                  </div>
+                  <span class="nx">الدفعة الكبيرة التالية: الرواتب، <span class="mono">7,198.000</span> في <span class="mono" dir="rtl">30 أبريل</span>.</span>
+                </div></div>
+              </div>
+              <div class="composer">
+                <div class="inp"><span>اسأل أمينة أي شيء عن دفاترك…</span><span class="send" aria-hidden="true"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M8 13V3m0 0L4 7m4-4 4 4"></path></svg></span></div>
+                <div class="foot">قد تخطئ أمينة. تحقق دائماً من الأرقام المهمة.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 KUWAIT -->
+<section class="sec slide" id="kuwait" aria-label="03 صُمّم للكويت">
+  <div class="gridbg"></div>
+  <div class="wrap" style="position:relative">
+    <div class="kgrid">
+      <div class="stack">
+        <div class="label rv" style="margin-block-end:8px"><span class="n">03</span><span>الكويت</span><span class="alt" dir="ltr" lang="en">Built for here</span></div>
+        <h2 class="h2 rv">لا يعمل في الكويت فحسب. بل يفهم الكويت.</h2>
+        <p class="lead rv d1">يقرأ كشف حسابك كما يقرؤه محاسب كويتي.</p>
+        <div class="chips rv d2">
+          <span class="chip"><i></i>تسويات كي نت</span>
+          <span class="chip"><i></i>التجار الكويتيون</span>
+          <span class="chip"><i></i>دفعات طلبات</span>
+          <span class="chip"><i></i>التأمينات الاجتماعية والرواتب</span>
+          <span class="chip"><i></i>التقدم العلمي ودعم العمالة والزكاة وضريبة الدخل</span>
+          <span class="chip"><i></i>كشوف الوطني والتجاري وبوبيان وبيتك</span>
+        </div>
+      </div>
+
+      <div class="win rv d1" role="img" aria-label="مثال: أسطر من كشف بنكي كويتي وما يفهمه حسيب من كل منها">
+        <div class="chrome">
+          <div class="co"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M2 6.5 8 3l6 3.5M3.5 7v5m3-5v5m3-5v5m3-5v5M2 13.5h12"></path></svg><span>كشف حساب</span><span class="alt" dir="ltr" lang="en">Statement import</span></div>
+          <div class="meta"><span class="hide">NBK · حساب التشغيل</span><span class="pill g"><i></i>د.ك</span></div>
+        </div>
+        <div class="main">
+          <div class="kh"><span>في كشف حسابك</span><span>ما يفهمه حسيب</span></div>
+          <div class="kl rows" data-in="1">
+            <div class="kr"><span class="raw mono" dir="rtl" lang="ar">كي نت تسوية 0412</span><svg aria-hidden="true" focusable="false" class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg><span class="und"><b>مبيعات بطاقات كي نت</b><small>مطابقة مع التسوية، والرسوم مفصولة</small></span></div>
+            <div class="kr"><span class="raw mono">TALABAT GENERAL TRADING PAYOUT</span><svg aria-hidden="true" focusable="false" class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg><span class="und"><b>دفعة طلبات</b><small>فصل المبيعات والعمولة باستخدام تقرير التسوية</small></span></div>
+            <div class="kr"><span class="raw mono">PIFSS CONTRIBUTION 04/2026</span><svg aria-hidden="true" focusable="false" class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg><span class="und"><b>اشتراك التأمينات الاجتماعية</b><small>تسدد ما تستحقه الرواتب، وليست مصروفاً جديداً</small></span></div>
+            <div class="kr"><span class="raw mono">MEW E-PAYMENT 00318842</span><svg aria-hidden="true" focusable="false" class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg><span class="und"><b>وزارة الكهرباء والماء</b><small>مرافق عامة</small></span></div>
+            <div class="kr"><span class="raw mono" dir="rtl" lang="ar">زين الكويت</span><svg aria-hidden="true" focusable="false" class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg><span class="und"><b>زين الكويت</b><small>الاتصالات</small></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  </div>
+</div>
+<section class="kflow" id="kflow" aria-label="دفعة كي نت واحدة، من البداية إلى النهاية">
+  <div class="kf-head"><div class="stack shead"><h2 class="h2 rv">دفعة كي نت واحدة، من جهاز البطاقات إلى دفاترك.</h2></div><button class="kf-pause" type="button" id="kfPause" aria-pressed="false"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M5.5 3.5v9M10.5 3.5v9"></path></svg><span>إيقاف الحركة</span></button></div>
+  <div class="kf-row rv d1" role="img" aria-label="يمرّر العميل بطاقته، فتصل الدفعة إلى بنكك كسطر تسوية كي نت، ثم يحضّر حسيب القيد وتعتمده أنت في دفاترك">
+    <div class="kf-st">
+      <div class="kf-box kf-counter">
+        <svg aria-hidden="true" focusable="false" viewBox="0 -62 200 214">
+          <rect class="kf-term" x="62" y="22" width="76" height="120" rx="12"></rect>
+          <rect class="kf-scr" x="71" y="33" width="58" height="44" rx="5"></rect>
+          <text class="kf-knet" x="78" y="45">KNET</text>
+          <text class="kf-amt mono" x="100" y="61" text-anchor="middle">8.250</text>
+          <text class="kf-ok" x="100" y="72" text-anchor="middle">تم الاعتماد</text>
+          <circle class="kf-key" cx="82" cy="94" r="4"></circle><circle class="kf-key" cx="100" cy="94" r="4"></circle><circle class="kf-key" cx="118" cy="94" r="4"></circle>
+          <circle class="kf-key" cx="82" cy="110" r="4"></circle><circle class="kf-key" cx="100" cy="110" r="4"></circle><circle class="kf-key" cx="118" cy="110" r="4"></circle>
+          <circle class="kf-key" cx="82" cy="126" r="4"></circle><circle class="kf-key" cx="100" cy="126" r="4"></circle><circle class="kf-key" cx="118" cy="126" r="4"></circle>
+          <path class="kf-wave" d="M146 30a10 10 0 0 1 0 16"></path><path class="kf-wave" d="M152 24a18 18 0 0 1 0 28"></path><path class="kf-wave" d="M158 18a26 26 0 0 1 0 40"></path>
+          <g class="kf-pay" transform="translate(30 -22) rotate(10 122 -7)"><rect class="kf-cc" x="86" y="-30" width="72" height="46" rx="7"></rect><rect class="kf-chip" x="96" y="-20" width="14" height="11" rx="2"></rect><rect class="kf-strip" x="96" y="2" width="40" height="4" rx="2"></rect></g>
+        </svg>
+      </div>
+      <p class="kf-cap"><span class="n mono">01</span><span>يمرّر العميل بطاقته.</span></p>
+    </div>
+    <div class="kf-st">
+      <div class="kf-box kf-bank">
+        <div class="kf-hd"><span>كشف NBK</span><span class="mono" dir="rtl">16 أبريل</span></div>
+        <div class="kf-l"><span class="mono">OOREDOO KUWAIT</span><span class="mono">−35.000</span></div>
+        <div class="kf-l"><span class="mono" dir="rtl" lang="ar">زين الكويت</span><span class="mono">−28.500</span></div>
+        <div class="kf-l kf-new"><span class="mono" dir="rtl" lang="ar">كي نت تسوية 0412</span><span class="mono">+<b data-kf="sum">25.500</b></span></div>
+      </div>
+      <p class="kf-cap"><span class="n mono">02</span><span>تصل إلى بنكك كسطر تسوية كي نت.</span></p>
+    </div>
+    <div class="kf-st">
+      <div class="kf-box kf-has">
+        <div class="kf-hd"><span class="kf-who"><span class="ava am">ح</span>حسيب</span></div>
+        <div class="kf-in"><i class="kf-beam"></i><small>في كشف حسابك</small><span class="mono" dir="rtl" lang="ar">كي نت تسوية 0412</span></div>
+        <svg aria-hidden="true" focusable="false" class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg>
+        <div class="kf-out"><small>سُجّل كـ</small><div><b>مبيعات البطاقات</b><span class="pill g"><i></i>جاهز للاعتماد</span></div></div>
+      </div>
+      <p class="kf-cap"><span class="n mono">03</span><span>يقرؤها حسيب ويحضّر القيد.</span></p>
+    </div>
+    <div class="kf-st">
+      <div class="kf-box kf-book">
+        <div class="kf-hd"><span>قيد يومية</span><span class="pill g kf-posted"><i></i>مُرحّل</span></div>
+        <div class="kf-je">
+          <div class="h"><span>الحساب</span><span>مدين</span><span>دائن</span></div>
+          <div><span>البنك · NBK</span><span class="mono">25.500</span><span></span></div>
+          <div><span>مبيعات البطاقات</span><span></span><span class="mono">25.500</span></div>
+        </div>
+        <span class="btn s sm kf-btn">تم الاعتماد</span>
+      </div>
+      <p class="kf-cap"><span class="n mono">04</span><span>تعتمده أنت، فيصبح في دفاترك.</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 VALUE -->
+<section class="sec" id="value">
+  <div class="wrap">
+    <div class="vgrid">
+      <div class="stack">
+        <div class="label rv" style="margin-block-end:8px"><span class="n">04</span><span>قيمة لأعمالك</span><span class="alt" dir="ltr" lang="en">Business value</span></div>
+        <h2 class="h2 rv">معلومات أفضل. محاسبة أسرع. عمل روتيني أقل.</h2>
+        <p class="big2 rv d2"><span>الميزة ليست في مزيد من التقارير.</span>بل في الحصول على قيمة أكبر من المحاسبة.</p>
+      </div>
+
+      <div class="win rv d1" id="s5" role="img" aria-label="مثال: روتين إقفال الشهر الذي يقوم به حسيب، ولا يبقى لك إلا اعتماد واحد">
+        <div class="chrome">
+          <div class="co"><span class="comark">TC</span><span>إقفال الشهر</span><span class="alt" dir="ltr" lang="en">Month-end · April</span></div>
+          <div class="meta"><span class="pill g"><i></i>د.ك</span></div>
+        </div>
+        <div class="main">
+          <div class="rhd">
+            <div><span class="big mono" data-count="41" data-int="1">41</span><span>سطراً بنكياً</span></div>
+            <svg aria-hidden="true" focusable="false" class="arrow" viewBox="0 0 18 18"><path d="M3 9h12M10.5 4.5 15 9l-4.5 4.5"></path></svg>
+            <div><span class="big mono">1</span><span>اعتماد واحد منك</span></div>
+          </div>
+          <div class="rl rows" data-in="1">
+            <div class="rr"><span class="ck2"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"></path></svg></span><s>إدخال كل سطر بنكي يدوياً</s><span class="by">يُقرأ من كشف حسابك</span></div>
+            <div class="rr"><span class="ck2"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"></path></svg></span><s>معرفة لمن ذهبت كل دفعة</s><span class="by">مطابقة مع التجار الكويتيين</span></div>
+            <div class="rr"><span class="ck2"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"></path></svg></span><s>تقسيم دفعات طلبات</s><span class="by">من تقرير التسوية</span></div>
+            <div class="rr"><span class="ck2"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"></path></svg></span><s>مطابقة التأمينات مع الرواتب</s><span class="by">تسدد ما تستحقه الرواتب</span></div>
+            <div class="rr"><span class="ck2"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"></path></svg></span><s>التحقق من توازن كل قيد</s><span class="by">متوازن قبل أن تراه</span></div>
+            <div class="rr you"><span class="ava u s">أنت</span><b>اعتمد الدفعة</b><span class="btn p sm">اعتماد</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 FULL BOOKS -->
+<section class="sec" id="books" aria-labelledby="books-h">
+  <div class="wrap">
+    <div class="stack bhead">
+      <div class="label rv" style="margin-block-end:8px"><span class="n">05</span><span>دفاتر كاملة</span><span class="alt" dir="ltr" lang="en">Full books</span></div>
+      <h2 class="h2 rv" id="books-h">خلف الكشف، دفاتر محاسبية كاملة.</h2>
+      <p class="lead rv d1">حسيب دفتر أستاذ كامل بالقيد المزدوج مصمم للكويت، وليس قارئ كشوف مُلحقاً بجدول بيانات.</p>
+    </div>
+    <div class="bento">
+      <article class="bc rules rv">
+        <h3>أنت تقرر ما يُرحَّل تلقائياً.</h3>
+        <p>حدد حدود الاعتماد حسب المبلغ. لا يُرحَّل تلقائياً إلا القيد الواضح ضمن حدّك، وكل ما عداه ينتظر الشخص المناسب.</p>
+        <ol class="ladder" aria-label="حدود الاعتماد الافتراضية بالدينار الكويتي">
+          <li><span class="amt"><small>حتى</small> <span class="mono">1,000.000</span></span><span class="who">يُرحَّل تلقائياً</span><span class="pill g"><i></i>تلقائي</span></li>
+          <li><span class="amt"><small>حتى</small> <span class="mono">25,000.000</span></span><span class="who">يعتمده مراجع</span><span class="pill n"><i></i>مراجع</span></li>
+          <li><span class="amt"><small>حتى</small> <span class="mono">100,000.000</span></span><span class="who">يعتمده المدير المالي</span><span class="pill n"><i></i>المدير المالي</span></li>
+          <li><span class="amt"><small>أكثر من</small> <span class="mono">100,000.000</span></span><span class="who">يوقّع عليه مجلس الإدارة</span><span class="pill n"><i></i>مجلس الإدارة</span></li>
+        </ol>
+        <p class="note">الحدود الافتراضية معروضة. لا يغيّرها إلا المالك.</p>
+      </article>
+      <article class="bc lang rv d1">
+        <h3>العربية أو الإنجليزية، من الدفاتر نفسها.</h3>
+        <p>حوّل التطبيق كله إلى العربية، من اليمين إلى اليسار. أسماء الحسابات محفوظة باللغتين.</p>
+        <div class="arcard" lang="ar" dir="rtl" aria-label="مثال: القيد نفسه معروضاً بالعربية">
+          <div class="r"><span>زين الكويت</span><span class="mono" dir="ltr">-28.500</span></div>
+          <div class="r"><span>مصروفات الاتصالات</span><span class="pill g"><i></i>جاهز للاعتماد</span></div>
+        </div>
+      </article>
+      <article class="bc tax rv">
+        <div class="pattern" aria-hidden="true"></div>
+        <h3>التزامات الكويت، لا ضريبة قيمة مضافة مستوردة.</h3>
+        <ul class="tags" aria-label="التزامات الكويت التي يتابعها حسيب">
+          <li>التقدم العلمي</li><li>دعم العمالة</li><li>الزكاة</li><li>ضريبة الدخل</li><li>التأمينات</li><li>الاحتياطي القانوني</li>
+        </ul>
+        <p>لا توجد ضريبة قيمة مضافة في الكويت، لذلك لا يضيفها حسيب. ويبقي تقويم الالتزامات المواعيد أمامك. الفوترة الإلكترونية قريباً.</p>
+      </article>
+      <article class="bc ledger rv d1">
+        <h3>وبقية دفتر الأستاذ هنا أيضاً.</h3>
+        <ul class="cols">
+          <li>الفواتير والعملاء</li><li>فواتير الموردين والموردون</li><li>الرواتب والتأمينات</li><li>الأصول الثابتة</li>
+          <li>العهدة النقدية والشيكات</li><li>الاعتمادات المستندية</li><li>إقفال الشهر والسنة</li><li>الموازنات</li>
+        </ul>
+      </article>
+      <article class="bc reports rv d2">
+        <h3>التقارير التي يتوقعها مدقق حساباتك.</h3>
+        <p>قائمة الدخل والميزانية العمومية والتدفقات النقدية وميزان المراجعة وأعمار الذمم وحزمة مجلس الإدارة. مع التصدير إلى Excel.</p>
+        <p class="move">تنتقل من QuickBooks أو Zoho أو Odoo؟ يستورد حسيب سجلك السابق.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- DARK BAND -->
+<section class="dark">
+  <div class="pattern" aria-hidden="true"></div>
+  <div class="skyline" aria-hidden="true"></div>
+  <div class="wrap" style="position:relative">
+    <div class="dots rv" aria-hidden="true"><i style="background:#00A684"></i><i style="background:#D4A84B"></i><i style="background:#FD361C"></i></div>
+    <h2 class="h1 rv">لا تنتظر حتى يوم 20 لتعرف كيف كان الشهر الماضي.</h2>
+    <div class="dgrid rv d1">
+      <p class="w">ارفع كشف الشهر الماضي وشاهد دفاترك محضّرة، سطراً بسطر، في يوم الرفع نفسه.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 COHORT -->
+<section class="sec" id="cohort">
+  <div class="gridbg left"></div>
+  <div class="wrap" style="position:relative">
+    <div class="cgrid">
+      <div class="stack cside">
+        <div class="label rv" style="margin-block-end:4px"><span class="n">06</span><span>المجموعة التأسيسية</span><span class="alt" dir="ltr" lang="en">Founding cohort</span></div>
+        <h2 class="h2 rv">كن من أوائل الشركات في الكويت التي تستخدم حسيب.</h2>
+        <p class="strong rv d1">من 8 إلى 12 شركة خدمات كويتية، يرافقها الفريق المؤسس عن قرب.</p>
+        <div class="bens rv d2">
+          <div class="ben"><span class="ic"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M2.5 8.5 6 12l7.5-8"></path></svg></span><span>انطلاقة بمرافقة قريبة</span></div>
+          <div class="ben"><span class="ic"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><circle cx="8" cy="5.5" r="2.5"></circle><path d="M3 13.5c.6-2.5 2.6-3.5 5-3.5s4.4 1 5 3.5"></path></svg></span><span>تواصل مباشر مع الفريق المؤسس</span></div>
+          <div class="ben"><span class="ic"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M8 2 3 4v4c0 3 2.2 5 5 6 2.8-1 5-3 5-6V4z"></path></svg></span><span>بداية تحت إشراف دقيق</span></div>
+        </div>
+      </div>
+
+      <form class="form rv d1" id="apply" novalidate>
+        <h3>قدّم طلب انضمام</h3>
+        <p class="intro">نراجع كل طلب شخصياً. لا نحتاج أي معلومات مالية.</p>
+        <div class="fgrid">
+          <div class="fld"><label for="f-name">الاسم</label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
+          <div class="fld"><label for="f-company">الشركة</label><input id="f-company" name="company" type="text" autocomplete="organization" required></div>
+          <div class="fld"><label for="f-role">المنصب</label><input id="f-role" name="role" type="text" autocomplete="organization-title" required></div>
+          <div class="fld"><label for="f-type">نوع النشاط</label><select id="f-type" name="business_type" required>
+            <option value="">اختر…</option>
+            <option>خدمات مهنية / استشارات</option>
+            <option>مقاولات / خدمات صيانة</option>
+            <option>أغذية ومشروبات</option>
+            <option>تجزئة / تجارة</option>
+            <option>خدمات أخرى</option>
+          </select></div>
+          <div class="fld w"><label for="f-setup">طريقة المحاسبة الحالية</label><select id="f-setup" name="setup" required>
+            <option value="">اختر…</option>
+            <option>محاسب خارجي / ماسك دفاتر</option>
+            <option>برنامج محاسبة داخلي</option>
+            <option>جداول بيانات</option>
+            <option>لا شيء رسمي بعد</option>
+          </select></div>
+          <div class="fld w"><label for="f-contact">بريد العمل أو رقم الهاتف</label><input id="f-contact" name="contact" type="text" inputmode="email" autocomplete="off" spellcheck="false" placeholder="name@company.com أو ‎+965 …" required></div>
+        </div>
+        <div class="fbtn">
+          <button class="btn p" type="submit">قدّم طلب انضمام</button>
+          <a class="btn s" id="founderBtn" href="mailto:founder@haseeb.app?subject=Conversation%20with%20the%20founder">تحدّث مع المؤسس</a>
+        </div>
+        <p class="status" id="formStatus" role="status" aria-live="polite"></p>
+        <p class="fnote">يفتح الزرّان تطبيق بريدك برسالة جاهزة إلى ⁦founder@haseeb.app⁩. لا يُرسَل شيء حتى تضغط إرسال هناك. يُرجى عدم إرفاق قوائم مالية أو بيانات بنكية.</p>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="ft">
+  <div class="ft-pattern" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="row">
+      <a class="logo" href="#top" translate="no">HASEEB<b>.</b></a>
+      <div class="lk"><a href="website-terms.html">شروط الموقع (بالإنجليزية)</a><a href="privacy.html">سياسة الخصوصية (بالإنجليزية)</a><a href="mailto:founder@haseeb.app">founder@haseeb.app</a></div>
+    </div>
+    <div class="row btm">
+      <span>© 2026 حسيب. جميع الحقوق محفوظة. صُنع في الكويت.</span>
+      <span class="lang"><b aria-current="page">العربية</b><a href="haseeb.html" hreflang="en" lang="en">English</a></span>
+    </div>
+  </div>
+</footer>
+
+<div class="stick" id="stick" aria-hidden="true"><a class="btn p" href="#apply" tabindex="-1">انضم إلى المجموعة التأسيسية</a></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" integrity="sha384-HOvlOYPIs/zjoIkWUGXkVmXsjr8GuZLV+Q+rcPwmJOVZVpvTSXQChiN4t9Euv9Vc" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js" integrity="sha384-P8VzCVnT9NBUkMrpcIZrJbA7EBjJvh/fJS6PmP+4nLIM284DtsImIv8D0fFjIkeh" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js" integrity="sha384-xb96EMJeax+NLXMC88ZBa1xAeAW+kn+horHh/zFlbMLG2UPWhMJJSlv7fi57hS+Q" crossorigin="anonymous"></script>
+<script src="js/motion.js"></script>
+<script src="js/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="#000" stroke-width="1">
+  <!-- Repeating tile: an eight-point star (khatam) joined to its neighbours. Original artwork for Haseeb. -->
+  <path d="M14 14h20v20H14z"/>
+  <path d="M24 10l14 14-14 14-14-14z"/>
+  <path d="M24 0v10M24 38v10M0 24h10M38 24h10M0 0l14 14M48 0 34 14M0 48l14-14M48 48 34 34"/>
+</svg>
