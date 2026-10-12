@@ -56,7 +56,7 @@
     var html = nav.map(function (n) {
       return '<div class="it' + (n[3] === on ? ' on' : '') + '"><span class="l"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="' + n[1] + '"></path></svg><span>' + n[0] + '</span></span>' + (n[2] ? '<span class="c">' + n[2] + '</span>' : '') + '</div>';
     }).join('');
-    side.innerHTML = html + '<div class="grp">' + t('Assistant', 'المساعد') + '</div><div class="it' + (on === 'Aminah' ? ' on' : '') + '"><span class="l"><span class="ava am xs">' + t('A', 'أ') + '</span><span>' + t('Aminah', 'أمينة') + '</span></span></div>';
+    side.innerHTML = html + '<div class="grp">' + t('Assistant', 'المساعد') + '</div><div class="it' + (on === 'Haseeb' ? ' on' : '') + '"><span class="l"><span class="ava am xs">' + t('H', 'ح') + '</span><span>' + t('Haseeb', 'حسيب') + '</span></span></div>';
   });
 
   // KPI count-up.
@@ -183,6 +183,77 @@
     }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
     showIo.observe(show);
   } else begin();
+
+  // Ask Haseeb — the suggested questions are real buttons. Picking one types it into the composer, sends it,
+  // and Haseeb answers in the chat window. Under reduced motion the answer simply swaps in.
+  var askShot = document.querySelector('.askshot');
+  if (askShot) (function () {
+    var chips = [].slice.call(document.querySelectorAll('.try[data-ask]'));
+    var turns = [].slice.call(askShot.querySelectorAll('.turn'));
+    var field = askShot.querySelector('.inp'), ph = field.firstElementChild, phText = ph.textContent;
+    // One clock for the whole exchange, driven by animation frames so typing and reveals land on real frames.
+    // Times in ms from the click: the question types in, sends, the dots show, then the answer.
+    var T = { type: 380, send: 480, dots: 680, answer: 1250 }, run = 0;
+    function reset() { run++; field.classList.remove('typed', 'sent'); ph.textContent = phText; }
+    function turnTo(i) {
+      turns.forEach(function (t, j) { t.classList.remove('qin', 'wait', 'ain', 'pend', 'leave'); t.classList.toggle('on', j === i); });
+      return turns[i];
+    }
+    // Runs fn(ms since start) on every frame until it returns false or a newer question takes over.
+    function clock(fn) {
+      var id = ++run, t0 = null;
+      requestAnimationFrame(function tick(now) {
+        if (id !== run) return;
+        if (t0 === null) t0 = now;
+        if (fn(now - t0) !== false) requestAnimationFrame(tick);
+      });
+    }
+    // Typing dots in the answer's slot, then the answer rises in. The window never changes height.
+    function reply(t) {
+      clock(function (ms) {
+        if (ms < T.answer - T.dots) { if (!t.classList.contains('wait')) t.classList.add('wait'); return; }
+        t.classList.remove('wait'); t.classList.add('ain'); return false;
+      });
+    }
+    function ask(i) {
+      reset();
+      chips.forEach(function (c, j) { c.setAttribute('aria-pressed', j === i ? 'true' : 'false'); });
+      if (reduce) { turnTo(i); return; }
+      var q = chips[i].textContent.trim(), t = null, shown = 0, old = askShot.querySelector('.turn.on');
+      field.classList.add('typed');
+      if (old) old.classList.add('leave'); // already leaving on a quick second click: let it finish
+      clock(function (ms) {
+        if (ms < T.type) {
+          var n = Math.ceil(q.length * ms / T.type);
+          if (n !== shown) ph.textContent = q.slice(0, shown = n);
+          return;
+        }
+        if (ms < T.send) { if (shown < q.length) ph.textContent = q.slice(0, shown = q.length); return; }
+        if (!t) {
+          field.classList.remove('typed');
+          field.classList.add('sent');
+          ph.textContent = phText;
+          t = turnTo(i);
+          return; // the rise starts next frame, so asking the same question again replays it
+        }
+        if (!t.classList.contains('qin')) t.classList.add('qin');
+        if (ms < T.dots) return;
+        if (ms < T.answer) { if (!t.classList.contains('wait')) t.classList.add('wait'); return; }
+        t.classList.remove('wait'); t.classList.add('ain');
+        return false;
+      });
+    }
+    chips.forEach(function (c, i) { c.addEventListener('click', function () { ask(i); }); });
+    // First view: the first answer is held back until motion.js says the window is on screen.
+    if (root.classList.contains('gs') && window.HMotion) {
+      turns[0].classList.add('pend');
+      askShot.addEventListener('ask:play', function () {
+        if (!turns[0].classList.contains('pend')) return;
+        turns[0].classList.remove('pend');
+        reply(turns[0]);
+      });
+    }
+  })();
 
   // Mobile sticky CTA — shows after the hero, hides near the form.
   var stick = document.getElementById('stick');

@@ -14,7 +14,7 @@ Source of truth for website copy. Read-only survey of the product code at `D:\Pr
 - **Held for review, not posted** when information is missing. Questions about unknown merchants are asked once and remembered.
 - **Settlements recognised:** KNET, Talabat, Deliveroo, MyFatoorah, Tap, Benefit. With the platform's settlement report, the entry splits sales, commission and fees; from the bank line alone the gross is unknown and the line goes to review.
 - **Payroll and PIFSS** matching; PIFSS payments settle what payroll owes.
-- **Aminah** is the assistant's name in the product ("Ask Aminah", "Aminah can make mistakes. Always verify critical numbers."). Answers questions about the books in English or Arabic.
+- **Haseeb** is the assistant's name in the product ("Ask Haseeb", "Haseeb can make mistakes. Always verify critical numbers.") — renamed from Aminah on 2026-10-13, matching the main system. Answers questions about the books in English or Arabic.
 
 ## Everything else in the product
 - Books: journal entries (templates, recurring), chart of accounts (bilingual names), customers and invoices, vendors and bills, payment vouchers, purchase orders, petty cash, fixed assets, inventory count, cheque register, letters of credit, Islamic finance.
@@ -45,7 +45,7 @@ Source of truth for website copy. Read-only survey of the product code at `D:\Pr
 | Old / in-progress site said | Product reality | Fixed on the site |
 |---|---|---|
 | "Nothing is posted without your approval" (meta) | Auto-posting up to an owner-set limit is the default | Reworded around the approval policy |
-| Assistant called "Haseeb" (redesign) | Assistant is **Aminah** | Uses Aminah, "the assistant inside Haseeb" |
+| Assistant called "Haseeb" (redesign) | Assistant was Aminah; renamed to **Haseeb** (2026-10-13) | Uses Haseeb |
 | Only NBK and KFH named | NBK, CBK, Boubyan, KFH layouts | All four named |
 | "KNET fees split out", "Talabat gross and commission separated" from the bank line | Split needs the settlement report | Says so |
 | "KFAS, NLST and Zakat" | Also CIT, PIFSS, statutory reserve | Added |

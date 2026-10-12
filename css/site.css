@@ -225,7 +225,7 @@ html.gs{scroll-behavior:auto}
 .hero-toast{position:absolute;z-index:3;inset-inline-end:calc(20px + var(--sp-4));bottom:calc(20px + var(--sp-4));max-width:380px}
 
 /* reveal motion */
-.gs .rv,.gs .msg,.gs .pop,.gs .seats i{opacity:0}
+.gs .rv,.gs .pop,.gs .seats i{opacity:0}
 .js-on .rows .tr:not(.h){opacity:0;transform:translateY(6px)}
 .js-on [data-in] .rows .tr:not(.h),.js-on .rows[data-in] .tr:not(.h){animation:rowin .5s cubic-bezier(.2,.7,.2,1) forwards}
 .rows .tr:nth-child(2){animation-delay:.10s!important}.rows .tr:nth-child(3){animation-delay:.17s!important}.rows .tr:nth-child(4){animation-delay:.24s!important}.rows .tr:nth-child(5){animation-delay:.31s!important}.rows .tr:nth-child(6){animation-delay:.38s!important}.rows .tr:nth-child(7){animation-delay:.45s!important}.rows .tr:nth-child(8){animation-delay:.52s!important}.rows .tr:nth-child(9){animation-delay:.59s!important}.rows .tr:nth-child(10){animation-delay:.66s!important}.rows .tr:nth-child(11){animation-delay:.73s!important}.rows .tr:nth-child(12){animation-delay:.80s!important}.rows .tr:nth-child(13){animation-delay:.87s!important}
@@ -449,7 +449,31 @@ html.gs{scroll-behavior:auto}
 /* chat */
 .chatwin{display:grid;grid-template-columns:minmax(0,1fr)}
 .chat{display:flex;flex-direction:column;min-width:0;border-inline-end:1px solid var(--line)}
-.thread{padding:var(--sp-5);display:flex;flex-direction:column;gap:var(--sp-4);flex:1}
+.thread{padding:var(--sp-5);display:grid;flex:1}
+/* One exchange per suggested question, stacked in one cell so the window keeps the tallest one's height. */
+.turn{grid-area:1/1;display:flex;flex-direction:column;gap:var(--sp-4);min-width:0}
+.turn:not(.on){visibility:hidden}
+.slot{display:grid}.slot>*{grid-area:1/1}
+.slot>.typing{display:none;align-self:start}
+.turn.wait .slot>.msg,.turn.pend .slot>.msg,.turn.qin:not(.ain) .slot>.msg{visibility:hidden}
+/* Exchange motion (site.js sets the classes): the old exchange drifts up and out while the question types,
+   the question bubble grows from its corner, dots, then the dots hand over to the answer and its rows follow. */
+.turn{--ez:cubic-bezier(.22,1,.36,1)}
+.turn.leave{animation:chat-leave .3s cubic-bezier(.4,0,1,1) forwards}
+.turn .q{transform-origin:100% 100%}.slot>.msg{transform-origin:0 0}
+[dir=rtl] .turn .q{transform-origin:0 100%}[dir=rtl] .slot>.msg{transform-origin:100% 0}
+.turn.qin .q{animation:chat-in .45s var(--ez) both}
+.turn.wait .slot>.typing{display:flex;animation:chat-in .3s var(--ez) both}
+.turn.ain .slot>.typing{display:flex;animation:chat-out .18s ease-out forwards}
+.turn.ain .slot>.msg{animation:chat-in .5s var(--ez) both}
+.turn.ain .mini>div,.turn.ain .nx{animation:chat-row .45s var(--ez) both}
+.turn.ain .mini>div:nth-child(1){animation-delay:.12s}.turn.ain .mini>div:nth-child(2){animation-delay:.2s}.turn.ain .nx{animation-delay:.28s}
+.turn.ain .mini.bars i::before{animation:chat-grow .8s var(--ez) .25s both;transform-origin:0 50%}
+@keyframes chat-in{from{opacity:0;transform:translateY(8px) scale(.97)}}
+@keyframes chat-row{from{opacity:0;transform:translateY(4px)}}
+@keyframes chat-out{to{opacity:0}}
+@keyframes chat-leave{to{opacity:0;transform:translateY(-8px)}}
+@keyframes chat-grow{from{transform:scaleX(0)}}
 .q{align-self:flex-end;background:var(--ink);color:var(--bg);padding:var(--sp-3) var(--sp-4);border-radius:14px 14px 4px 14px;font-size:var(--fs-md);max-width:85%}
 .ans{display:flex;gap:var(--sp-3);align-items:flex-start;max-width:95%}
 .ans .b{background:var(--alt);border:1px solid var(--line);border-radius:4px 14px 14px 14px;padding:var(--sp-3) var(--sp-4);font-size:var(--fs-md);line-height:1.55}
@@ -459,7 +483,13 @@ html.gs{scroll-behavior:auto}
 .typing .b i:nth-child(2){animation-delay:.15s}.typing .b i:nth-child(3){animation-delay:.3s}
 @keyframes typing{0%,60%,100%{opacity:.3;transform:none}30%{opacity:1;transform:translateY(-3px)}}
 .composer{border-top:1px solid var(--line);padding:var(--sp-4) var(--sp-4);display:flex;flex-direction:column;gap:var(--sp-2)}
-.inp{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);border:1px solid var(--line2);border-radius:12px;padding:0 var(--sp-2) 0 var(--sp-4);min-height:46px;font-size:var(--fs-md);color:var(--ink40)}
+.inp{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);border:1px solid var(--line2);border-radius:12px;padding:0 var(--sp-2) 0 var(--sp-4);min-height:46px;font-size:var(--fs-md);color:var(--ink40);transition:border-color .2s}
+.inp>span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.inp.typed{border-color:var(--ink40)}.inp.typed>span:first-child{color:var(--ink)}
+.inp.typed>span:first-child::after{content:"";display:inline-block;width:1.5px;height:1.1em;margin-inline-start:2px;vertical-align:-.2em;background:var(--teal);animation:caret .9s steps(1) infinite}
+@keyframes caret{50%{opacity:0}}
+.inp.sent .send{animation:send-p .35s cubic-bezier(.22,1,.36,1)}
+@keyframes send-p{35%{transform:scale(.86)}}
 .send{width:34px;height:34px;border-radius:9px;background:#007A62;border:0;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .foot{font-size:var(--fs-sm);line-height:1.5;color:var(--ink60);text-align:center}
 .ctx{padding:var(--sp-5);display:flex;flex-direction:column;gap:var(--sp-4);min-width:0;background:var(--surface)}
@@ -514,8 +544,14 @@ html.gs{scroll-behavior:auto}
 .hint{font-size:var(--fs-sm);color:var(--ink60)}
 .agrid{display:grid;grid-template-columns:var(--cols-2);gap:var(--gutter);align-items:start}
 .tries{display:flex;flex-direction:column;align-items:flex-start;gap:var(--sp-2);margin-block-start:var(--sp-4)}
-.try{display:inline-flex;align-items:center;gap:var(--sp-2);padding:var(--sp-3) var(--sp-4);border-radius:999px;border:1px solid var(--line2);background:var(--surface);font-size:var(--fs-md);color:var(--ink60)}
-.try.on{border-color:var(--tint-b);background:var(--tint);color:var(--teal);font-weight:var(--fw-medium)}
+.tries-k{font-size:var(--fs-sm);color:var(--ink60)}
+.try{display:inline-flex;align-items:center;gap:var(--sp-3);padding:var(--sp-3) var(--sp-4);border-radius:999px;border:1px solid var(--line2);background:var(--surface);font-size:var(--fs-md);color:var(--ink60);text-align:start;cursor:pointer;transition:border-color .2s,background-color .2s,color .2s,transform .15s}
+.try .ico{width:14px;height:14px;opacity:.5;transition:opacity .2s,transform .2s}
+.try:hover{border-color:var(--ink40);color:var(--ink)}
+.try:hover .ico{opacity:1;transform:translateY(-2px)}
+.try:active{transform:scale(.98)}
+.try[aria-pressed="true"]{border-color:var(--tint-b);background:var(--tint);color:var(--teal);font-weight:var(--fw-medium)}
+.try[aria-pressed="true"] .ico{opacity:1;transform:none}
 .mini{display:flex;flex-direction:column;margin-block:var(--sp-3) 2px;border:1px solid var(--line);border-radius:10px;background:var(--surface);overflow:hidden}
 .mini>div{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:var(--sp-3);align-items:center;padding:var(--sp-2) var(--sp-3);border-top:1px solid var(--line);font-size:var(--fs-sm)}
 .mini>div:first-child{border-top:0}
@@ -549,7 +585,7 @@ html.gs{scroll-behavior:auto}
 .rr.you{margin-block-start:var(--sp-2);border:1px solid var(--tint-b);border-radius:12px;background:var(--tint);padding:var(--sp-3) var(--sp-3)}
 .rr.you .ava{width:28px;height:28px;font-size:var(--fs-2xs)}
 .rr.you b{font-weight:var(--fw-semibold)}
-@media (max-width:1080px){.agrid{grid-template-columns:minmax(0,1fr);gap:var(--sp-7)}.tries{flex-direction:row;flex-wrap:wrap}}
+@media (max-width:1080px){.agrid{grid-template-columns:minmax(0,1fr);gap:var(--sp-7)}.tries{flex-direction:row;flex-wrap:wrap}.tries-k{flex-basis:100%}}
 @media (max-width:600px){
   .kh{display:none}
   .mini:not(.bars)>div{grid-template-columns:minmax(0,1fr) auto;row-gap:var(--sp-1)}
@@ -634,8 +670,10 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
 .cphoto{aspect-ratio:16/9;margin-block-start:var(--sp-2)}
 .cphoto img{object-position:50% 40%}
 .shead{max-width:760px;gap:var(--sp-4)}
-.askshot .ans{max-width:84%}.askshot .ans .b{flex:1;min-width:0}
+.askshot .ans{max-width:84%}.askshot .ans .b{flex:1;min-width:0}.askshot .typing .b{flex:none}
 .askshot{margin-block-start:0}
+/* The window can be stretched to match the other tour slides: the thread takes the room, the composer stays at the bottom. */
+.askshot .win{display:flex;flex-direction:column}.askshot .chatwin{flex:1}
 .askshot .chat{border-inline-end:0}
 .split.ph{align-items:center}
 .split.ph .stack{gap:var(--sp-4)}
@@ -780,6 +818,7 @@ html{scrollbar-width:none}html::-webkit-scrollbar,.tabs::-webkit-scrollbar{displ
   .stage>*,.stage .result .pill,.stage .result .arrow{animation:none!important}
   .js-on .rv,.js-on .rows .tr:not(.h),.js-on .pop{opacity:1!important;transform:none!important;animation:none!important;transition:none!important}
   .js-on .lane .bar b{transform:scaleX(1)!important}
+  .turn,.turn *,.inp *,.try,.try .ico{animation:none!important;transition:none!important}
   html{scroll-behavior:auto}
 }
 

@@ -3,7 +3,7 @@
  * The page works without this file: content is visible by default, and the
  * inline script falls back to an IntersectionObserver when HMotion is missing.
  * <html class="gs"> (set in <head>, skipped under reduced motion) hides
- * .rv / .msg / .pop / seat dots until start() animates them in.
+ * .rv / .pop / seat dots until start() animates them in.
  *
  * Motion vocabulary — keep to these, don't invent one-off effects:
  *   reveal  fade + 12px rise as it enters the screen, batched, once
@@ -89,33 +89,13 @@
     ScrollTrigger.create({ trigger: shot, start: T.start, once: true, onEnter: function () { tl.play(); } });
   }
 
-  function chat(handled) {
+  // The chat itself lives in site.js (the suggested questions are buttons). Here: tell it when the window is on screen.
+  function chat() {
     var shot = $('.askshot');
     if (!shot) return;
-    var thread = $('.thread', shot), msgs = $$('.msg', thread);
-    if (msgs.length < 4) { gsap.set(msgs, { opacity: 1 }); return; }
-    // The dots sit over the answer's (still invisible) slot, so the window never changes height.
-    thread.style.position = 'relative';
-    function typing(before) {
-      var t = document.createElement('div');
-      t.className = 'ans typing';
-      t.setAttribute('aria-hidden', 'true');
-      t.innerHTML = '<span class="ava am">H</span><div class="b"><i></i><i></i><i></i></div>';
-      thread.insertBefore(t, before);
-      gsap.set(t, { display: 'none', position: 'absolute', left: before.offsetLeft });
-      return t;
-    }
-    function place(t, before) { return function () { gsap.set(t, { top: before.offsetTop, left: before.offsetLeft }); }; }
-    // The window is never empty: the first question and answer are already there, the second exchange plays.
-    gsap.set([msgs[0], msgs[1]], { opacity: 1 });
-    var t2 = typing(msgs[3]);
-    var inn = { opacity: 1, y: 0, duration: T.fast, ease: T.ease }, from = { opacity: 0, y: 10 };
-    var tl = gsap.timeline({ paused: true });
-    tl.fromTo(msgs[2], from, inn, 0.2)
-      .call(place(t2, msgs[3])).set(t2, { display: 'flex' }).fromTo(t2, { opacity: 0 }, { opacity: 1, duration: 0.2 })
-      .set(t2, { display: 'none' }, '+=0.6')
-      .fromTo(msgs[3], from, inn);
-    ScrollTrigger.create({ trigger: shot, start: 'top 90%', once: true, onEnter: function () { whenShown(shot, function () { tl.play(); }); } });
+    ScrollTrigger.create({ trigger: shot, start: 'top 90%', once: true, onEnter: function () { whenShown(shot, function () {
+      gsap.delayedCall(0.35, function () { shot.dispatchEvent(new CustomEvent('ask:play')); });
+    }); } });
   }
 
   function bankFlow() {
@@ -298,6 +278,12 @@
     function fit(H) {
       var wraps = slides.map(function (sl) { return $('.wrap', sl); }).filter(Boolean), k = 1;
       wraps.forEach(function (w) { w.style.zoom = w.style.maxWidth = w.style.paddingInline = ''; });
+      // One window height for all three slides (the tallest one's), so the heading and the window sit at the
+      // same place and the same size on each slide.
+      var wins = slides.map(function (sl) { return $('.win', sl); }).filter(Boolean);
+      wins.forEach(function (w) { w.style.minHeight = ''; });
+      var wh = Math.ceil(Math.max.apply(null, wins.map(function (w) { return w.getBoundingClientRect().height; })));
+      wins.forEach(function (w) { w.style.minHeight = wh + 'px'; });
       wraps.forEach(function (w) {
         var cs = getComputedStyle(w.parentNode), room = H - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
         k = Math.min(k, room / w.getBoundingClientRect().height);
@@ -335,7 +321,11 @@
         st = null;
         tl.clear();
         gsap.set(slides.concat(fills), { clearProps: 'opacity,visibility,transform' });
-        slides.forEach(function (sl) { var w = $('.wrap', sl); if (w) w.style.zoom = w.style.maxWidth = w.style.paddingInline = ''; });
+        slides.forEach(function (sl) {
+          var w = $('.wrap', sl), win = $('.win', sl);
+          if (w) w.style.zoom = w.style.maxWidth = w.style.paddingInline = '';
+          if (win) win.style.minHeight = '';
+        });
         box.classList.remove('pin');
         document.documentElement.style.removeProperty('--tour-tail');
         stacked();
@@ -413,7 +403,7 @@
         lines(h, { trigger: { trigger: h, start: T.start, once: true } });
       });
 
-      chat(handled);
+      chat();
       bankFlow();
       counterFlow();
       seats();
@@ -465,7 +455,8 @@
       gsap.set($$('.slide'), { clearProps: 'opacity,visibility,transform' });
       if ('scrollRestoration' in history) history.scrollRestoration = 'auto';
       $$('.rv, .seats').forEach(mark);
-      gsap.set($$('.rv, .msg, .pop, .seats i'), { clearProps: 'all' });
+      gsap.set($$('.rv, .pop, .seats i'), { clearProps: 'all' });
+      $$('.turn.pend').forEach(function (t) { t.classList.remove('pend'); });
       if (window.console) console.error(e);
     }
   }

@@ -56,7 +56,7 @@
     <div class="nav-r">
       <nav class="links" aria-label="Primary">
         <a href="#how">How it works</a>
-        <a href="#ask">Ask Aminah</a>
+        <a href="#ask">Ask Haseeb</a>
         <a href="#kuwait">Kuwait</a>
         <a href="#cohort">Founding cohort</a>
         <a class="btn p sm" href="#apply">Join the founding cohort</a>
@@ -71,7 +71,7 @@
   </div>
   <nav class="mmenu" id="mmenu" aria-label="Mobile">
     <a href="#how">How it works</a>
-    <a href="#ask">Ask Aminah</a>
+    <a href="#ask">Ask Haseeb</a>
     <a href="#kuwait">Kuwait</a>
     <a href="#cohort">Founding cohort</a>
     <a href="ar.html" hreflang="ar" lang="ar">العربية</a>
@@ -152,7 +152,7 @@
   <nav class="tour-bar" aria-label="How it works, step by step">
     <div class="wrap">
       <a href="#how" class="on" aria-current="step"><span class="lb"><span class="n">01</span><span>How it works</span><span class="ar" dir="rtl" lang="ar">كيف يعمل</span></span><span class="rail"><i></i></span></a>
-      <a href="#ask"><span class="lb"><span class="n">02</span><span>Ask Aminah</span><span class="ar" dir="rtl" lang="ar">اسأل أمينة</span></span><span class="rail"><i></i></span></a>
+      <a href="#ask"><span class="lb"><span class="n">02</span><span>Ask Haseeb</span><span class="ar" dir="rtl" lang="ar">اسأل حسيب</span></span><span class="rail"><i></i></span></a>
       <a href="#kuwait"><span class="lb"><span class="n">03</span><span>Built for here</span><span class="ar" dir="rtl" lang="ar">الكويت</span></span><span class="rail"><i></i></span></a>
     </div>
   </nav>
@@ -306,48 +306,72 @@
 </section>
 
 <!-- 02 ASK HASEEB -->
-<section class="sec ask slide" id="ask" aria-label="02 Ask Aminah">
+<section class="sec ask slide" id="ask" aria-label="02 Ask Haseeb">
   <div class="wrap">
     <div class="agrid">
       <div class="stack">
-        <div class="label rv"><span class="n">02</span><span>Ask Aminah</span><span class="ar" dir="rtl" lang="ar">اسأل أمينة</span></div>
+        <div class="label rv"><span class="n">02</span><span>Ask Haseeb</span><span class="ar" dir="rtl" lang="ar">اسأل حسيب</span></div>
         <h2 class="h2 rv">Talk to your accounts like you talk to a person.</h2>
-        <p class="lead rv d1">Aminah is the assistant inside Haseeb. Ask about your books in English or Arabic, without digging through reports.</p>
-        <div class="tries rv d2" aria-hidden="true">
-          <span class="try on">Which customers still owe us?</span>
-          <span class="try">How much cash do we have right now?</span>
-          <span class="try">Is there anything I should worry about?</span>
+        <p class="lead rv d1">Ask Haseeb about your books in English or Arabic, without digging through reports.</p>
+        <div class="tries rv d2" role="group" aria-label="Try asking Haseeb">
+          <span class="tries-k">Try asking</span>
+          <button type="button" class="try" data-ask="0" aria-controls="askthread" aria-pressed="true"><span>Which customers still owe us?</span><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M8 13V3m0 0L4 7m4-4 4 4"></path></svg></button>
+          <button type="button" class="try" data-ask="1" aria-controls="askthread" aria-pressed="false"><span>How much cash do we have right now?</span><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M8 13V3m0 0L4 7m4-4 4 4"></path></svg></button>
+          <button type="button" class="try" data-ask="2" aria-controls="askthread" aria-pressed="false"><span>Is there anything I should worry about?</span><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M8 13V3m0 0L4 7m4-4 4 4"></path></svg></button>
         </div>
       </div>
 
-      <div class="shot askshot rv d1" role="img" aria-label="Example conversation with Aminah about receivables and cash">
+      <div class="shot askshot rv d1" role="group" aria-label="Example conversation with Haseeb about receivables and cash">
         <div class="win">
           <div class="chrome">
-            <div class="co"><span class="ava am">A</span><span>Aminah</span><span class="ar" dir="rtl" lang="ar">أمينة</span></div>
+            <div class="co"><span class="ava am">H</span><span>Haseeb</span><span class="ar" dir="rtl" lang="ar">حسيب</span></div>
             <div class="meta"><span class="hide">THE COMPANY W.L.L.</span></div>
           </div>
           <div class="chatwin">
             <div class="chat">
-              <div class="thread">
-                <div class="q msg">Which customers still owe us?</div>
-                <div class="ans msg m2"><span class="ava am">A</span><div class="b">Two customers owe you <span class="mono">10,950.000</span>&nbsp;KWD.
-                  <div class="mini">
-                    <div><span>Alghanim Industries</span><span class="mono">8,000.000</span><span class="pill r"><i></i>6 days late</span></div>
-                    <div><span>Al Shaya Trading</span><span class="mono">2,950.000</span><span class="pill a"><i></i>Due Thursday</span></div>
+              <div class="thread" id="askthread" aria-live="polite">
+                <div class="turn on" data-ask="0">
+                  <div class="q msg">Which customers still owe us?</div>
+                  <div class="slot">
+                    <div class="ans typing" aria-hidden="true"><span class="ava am">H</span><div class="b"><i></i><i></i><i></i></div></div>
+                    <div class="ans msg"><span class="ava am">H</span><div class="b">Two customers owe you <span class="mono">10,950.000</span>&nbsp;KWD.
+                      <div class="mini">
+                        <div><span>Alghanim Industries</span><span class="mono">8,000.000</span><span class="pill r"><i></i>6 days late</span></div>
+                        <div><span>Al Shaya Trading</span><span class="mono">2,950.000</span><span class="pill a"><i></i>Due Thursday</span></div>
+                      </div>
+                    </div></div>
                   </div>
-                </div></div>
-                <div class="q msg m3">How much cash do we have right now?</div>
-                <div class="ans msg m4"><span class="ava am">A</span><div class="b"><span class="mono">142,850.000</span>&nbsp;KWD today.
-                  <div class="mini bars">
-                    <div><span>NBK · operating</span><span class="mono">118,600.000</span><i style="--w:83%"></i></div>
-                    <div><span>KFH · savings</span><span class="mono">24,250.000</span><i style="--w:17%"></i></div>
+                </div>
+                <div class="turn" data-ask="1">
+                  <div class="q msg">How much cash do we have right now?</div>
+                  <div class="slot">
+                    <div class="ans typing" aria-hidden="true"><span class="ava am">H</span><div class="b"><i></i><i></i><i></i></div></div>
+                    <div class="ans msg"><span class="ava am">H</span><div class="b"><span class="mono">142,850.000</span>&nbsp;KWD today.
+                      <div class="mini bars">
+                        <div><span>NBK · operating</span><span class="mono">118,600.000</span><i style="--w:83%"></i></div>
+                        <div><span>KFH · savings</span><span class="mono">24,250.000</span><i style="--w:17%"></i></div>
+                      </div>
+                      <span class="nx">Next big payment: payroll, <span class="mono">7,198.000</span> on <span class="mono">30 Apr</span>.</span>
+                    </div></div>
                   </div>
-                  <span class="nx">Next big payment: payroll, <span class="mono">7,198.000</span> on <span class="mono">30 Apr</span>.</span>
-                </div></div>
+                </div>
+                <div class="turn" data-ask="2">
+                  <div class="q msg">Is there anything I should worry about?</div>
+                  <div class="slot">
+                    <div class="ans typing" aria-hidden="true"><span class="ava am">H</span><div class="b"><i></i><i></i><i></i></div></div>
+                    <div class="ans msg"><span class="ava am">H</span><div class="b">Two things need you this week.
+                      <div class="mini">
+                        <div><span>Alghanim Industries</span><span class="mono">8,000.000</span><span class="pill r"><i></i>6 days late</span></div>
+                        <div><span>Supplier payment, no document</span><span class="mono">1,840.000</span><span class="pill a"><i></i>Invoice missing</span></div>
+                      </div>
+                      <span class="nx">Payroll on <span class="mono">30 Apr</span> is covered, with room to spare.</span>
+                    </div></div>
+                  </div>
+                </div>
               </div>
               <div class="composer">
-                <div class="inp"><span>Ask Aminah anything about your books…</span><span class="send" aria-hidden="true"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M8 13V3m0 0L4 7m4-4 4 4"></path></svg></span></div>
-                <div class="foot">Aminah can make mistakes. Always verify critical numbers.</div>
+                <div class="inp"><span>Ask Haseeb anything about your books…</span><span class="send" aria-hidden="true"><svg aria-hidden="true" focusable="false" class="ico" viewBox="0 0 16 16"><path d="M8 13V3m0 0L4 7m4-4 4 4"></path></svg></span></div>
+                <div class="foot">Haseeb can make mistakes. Always verify critical numbers.</div>
               </div>
             </div>
           </div>
